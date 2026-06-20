@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Alex R.</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="app">
+        <!-- ========================================= -->
+        <!-- SIDEBAR (Selectors match your JS exactly) -->
+        <!-- ========================================= -->
+        <aside class="sidebar" id="sidebar">
+            <!-- JS uses: .menuBtn -->
+            <button class="menuBtn">☰</button>
+
+            <div class="profile">
+                <img src="https://i.pravatar.cc/100?img=12" alt="Profile" />
+                <div class="profile-name">Alex R.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-target="dashboard-view">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M3 10.5L12 3l9 7.5"></path>
+                            <path d="M5 9.5V21h6v-6h2v6h6V9.5"></path>
+                        </svg>
+                    </span>
+                    <span class="label">Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item" data-target="clients-view">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="10" cy="7" r="4"></circle>
+                            <path d="M21 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </span>
+                    <span class="label">Clients</span>
+                </a>
+
+                <a href="#" class="nav-item" data-target="follow-view">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 8v4l3 3"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                        </svg>
+                    </span>
+                    <span class="label">Follow-ups</span>
+                </a>
+                <a href="#" class="nav-item" data-target="satatistic-view">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M4 19V5"></path>
+                            <path d="M8 19V9"></path>
+                            <path d="M12 19V13"></path>
+                            <path d="M16 19V7"></path>
+                            <path d="M20 19V11"></path>
+                        </svg>
+                    </span>
+                    <span class="label">Statistics</span>
+                </a>
+                <a href="#" class="nav-item" data-target="setting-view">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.65 1.65 0 0 0-1-1.5A1.65 1.65 0 0 0 6.18 19l-.06.06A2 2 0 1 1 3.29 16.2l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.65 1.65 0 0 0 1.5-1A1.65 1.65 0 0 0 4 6.18l-.06-.06A2 2 0 1 1 6.77 3.29l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.65 1.65 0 0 0 1 1.5A1.65 1.65 0 0 0 18.82 4l.06-.06A2 2 0 1 1 21.71 6.8l-.06.06A1.65 1.65 0 0 0 20.4 9a1.65 1.65 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.1a1.65 1.65 0 0 0-1.5 1Z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="label">Settings</span>
+                </a>
+            </nav>
+
+            <div class="logout-wrap">
+                <!-- JS uses: #logoutBtn -->
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M10 17l5-5-5-5"></path>
+                            <path d="M15 12H3"></path>
+                            <path d="M21 21V3"></path>
+                        </svg>
+                    </span>
+                    <span class="label">Log Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ========================================= -->
+        <!-- MAIN CONTENT                              -->
+        <!-- ========================================= -->
+        <main class="content">
+
+            <div id="clientBox" class="box">
+                <div class="boxContent">
+                    <span class="closeBtn">&times;</span>
+                    <form id="clientPaper">
+                        <input type="text" name="name" placeholder="Enter Client Name" required>
+                        <input type="email" name="email" placeholder="Enter Client Email" required>
+                        <input type="number" name="number" placeholder="Enter your Contact Number" required>
+                        <input type="text" name="business" placeholder="Enter your business name" required>
+                        <button type="submit">Add Client</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 1. HEADER (JS uses .greeting and .datebox) -->
+            <div id="dashboard-view" class="view-section">
+                <div class="content-box">
+                    <div>
+                        <!-- JS updates this innerHTML, CSS keeps it gradient -->
+                        <h1 class="greeting">Good Morning, Alex 👋</h1>
+                        <!-- JS updates this textContent -->
+                        <p class="datebox">📅 Monday, June 15, 2026</p>
+                    </div>
+                    <button class="btn">+ Quickly Add Client</button>
+
+                </div>
+
+
+
+
+                <!-- 2. FOUR STAT CARDS (Exact numbers from image) -->
+                <div class="stats-grid">
+                    <div class="stat-card card-1">
+                        <p class="stat-label">Total Clients</p>
+                        <p class="stat-number">25</p>
+                        <div class="stat-bar"></div>
+                    </div>
+                    <div class="stat-card card-2">
+                        <p class="stat-label">Active Leads</p>
+                        <p class="stat-number">12</p>
+                        <div class="stat-bar"></div>
+                    </div>
+                    <div class="stat-card card-3">
+                        <p class="stat-label">Follow Ups Due</p>
+                        <p class="stat-number">5</p>
+                        <div class="stat-bar"></div>
+                    </div>
+                    <div class="stat-card card-4">
+                        <p class="stat-label">Closed Deals</p>
+                        <p class="stat-number">8</p>
+                        <div class="stat-bar"></div>
+                    </div>
+                </div>
+
+                <!-- 3. MIDDLE ROW: Weekly Progress + Pipeline -->
+                <div class="middle-row">
+                    <!-- Left: Weekly Chart -->
+                    <div class="weekly-progress">
+                        <div class="week-days">
+                            <span>Mo</span><span>Tu</span><span>We</span>
+                            <span>Th</span><span>Fr</span><span>Sa</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-fill" style="width: 80%;"></div>
+                        </div>
+                        <div class="progress-label">
+                            <span>80% of Target</span>
+                            <span class="increase">📈 3.2% increase (M-o-M)</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Pipeline Metrics (Exact text from image) -->
+                    <div class="pipeline-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Leads in Pipeline</span>
+                            <span class="metric-value">75%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Total Client Base</span>
+                            <span class="metric-value" style="color: #6b7a8f;">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Active Client Leads</span>
+                            <span class="metric-value success">✅ Healthy</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Immediate Follow-ups</span>
+                            <span class="metric-value success">🏆 Won This Month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. RECENT CLIENT ENGAGEMENTS (Table) -->
+                <section class="engagements">
+                    <h2>Recent Client Engagements</h2>
+                    <table class="engagement-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Company</th>
+                                <th>Status</th>
+                                <th>Recent Activity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Vansh Singh</strong></td>
+                                <td>Apex Gym</td>
+                                <td><span class="status-badge lead">Lead</span></td>
+                                <td>📝 Updated Proposal</td>
+                                <td>
+                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
+                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vansh Singh</strong></td>
+                                <td>Apex Gym</td>
+                                <td><span class="status-badge opportunity">Opportunity</span></td>
+                                <td>📝 Updated Proposal</td>
+                                <td>
+                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
+                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vansh Singh</strong></td>
+                                <td>Apex Gym</td>
+                                <td><span class="status-badge closed">Closed Won</span></td>
+                                <td>📧 Sent Email</td>
+                                <td>
+                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
+                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- 5. UPCOMING FOLLOW-UPS (List - exact format) -->
+                <section class="followups">
+                    <h2>Upcoming Follow-ups</h2>
+                    <ul class="followup-list">
+                        <li>
+                            <label for="task1" class="followup-label">
+                                <span class="followup-date">JUN 15</span>
+                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
+                                <span class="followup-time">⏰ 10:00 AM</span>
+                            </label>
+                            <input type="checkbox" class="followup-checkbox" id="task1">
+                        </li>
+                        <li>
+                            <label for="task1" class="followup-label">
+                                <span class="followup-date">JUN 15</span>
+                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
+                                <span class="followup-time">⏰ 10:00 AM</span>
+                            </label>
+                            <input type="checkbox" class="followup-checkbox" id="task1">
+                        </li>
+                        <li>
+                            <label for="task1" class="followup-label">
+                                <span class="followup-date">JUN 15</span>
+                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
+                                <span class="followup-time">⏰ 10:00 AM</span>
+                            </label>
+                            <input type="checkbox" class="followup-checkbox" id="task1">
+                        </li>
+                        <li>
+                            <label for="task1" class="followup-label">
+                                <span class="followup-date">JUN 15</span>
+                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
+                                <span class="followup-time">⏰ 10:00 AM</span>
+                            </label>
+                            <input type="checkbox" class="followup-checkbox" id="task1">
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+
+            
+            <div id="editBox" class="box">
+            <div class="editContent">
+                <h1>Edit The Client Detail</h1>
+                <span class="existbtn">&times;</span>
+                <form id="editform">
+                    <input type="text" name="name" placeholder="Enter Client Name" required>
+                    <input type="email" name="email" placeholder="Enter Client Email" required>
+                    <input type="number" name="number" placeholder="Enter your Contact Number" required>
+                    <input type="text" name="business" placeholder="Enter your business name" required>
+                    <button class="submit" type="submit">Sumit</button>
+                    <button class="deal" type="button">Closed Deal</button>
+                </form>
+            </div>
+        </div>
+            <div id="clients-view" class="view-section" style="display: none;">
+                <header class="content-header">
+                    <h1>All Clients 🌞</h1>
+                    <div class="header-actions">
+                        <button class="btn">+ Quick Add Client</button>
+                        <select id="sortOptions">
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="az">A-Z</option>
+                            <option value="za">Z-A</option>
+                        </select>
+                    </div>
+                </header>
+
+                <div class="filters">
+                    <input type="text" id="searchBox" placeholder="Search clients...">
+                    <button class="filter active">All</button>
+                    <button class="filter">Lead</button>
+                    <button class="filter">Contacted</button>
+                    <button class="filter">Proposal Sent</button>
+                    <button class="filter">Closed</button>
+                </div>
+
+                <table class="client-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th class="status">Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientTableBody">
+                        <tr>
+                           <td><button class="edit">Edit</button></td>
+                           <td><button >Close Deal </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </main>
+    </div>
+
+
+    <!-- Your JS file (crm.js) will be loaded here -->
+    <script src="crm.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+.sidebar{
+    width:300px;
+    height:100px;
+    background:blue;
+    color:white;
+    transition:0.3s;
+}
+
+.sidebar.close{
+    width:80px;
+}
