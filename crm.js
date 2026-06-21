@@ -1,4 +1,4 @@
-// ----------------------------------------------//--Client data sytem--//----------------------------------------------------------------
+// ----------------------------------------------//--Client data sytem--//--------------------------------------------------//
 
 const clients = [];    //--to store client data--//
 function loadclients() {
@@ -65,8 +65,7 @@ search.addEventListener("input", () => {
 })
 
 
-
-//---------------------------------------------------Greeting and calender featues---//----------------------------------------------------------------------------------------------------
+//---------------------------------------------------Greeting and calender featues---//--------------------------------------//
 
 const greeting = document.querySelector(".greeting"); // The "Good Morning" text
 const datebox = document.querySelector(".datebox"); // The "Monday, June 15, 2026" text
@@ -106,7 +105,7 @@ document.addEventListener("visibilitychange", function () {
 });
 
 
-//  --------------------------------------------- //--Quick button function--//---------------------------------------------------------
+//  --------------------------------------------- //--Quick button function--//----------------------------------------------------//
 
 
 const quickbtn = document.querySelectorAll(".btn")
@@ -150,7 +149,7 @@ clientPaper.addEventListener("submit", (e) => {
 })
 console.log(clients)
 
-// ---------------------------------------------------edit button------------------------------------------------------------------------
+// ---------------------------------------------------edit button----------------------------------------------------------------//
 
 const edit = document.querySelector(".edit")
 let editBox = document.getElementById("editBox")
@@ -200,14 +199,35 @@ document.querySelector(".deal").addEventListener("click", () => {
 
 })
 
-// --------------- View Page -------------------//
+// --------------- Renderclientdetail -------------------//
 
-const displaybox = document.querySelector(".displaybox")
+function renderClientdetail(detialTorender = clients){
+    detialTorender.forEach(client=> {
+document.querySelector(".client-name").textContent = client.name;
+document.querySelector(".client-email").textContent = client.email;
+document.querySelector(".client-number").textContent = client.number;
+document.querySelector(".client-company").textContent = client.business;
+
+document.querySelector(".over-business").textContent = client.business;
+document.querySelector(".over-business").textContent = client.name;
+document.querySelector(".over-email").textContent = client.email;
+document.querySelector(".over-number").textContent = client.number;
+
+
+document.querySelectorAll(".view-section").forEach((view)=>{
+    view.style.display = "none"
+})
+document.getElementById("clients-detail").style.display = "block";
+
+ }) 
+ 
+ 
+}
 
 
 
 
-// ----------------------------------------------------------renderfunction--------------------------------------------------------------
+// ----------------------------------------------------------renderfunction---------------------------------------------------//
 
 function renderclient(dataToRender = clients) {
     const table = document.querySelector("#clientTableBody")
@@ -261,9 +281,9 @@ function renderclient(dataToRender = clients) {
        let viewbtn = tr.querySelector(".view")
         const vbox = document.querySelector(".vbox")
 
-
         viewbtn.addEventListener("click", () => {
-            vbox.style.display = "block";
+          
+            renderClientdetail();
         })
 
     });
