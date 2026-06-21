@@ -151,7 +151,7 @@ console.log(clients)
 
 // ---------------------------------------------------edit button----------------------------------------------------------------//
 
-const edit = document.querySelector(".edit")
+// const edit = document.querySelector(".edit")
 let editBox = document.getElementById("editBox")
 const editContent = document.querySelector(".editContent")
 const existbtn = document.querySelector(".existbtn")
@@ -201,14 +201,16 @@ document.querySelector(".deal").addEventListener("click", () => {
 
 // --------------- Renderclientdetail -------------------//
 
-function renderClientdetail(detialTorender = clients){
-    detialTorender.forEach(client=> {
+function renderClientdetail(client){
+    if (!client)return; 
+        
+    
 document.querySelector(".client-name").textContent = client.name;
 document.querySelector(".client-email").textContent = client.email;
 document.querySelector(".client-number").textContent = client.number;
-document.querySelector(".client-company").textContent = client.business;
+document.querySelector(".client-company").textContent = client.business || "NA";
 
-document.querySelector(".over-business").textContent = client.business;
+// document.querySelector(".over-business").textContent = client.business || "NA";
 document.querySelector(".over-business").textContent = client.name;
 document.querySelector(".over-email").textContent = client.email;
 document.querySelector(".over-number").textContent = client.number;
@@ -219,10 +221,10 @@ document.querySelectorAll(".view-section").forEach((view)=>{
 })
 document.getElementById("clients-detail").style.display = "block";
 
- }) 
+ } 
  
  
-}
+
 
 
 
@@ -283,7 +285,7 @@ function renderclient(dataToRender = clients) {
 
         viewbtn.addEventListener("click", () => {
           
-            renderClientdetail();
+            renderClientdetail(client);
         })
 
     });
