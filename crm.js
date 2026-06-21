@@ -138,7 +138,9 @@ clientPaper.addEventListener("submit", (e) => {
         number: clientPaper.number.value,
         business: clientPaper.business.value,
         status: "lead",
-        createdat: new Date().toISOString()
+        createdat: new Date().toISOString(),
+         notes: [],
+         task :[]
     };
     clients.push(newclient);    //client data  
     // alert("Client added successfully!");
@@ -225,21 +227,22 @@ document.getElementById("clients-detail").style.display = "block";
  
                                                     //   ----Note Button----//
 
-let notes =[];
-function loadnotes(){
-    const notedata = localStorage.getItem("notes")
-
-if (notedata !== null){notes.push(...JSON.parse(notedata));}
-}
-function savenotes(){ localStorage.setItem("notes",JSON.stringify(notes));}
-
 
 const notebtn = document.querySelector(".notebtn");
-// const closebox = document.getElementsByClassName("details-grid"); //
+const tabbtn = document.querySelector(".tabs button")
+const overactive = document.querySelector(".tabs .active")
+
+
 notebtn.addEventListener("click",()=>{
-document.getElementsByClassName("details-grid").style.display ="none";
+
+document.querySelector(".details-grid").style.display ="none";
+document.getElementById("notesContainer").style.display="block";
+overactive.classList.remove("active");
+notebtn.classList.add("active");
+
     
 });
+
 
 
 
