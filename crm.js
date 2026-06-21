@@ -199,7 +199,7 @@ document.querySelector(".deal").addEventListener("click", () => {
 
 })
 
-// --------------- Renderclientdetail -------------------//
+                                            // --------------- Renderclientdetail -------------------//
 
 function renderClientdetail(client){
     if (!client)return; 
@@ -221,9 +221,40 @@ document.querySelectorAll(".view-section").forEach((view)=>{
 })
 document.getElementById("clients-detail").style.display = "block";
 
- } 
+ }; 
  
- 
+                                                    //   ----Note Button----//
+
+let notes =[];
+function loadnotes(){
+    const notedata = localStorage.getItem("notes")
+
+if (notedata !== null){notes.push(...JSON.parse(notedata));}
+}
+function savenotes(){ localStorage.setItem("notes",JSON.stringify(notes));}
+
+
+const notebtn = document.querySelector(".notebtn");
+// const closebox = document.getElementsByClassName("details-grid"); //
+notebtn.addEventListener("click",()=>{
+document.getElementsByClassName("details-grid").style.display ="none";
+    
+});
+
+
+
+
+function rendernotes(){
+    
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -302,12 +333,3 @@ function dbtnClient(idToErase) {
         renderclient();
     }
 }
-
-
-
-
-
-
-
-
-
