@@ -103,7 +103,8 @@ document.addEventListener("visibilitychange", function () {
         display();
 });
 
-
+function name(params) {
+    
 
 
 
@@ -200,6 +201,7 @@ document.querySelector(".deal").addEventListener("click",()=>{
     
 
 })
+
 // ----------------------------------------------------------renderfunction--------------------------------------------------------------
 
 function renderclient(dataToRender = clients) {
