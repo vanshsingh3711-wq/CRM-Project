@@ -243,6 +243,14 @@ notebtn.classList.add("active");
     
 });
 
+// back to overview //
+overactive.addEventListener("click",()=>{
+    document.querySelector(".details-grid").style.display= "grid"
+    document.getElementById("notesContainer").style.display ="none";
+    notebtn.classList.remove("active")
+    overactive.classList.add ("active")
+})
+
 
 
 
