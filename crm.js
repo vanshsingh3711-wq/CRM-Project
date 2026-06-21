@@ -7,9 +7,11 @@ function loadclients() {
         clients.push(...JSON.parse(data));
 
     }
-    renderclient()
-    saveclients()
+    renderclient();
+    
 };
+
+
 function saveclients() { localStorage.setItem("clients", JSON.stringify(clients)) };
 function generateid() {
     return crypto.randomUUID();
@@ -103,10 +105,6 @@ document.addEventListener("visibilitychange", function () {
         display();
 });
 
-function name(params) {
-    
-
-
 
 //  --------------------------------------------- //--Quick button function--//---------------------------------------------------------
 
@@ -140,7 +138,7 @@ clientPaper.addEventListener("submit", (e) => {
         email: clientPaper.email.value,
         number: clientPaper.number.value,
         business: clientPaper.business.value,
-        status: lead,
+        status: "lead",
         createdat: new Date().toISOString()
     };
     clients.push(newclient);    //client data  
@@ -171,36 +169,43 @@ window.addEventListener("click", (e) => {
     }
 })
 
-editForm.addEventListener("submit",(e)=>{
+editForm.addEventListener("submit", (e) => {
     const clientId = editForm.dataset.clientId;
     const clientIndex = clients.findIndex(c => c.id === clientId);
     e.preventDefault();
-    
+
     clients[clientIndex].name = editForm.name.value;
     clients[clientIndex].email = editForm.email.value;
     clients[clientIndex].number = editForm.number.value;
     clients[clientIndex].business = editForm.business.value;
-    editBox.style.display ="none";
-    
-    
+    editBox.style.display = "none";
+
+
     saveclients();
     renderclient();
 
 })
 
 
-document.querySelector(".deal").addEventListener("click",()=>{
-    clientId =editForm.dataset.clientId;
-    index= clients.findIndex(c=> c.id ===clientId);
-    if (index ===-1)return 
-        clients[index].status = "closed";
-        editBox.style.display="none";
-        saveclients();
-        renderclient();
+document.querySelector(".deal").addEventListener("click", () => {
+    const clientId = editForm.dataset.clientId;
+    const index = clients.findIndex(c => c.id === clientId);
+    if (index === -1) return;
+    clients[index].status = "closed";
+    editBox.style.display = "none";
+    saveclients();
+    renderclient();
 
-    
+
 
 })
+
+// --------------- View Page -------------------//
+
+const displaybox = document.querySelector(".displaybox")
+
+
+
 
 // ----------------------------------------------------------renderfunction--------------------------------------------------------------
 
@@ -208,7 +213,7 @@ function renderclient(dataToRender = clients) {
     const table = document.querySelector("#clientTableBody")
     if (!table) return;
     table.innerHTML = "";
-     if (dataToRender.length === 0) {
+    if (dataToRender.length === 0) {
         table.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
         return;
     }
@@ -217,7 +222,7 @@ function renderclient(dataToRender = clients) {
         tr.innerHTML = `
     <td>${client.name}</td>
     <td>${client.business || 'N/A'}</td>
-    <td>${client.number || 'N/A'}
+    <td>${client.number || 'N/A'}</td>
     <td>${client.email}</td>
     <td> <span class="status ${client.status}">${client.status}</span></td>
     <td class="actions">
@@ -241,20 +246,26 @@ function renderclient(dataToRender = clients) {
             dbtnClient(client.id);
             search.value = "";
         });
-        
+
         const edit = tr.querySelector(".edit")
         edit.addEventListener("click", () => {
-            
+
             editForm.dataset.clientId = client.id;
-            editBox.style.display ="block"
+            editBox.style.display = "block"
             editForm.name.value = client.name;
             editForm.email.value = client.email;
             editForm.number.value = client.number || "";
             editForm.business.value = client.business || "";
-           
-
 
         })
+       let viewbtn = tr.querySelector(".view")
+        const vbox = document.querySelector(".vbox")
+
+
+        viewbtn.addEventListener("click", () => {
+            vbox.style.display = "block";
+        })
+
     });
 
 };
@@ -268,7 +279,6 @@ function dbtnClient(idToErase) {
         saveclients();
         renderclient();
     }
-
 }
 
 
