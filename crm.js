@@ -256,7 +256,7 @@ const noteModalClose = document.getElementById("noteModalClose");
 const noteCancelBtn = document.getElementById("noteCancelBtn");
 const noteForm = document.getElementById("noteForm");
 const notetitle = document.querySelector("#noteTitle")
-const notecontent = document.querySelector("#noteContent")
+const notecontent = document.querySelector("#notetext")
 const notecategory = document.querySelector("#noteCategory")
 const noteimpt = document.querySelector("#notePriority");
 let selectedId = null;
@@ -288,9 +288,11 @@ const newnote ={
     impt: noteimpt.value,
     createdAt: new Date().toISOString()
 }
-    client.notes.push(note);
+    client.notes.push(newnote);
     saveclients();
     rendernote();
+    noteModal.style.display = "none";
+
 })
 
 
@@ -303,11 +305,19 @@ const newnote ={
 // }
 
 function rendernote(){
-   document.querySelector("#noteTitle").textContent = note.title;
-   document.querySelector("#noteContent").textContent = note.content;
-   document.querySelector("#noteCategory").textContent = note.category;
-   document.querySelector("#notePriority").textContent = note.impt;
+    const client = clients.find(c=>c.id=== selectedId);
+    if (!client){console.warn("No , Client found. Can't show NOTES"); }
+    const noteslist =document.getElementById("notesList")
+    selectedId = client.id;
+    noteslist.innerHTML = "";
+   
 
+        noteslist.innerHTML =
+        document.querySelector("#noteTitle").textContent = note.title;
+        document.querySelector("#notetext").textContent = note.content;
+        document.querySelector("#noteCategory").textContent = note.category;
+        document.querySelector("#notePriority").textContent = note.impt;
+   
 }
 
 
