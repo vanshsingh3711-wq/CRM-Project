@@ -413,15 +413,15 @@
                     <div class="details-wrapper">
 
                         <div class="tabs">
-                            <button class="active">Overview</button>
-                            <button class="followbtn">Follow-ups</button>
-                            <button class="notebtn">Notes</button>
-                            <button class="tasksbtn">Tasks</button>
-                            <button class="docbtn">Documents</button>
+                            <button class="active" id="page-view">Overview</button>
+                            <button class="followbtn" id="page-view">Follow-ups</button>
+                            <button class="notebtn" id="page-view">Notes</button>
+                            <button class="tasksbtn" id="page-view">Tasks</button>
+                            <button class="docbtn" id="page-view">Documents</button>
                         </div>
 
 
-                        <div class="details-grid">
+                        <div class="details-grid" data-target="grid-view">
 
                             <div class="client-details-card">
 
@@ -486,11 +486,19 @@
 
                         </div>
                         <!-- //NOTE BOX   -->
-                        <div id="notesContainer" class="tab-content"
+                        <div id="notesContainer" class="tab-content" data-target="note-view"
                             style="display: none; padding: 40px; height: auto;">
                             <h3>Notes</h3>
                             <div id="notesList">No notes yet.</div>
-                            <button id="addNoteBtn">+ Add Note</button>
+                            <button id="addNoteBtn" class="addnote">+ Add Note</button>
+                        </div>
+
+                        <!-- TASK BOX -->
+                        <div id="taskbox" class="task-style" data-target="task-view"
+                            style="display: none; padding: 40px; height: auto;">
+                            <h3>Task</h3>
+                            <div id="taskcontent">No Task Yet</div>
+                            <button id="taskbtn" class="task-style">Add Task</button>
                         </div>
 
                     </div>
@@ -522,8 +530,7 @@
                         <!-- Note Content -->
                         <div class="note-form-group">
                             <label for="noteContent">Content <span class="required">*</span></label>
-                            <textarea id="noteText" rows="6" placeholder="Write your note here..."
-                                required></textarea>
+                            <textarea id="noteText" rows="6" placeholder="Write your note here..." required></textarea>
                         </div>
 
                         <!-- Row: Category + Priority -->

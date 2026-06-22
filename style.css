@@ -966,6 +966,16 @@ select {
 /* ========================================= */
 
 /* ----- Overlay Background ----- */
+
+.addnote{
+   background:linear-gradient(90deg,#10316f,#4d4fe0);
+    color:white;
+    border:none;
+    padding:14px 22px;
+    border-radius:12px;
+    cursor:pointer;
+  
+}
 .note-modal {
     display: none; /* Hidden by default */
     position: fixed;

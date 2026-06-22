@@ -391,9 +391,20 @@ function rendernote() {
 }
 
 
+                                                                // TASK BUTTON 
+
+const task = document.querySelector(".tasksbtn");
+const tab =document.querySelector(".tabs");
+task.addEventListener("click",()=>{
+const alltask = document.querySelectorAll("")    
 
 
 
+
+    // overactive.classList.remove("active")
+    // task.classList.add("active")
+   
+});
 
 
 
