@@ -988,7 +988,7 @@ select {
 
 /* ----- Modal Card ----- */
 .note-modal-content {
-    background: #ffffff;
+       background: #ffffff;
     border-radius: 20px;
     width: 580px;
     max-width: 92%;
@@ -996,6 +996,9 @@ select {
     overflow-y: auto;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.3s ease;
+    margin-top: 30px;
+    margin: auto;
+    margin-top: 37px;
 }
 
 /* ----- Header ----- */

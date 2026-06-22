@@ -255,17 +255,60 @@ const noteModal = document.getElementById("noteModal");
 const noteModalClose = document.getElementById("noteModalClose");
 const noteCancelBtn = document.getElementById("noteCancelBtn");
 const noteForm = document.getElementById("noteForm");
+const notetitle = document.querySelector("#noteTitle")
+const notecontent = document.querySelector("#noteContent")
+const notecategory = document.querySelector("#noteCategory")
+const noteimpt = document.querySelector("#notePriority");
+let selectedId = null;
+const addbtn = document.querySelector("#addNoteBtn");
+const closenote = document.querySelector(".note-modal-close")
+
+addbtn.addEventListener("click",()=>{
+    noteModal.style.display = "block";
+})
+closenote.addEventListener("click",()=>{
+    noteModal.style.display="none";
+})
+noteCancelBtn.addEventListener("click",()=>{
+    noteModal.style.display = "none";
+})
 
 
+noteForm.addEventListener("submit",(e)=>{
+e.preventDefault();
 
-function rendernotes(){
-    addbtn.addEventListener("click",()=>{
-    document.getElementById("noteModal").style.display = "block";
-    })
-    
+const client = clients.find(c => c.id === selectedId);
+
+
+const newnote ={
+    id: crypto.randomUUID(),
+    title: notetitle.value,
+    content: notecontent.value,
+    category: notecategory.value,
+    impt: noteimpt.value,
+    createdAt: new Date().toISOString()
 }
+    client.notes.push(note);
+    saveclients();
+    rendernote();
+})
 
 
+
+// function rendernotes(){
+//     addbtn.addEventListener("click",()=>{
+//     document.getElementById("noteModal").style.display = "block";
+//     })
+    
+// }
+
+function rendernote(){
+   document.querySelector("#noteTitle").textContent = note.title;
+   document.querySelector("#noteContent").textContent = note.content;
+   document.querySelector("#noteCategory").textContent = note.category;
+   document.querySelector("#notePriority").textContent = note.impt;
+
+}
 
 
 
@@ -332,7 +375,7 @@ function renderclient(dataToRender = clients) {
         const vbox = document.querySelector(".vbox")
 
         viewbtn.addEventListener("click", () => {
-          
+          selectedId = client.id;
             renderClientdetail(client);
         })
 
