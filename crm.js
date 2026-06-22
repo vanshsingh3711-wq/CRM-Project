@@ -8,7 +8,7 @@ function loadclients() {
 
     }
     renderclient();
-    
+
 };
 
 
@@ -139,9 +139,10 @@ clientPaper.addEventListener("submit", (e) => {
         business: clientPaper.business.value,
         status: "lead",
         createdat: new Date().toISOString(),
-         notes: [],
-         task :[]
+        notes: [],
+        task: []
     };
+    
     clients.push(newclient);    //client data  
     // alert("Client added successfully!");
     clientBox.style.display = "none"; // close box
@@ -201,31 +202,31 @@ document.querySelector(".deal").addEventListener("click", () => {
 
 })
 
-                                            // --------------- Renderclientdetail -------------------//
+// --------------- Renderclientdetail -------------------//
 
-function renderClientdetail(client){
-    if (!client)return; 
-        
-    
-document.querySelector(".client-name").textContent = client.name;
-document.querySelector(".client-email").textContent = client.email;
-document.querySelector(".client-number").textContent = client.number;
-document.querySelector(".client-company").textContent = client.business || "NA";
-
-// document.querySelector(".over-business").textContent = client.business || "NA";
-document.querySelector(".over-business").textContent = client.name;
-document.querySelector(".over-email").textContent = client.email;
-document.querySelector(".over-number").textContent = client.number;
+function renderClientdetail(client) {
+    if (!client) return;
 
 
-document.querySelectorAll(".view-section").forEach((view)=>{
-    view.style.display = "none"
-})
-document.getElementById("clients-detail").style.display = "block";
+    document.querySelector(".client-name").textContent = client.name;
+    document.querySelector(".client-email").textContent = client.email;
+    document.querySelector(".client-number").textContent = client.number;
+    document.querySelector(".client-company").textContent = client.business || "NA";
 
- }; 
- 
-                                                    //   ----Note Button----//
+    // document.querySelector(".over-business").textContent = client.business || "NA";
+    document.querySelector(".over-business").textContent = client.name;
+    document.querySelector(".over-email").textContent = client.email;
+    document.querySelector(".over-number").textContent = client.number;
+
+
+    document.querySelectorAll(".view-section").forEach((view) => {
+        view.style.display = "none"
+    })
+    document.getElementById("clients-detail").style.display = "block";
+
+};
+
+                                                //   ----Note Button----//
 
 
 const notebtn = document.querySelector(".notebtn");
@@ -233,62 +234,71 @@ const tabbtn = document.querySelector(".tabs button")
 const overactive = document.querySelector(".tabs .active")
 
 
-notebtn.addEventListener("click",()=>{
+notebtn.addEventListener("click", () => {
 
-document.querySelector(".details-grid").style.display ="none";
-document.getElementById("notesContainer").style.display="block";
+    document.querySelector(".details-grid").style.display = "none";
+    document.getElementById("notesContainer").style.display = "block";
 
-overactive.classList.remove("active");
-notebtn.classList.add("active");
+    overactive.classList.remove("active");
+    notebtn.classList.add("active");
 
-    
+
 });
 
 // back to overview //
-overactive.addEventListener("click",()=>{
-    document.querySelector(".details-grid").style.display= "grid"
-    document.getElementById("notesContainer").style.display ="none";
+overactive.addEventListener("click", () => {
+    document.querySelector(".details-grid").style.display = "grid"
+    document.getElementById("notesContainer").style.display = "none";
     notebtn.classList.remove("active")
-    overactive.classList.add ("active")
+    overactive.classList.add("active")
 })
 const noteModal = document.getElementById("noteModal");
 const noteModalClose = document.getElementById("noteModalClose");
 const noteCancelBtn = document.getElementById("noteCancelBtn");
 const noteForm = document.getElementById("noteForm");
-const notetitle = document.querySelector("#noteTitle")
-const notecontent = document.querySelector("#notetext")
+const notetitle = document.querySelector("#noteTitle");
+const notecontent = document.querySelector("#noteText");
 const notecategory = document.querySelector("#noteCategory")
 const noteimpt = document.querySelector("#notePriority");
 let selectedId = null;
 const addbtn = document.querySelector("#addNoteBtn");
 const closenote = document.querySelector(".note-modal-close")
 
-addbtn.addEventListener("click",()=>{
+addbtn.addEventListener("click", () => {
     noteModal.style.display = "block";
 })
-closenote.addEventListener("click",()=>{
-    noteModal.style.display="none";
+closenote.addEventListener("click", () => {
+    noteModal.style.display = "none";
 })
-noteCancelBtn.addEventListener("click",()=>{
+noteCancelBtn.addEventListener("click", () => {
     noteModal.style.display = "none";
 })
 
 
-noteForm.addEventListener("submit",(e)=>{
-e.preventDefault();
+noteForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-const client = clients.find(c => c.id === selectedId);
+    const client = clients.find(c => c.id === selectedId);
+
+     if (!notecontent || !notecontent.value.trim()) {
+        alert("Please write some content for your note.");
+        return;
+    };
 
 
-const newnote ={
-    id: crypto.randomUUID(),
-    title: notetitle.value,
-    content: notecontent.value,
-    category: notecategory.value,
-    impt: noteimpt.value,
-    createdAt: new Date().toISOString()
-}
+
+    const newnote = {
+        id: crypto.randomUUID(),
+        title: notetitle.value,
+        content: notecontent.value,
+        category: notecategory.value,
+        impt: noteimpt.value,
+        createdAt: new Date().toISOString()
+    }
+    if (!client.notes) {
+    client.notes = [];}
     client.notes.push(newnote);
+    noteForm.reset();
     saveclients();
     rendernote();
     noteModal.style.display = "none";
@@ -296,28 +306,88 @@ const newnote ={
 })
 
 
+                                                    // NOTE RENDER FUNCTION 
 
-// function rendernotes(){
-//     addbtn.addEventListener("click",()=>{
-//     document.getElementById("noteModal").style.display = "block";
-//     })
+function rendernote() {
+    // 1. Find the client
+    const client = clients.find(c => c.id === selectedId);
     
-// }
+    // 2. Safety check - STOP if no client
+    if (!client) {
+       
+        console.warn("No client found. Can't show notes.");
+        const notesList = document.getElementById("notesList");
+        if (notesList) {
+            notesList.innerHTML = "<p style='color: #888;'>Please select a client first.</p>";
+        }
+        return; // ← IMPORTANT: Stop here!
+    }
 
-function rendernote(){
-    const client = clients.find(c=>c.id=== selectedId);
-    if (!client){console.warn("No , Client found. Can't show NOTES"); }
-    const noteslist =document.getElementById("notesList")
-    selectedId = client.id;
-    noteslist.innerHTML = "";
-   
+    // 3. Get the notes list container
+    const notesList = document.getElementById("notesList");
+    if (!notesList) {
+        console.error("notesList not found in HTML.");
+        return;
+    }
 
-        noteslist.innerHTML =
-        document.querySelector("#noteTitle").textContent = note.title;
-        document.querySelector("#notetext").textContent = note.content;
-        document.querySelector("#noteCategory").textContent = note.category;
-        document.querySelector("#notePriority").textContent = note.impt;
-   
+    // 4. Clear it
+    notesList.innerHTML = "";
+
+    // 5. Show "No notes" message if empty
+    if (!client.notes || client.notes.length === 0) {
+        notesList.innerHTML = `<p style="color: #888; padding: 10px 0;">No notes yet. Click "Add Note" to get started.</p>`;
+        return;
+    }
+
+    // 6. Loop through each note and display it
+    client.notes.forEach(note => {
+        // Create container for this note
+        const noteDiv = document.createElement("div");
+        noteDiv.style.cssText = `
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        `;
+
+        // Format the date
+        const date = new Date(note.createdAt);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+
+        // Fill with content
+        noteDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <strong>${note.title || "Untitled"}</strong>
+                    <p style="margin: 4px 0; color: #555;">${note.content || ""}</p>
+                    <small style="color: #999;">
+                        📂 ${note.category || "General"} • 
+                        ⚡ ${note.impt || "Medium"} • 
+                        📅 ${formattedDate}
+                    </small>
+                </div>
+                <button class="delete-note-btn" data-note-id="${note.id}" style="
+                    background: none;
+                    border: none;
+                    color: #f74a6c;
+                    cursor: pointer;
+                    font-size: 30px;
+                ">🗑</button>
+            </div>
+        `;
+
+        // Add to the list
+        notesList.appendChild(noteDiv);
+        const deletenote = noteDiv.querySelector(".delete-note-btn")
+        deletenote.addEventListener("click",()=>{
+            delenote(note.id);
+
+        })
+        
+
+    });
 }
 
 
@@ -381,12 +451,14 @@ function renderclient(dataToRender = clients) {
             editForm.business.value = client.business || "";
 
         })
-       let viewbtn = tr.querySelector(".view")
+        let viewbtn = tr.querySelector(".view")
         const vbox = document.querySelector(".vbox")
 
         viewbtn.addEventListener("click", () => {
-          selectedId = client.id;
+            selectedId = client.id;
             renderClientdetail(client);
+            rendernote();
+
         })
 
     });
@@ -402,4 +474,16 @@ function dbtnClient(idToErase) {
         saveclients();
         renderclient();
     }
+}
+function delenote(noteId){
+    const client =clients.find(c => c.id === selectedId);
+    selectedId = client.id;
+    const noteindex = client.notes.findIndex(n=>n.id === noteId)
+    if (!client)return;
+    {
+        client.notes.splice(noteindex ,1);
+        
+    }
+    saveclients();
+    rendernote();
 }
