@@ -237,6 +237,7 @@ notebtn.addEventListener("click",()=>{
 
 document.querySelector(".details-grid").style.display ="none";
 document.getElementById("notesContainer").style.display="block";
+
 overactive.classList.remove("active");
 notebtn.classList.add("active");
 
@@ -250,12 +251,17 @@ overactive.addEventListener("click",()=>{
     notebtn.classList.remove("active")
     overactive.classList.add ("active")
 })
-
-
+const noteModal = document.getElementById("noteModal");
+const noteModalClose = document.getElementById("noteModalClose");
+const noteCancelBtn = document.getElementById("noteCancelBtn");
+const noteForm = document.getElementById("noteForm");
 
 
 
 function rendernotes(){
+    addbtn.addEventListener("click",()=>{
+    document.getElementById("noteModal").style.display = "block";
+    })
     
 }
 

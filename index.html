@@ -485,7 +485,9 @@
                             </div>
 
                         </div>
-                        <div id="notesContainer" class="tab-content" style="display: none; padding: 20px;">
+                        <!-- //NOTE BOX   -->
+                        <div id="notesContainer" class="tab-content"
+                            style="display: none; padding: 40px; height: 200px;">
                             <h3>Notes</h3>
                             <div id="notesList">No notes yet.</div>
                             <button id="addNoteBtn">+ Add Note</button>
@@ -493,6 +495,67 @@
 
                     </div>
 
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- ADD NOTE MODAL                            -->
+            <!-- ========================================= -->
+            <div id="noteModal" class="note-modal">
+                <div class="note-modal-content">
+
+                    <!-- Header -->
+                    <div class="note-modal-header">
+                        <h2>✏️ Add New Note</h2>
+                        <button class="note-modal-close" id="noteModalClose">&times;</button>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="noteForm" class="note-form">
+
+                        <!-- Note Title -->
+                        <div class="note-form-group">
+                            <label for="noteTitle">Note Title <span class="required">*</span></label>
+                            <input type="text" id="noteTitle" placeholder="e.g., Client meeting summary" required>
+                        </div>
+
+                        <!-- Note Content -->
+                        <div class="note-form-group">
+                            <label for="noteContent">Content <span class="required">*</span></label>
+                            <textarea id="noteContent" rows="6" placeholder="Write your note here..."
+                                required></textarea>
+                        </div>
+
+                        <!-- Row: Category + Priority -->
+                        <div class="note-form-row">
+                            <div class="note-form-group half">
+                                <label for="noteCategory">Category</label>
+                                <select id="noteCategory">
+                                    <option value="general">📌 General</option>
+                                    <option value="meeting">🤝 Meeting</option>
+                                    <option value="call">📞 Phone Call</option>
+                                    <option value="email">✉️ Email</option>
+                                    <option value="proposal">📄 Proposal</option>
+                                    <option value="followup">⏰ Follow-up</option>
+                                </select>
+                            </div>
+                            <div class="note-form-group half">
+                                <label for="notePriority">Priority</label>
+                                <select id="notePriority">
+                                    <option value="low">🟢 Low</option>
+                                    <option value="medium" selected>🟡 Medium</option>
+                                    <option value="high">🔴 High</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="note-form-actions">
+                            <button type="button" class="note-btn note-btn-cancel" id="noteCancelBtn">Cancel</button>
+                            <button type="submit" class="note-btn note-btn-save">💾 Save Note</button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
 
