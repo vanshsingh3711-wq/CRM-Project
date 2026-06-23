@@ -234,13 +234,21 @@ const tabbtn = document.querySelector(".tabs button")
 const overactive = document.querySelector(".tabs .active")
 
 
+
 notebtn.addEventListener("click", () => {
+    
+    
+   
+    document.querySelectorAll(".content-view").forEach((view)=>{
+        view.style.display = "none"
+        const targetId =view.getAttribute("data-target");
+        document.getElementById("targetId").style.display = "block";
+    })
 
-    document.querySelector(".details-grid").style.display = "none";
-    document.getElementById("notesContainer").style.display = "block";
+    // task.classList.remove("active")
 
-    overactive.classList.remove("active");
-    notebtn.classList.add("active");
+    // overactive.classList.remove("active");
+    // notebtn.classList.add("active");
 
 
 });
@@ -394,18 +402,30 @@ function rendernote() {
                                                                 // TASK BUTTON 
 
 const task = document.querySelector(".tasksbtn");
-const tab =document.querySelector(".tabs");
+const tabs =document.querySelector(".tabs");
 task.addEventListener("click",()=>{
-const alltask = document.querySelectorAll("")    
+const alltabs = document.querySelectorAll("#page-view") 
+alltabs.forEach((x)=>x.classList.remove("active"))
+   task.classList.add("active");
+   notebtn.classList.remove("active")
+   console.log(task);
+
+   const targetId = tab.getAttribute("data-target");
+   if (targetId) {
+    e.preventDefault();
+    document.querySelectorAll("content-view").forEach((view)=>{view.style.display = "none"})
+    document.getElementById(targetId).style.display = "block";
 
 
-
-
-    // overactive.classList.remove("active")
-    // task.classList.add("active")
+   }
    
 });
 
+overactive.addEventListener("click",()=>{
+    task.classList.remove("active")
+    overactive.classList.add("active")
+
+})
 
 
 
