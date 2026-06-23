@@ -142,7 +142,7 @@ clientPaper.addEventListener("submit", (e) => {
         notes: [],
         task: []
     };
-    
+
     clients.push(newclient);    //client data  
     // alert("Client added successfully!");
     clientBox.style.display = "none"; // close box
@@ -226,40 +226,33 @@ function renderClientdetail(client) {
 
 };
 
-                                                //   ----Note Button----//
+//   ----Note Button----//
 
 
 const notebtn = document.querySelector(".notebtn");
 const tabbtn = document.querySelector(".tabs button")
 const overactive = document.querySelector(".tabs .active")
 
+document.querySelectorAll(".tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".content-page").forEach(page => {
+            page.style.display = "none"
+           
+        });
+        const target = btn.dataset.target;
+        console.log(target);
+        document.querySelectorAll(".tabs button").forEach((x) =>{
+            x.classList.remove("active");
+        });
+        // document.getElementById(target).classList.add("active");
+        document.getElementById(target).style.display = "block"; 
+        btn.classList.add("active")        
 
-
-notebtn.addEventListener("click", () => {
-    
-    
-   
-    document.querySelectorAll(".content-view").forEach((view)=>{
-        view.style.display = "none"
-        const targetId =view.getAttribute("data-target");
-        document.getElementById("targetId").style.display = "block";
-    })
-
-    // task.classList.remove("active")
-
-    // overactive.classList.remove("active");
-    // notebtn.classList.add("active");
-
-
+    });
 });
 
-// back to overview //
-overactive.addEventListener("click", () => {
-    document.querySelector(".details-grid").style.display = "grid"
-    document.getElementById("notesContainer").style.display = "none";
-    notebtn.classList.remove("active")
-    overactive.classList.add("active")
-})
+
+
 const noteModal = document.getElementById("noteModal");
 const noteModalClose = document.getElementById("noteModalClose");
 const noteCancelBtn = document.getElementById("noteCancelBtn");
@@ -288,7 +281,7 @@ noteForm.addEventListener("submit", (e) => {
 
     const client = clients.find(c => c.id === selectedId);
 
-     if (!notecontent || !notecontent.value.trim()) {
+    if (!notecontent || !notecontent.value.trim()) {
         alert("Please write some content for your note.");
         return;
     };
@@ -304,7 +297,8 @@ noteForm.addEventListener("submit", (e) => {
         createdAt: new Date().toISOString()
     }
     if (!client.notes) {
-    client.notes = [];}
+        client.notes = [];
+    }
     client.notes.push(newnote);
     noteForm.reset();
     saveclients();
@@ -314,15 +308,15 @@ noteForm.addEventListener("submit", (e) => {
 })
 
 
-                                                    // NOTE RENDER FUNCTION 
+// NOTE RENDER FUNCTION 
 
 function rendernote() {
     // 1. Find the client
     const client = clients.find(c => c.id === selectedId);
-    
+
     // 2. Safety check - STOP if no client
     if (!client) {
-       
+
         console.warn("No client found. Can't show notes.");
         const notesList = document.getElementById("notesList");
         if (notesList) {
@@ -389,61 +383,45 @@ function rendernote() {
         // Add to the list
         notesList.appendChild(noteDiv);
         const deletenote = noteDiv.querySelector(".delete-note-btn")
-        deletenote.addEventListener("click",()=>{
+        deletenote.addEventListener("click", () => {
             delenote(note.id);
 
         })
-        
+
 
     });
 }
 
 
-                                                                // TASK BUTTON 
+// TASK BUTTON 
 
-const task = document.querySelector(".tasksbtn");
-const tabs =document.querySelector(".tabs");
-task.addEventListener("click",()=>{
-const alltabs = document.querySelectorAll("#page-view") 
-alltabs.forEach((x)=>x.classList.remove("active"))
-   task.classList.add("active");
-   notebtn.classList.remove("active")
-   console.log(task);
-
-   const targetId = tab.getAttribute("data-target");
-   if (targetId) {
-    e.preventDefault();
-    document.querySelectorAll("content-view").forEach((view)=>{view.style.display = "none"})
-    document.getElementById(targetId).style.display = "block";
-
-
-   }
-   
+const taskbtn = document.querySelector("#addTaskBtn");
+const tabs = document.querySelector(".tabs");
+const taskback = document.getElementById("taskModal");
+taskbtn.addEventListener("click",()=>{
+    taskback.style.display ="block"
 });
 
-overactive.addEventListener("click",()=>{
-    task.classList.remove("active")
-    overactive.classList.add("active")
-
-})
 
 
 
 
 
-// ----------------------------------------------------------renderfunction---------------------------------------------------//
 
-function renderclient(dataToRender = clients) {
-    const table = document.querySelector("#clientTableBody")
-    if (!table) return;
-    table.innerHTML = "";
-    if (dataToRender.length === 0) {
-        table.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
-        return;
-    }
-    dataToRender.forEach(client => {                           //to asign each client to their row we used 'for each'
-        let tr = document.createElement("tr");
-        tr.innerHTML = `
+
+    // ----------------------------------------------------------renderfunction---------------------------------------------------//
+
+    function renderclient(dataToRender = clients) {
+        const table = document.querySelector("#clientTableBody")
+        if (!table) return;
+        table.innerHTML = "";
+        if (dataToRender.length === 0) {
+            table.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
+            return;
+        }
+        dataToRender.forEach(client => {                           //to asign each client to their row we used 'for each'
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
     <td>${client.name}</td>
     <td>${client.business || 'N/A'}</td>
     <td>${client.number || 'N/A'}</td>
@@ -463,58 +441,58 @@ function renderclient(dataToRender = clients) {
             </button>
             </td>
     `;
-        table.appendChild(tr);
+            table.appendChild(tr);
 
-        let deletebtn = tr.querySelector(".delete")
-        deletebtn.addEventListener("click", () => {
-            dbtnClient(client.id);
-            search.value = "";
+            let deletebtn = tr.querySelector(".delete")
+            deletebtn.addEventListener("click", () => {
+                dbtnClient(client.id);
+                search.value = "";
+            });
+
+            const edit = tr.querySelector(".edit")
+            edit.addEventListener("click", () => {
+
+                editForm.dataset.clientId = client.id;
+                editBox.style.display = "block"
+                editForm.name.value = client.name;
+                editForm.email.value = client.email;
+                editForm.number.value = client.number || "";
+                editForm.business.value = client.business || "";
+
+            })
+            let viewbtn = tr.querySelector(".view")
+            const vbox = document.querySelector(".vbox")
+
+            viewbtn.addEventListener("click", () => {
+                selectedId = client.id;
+                renderClientdetail(client);
+                rendernote();
+
+            })
+
         });
 
-        const edit = tr.querySelector(".edit")
-        edit.addEventListener("click", () => {
+    };
 
-            editForm.dataset.clientId = client.id;
-            editBox.style.display = "block"
-            editForm.name.value = client.name;
-            editForm.email.value = client.email;
-            editForm.number.value = client.number || "";
-            editForm.business.value = client.business || "";
+    loadclients();
 
-        })
-        let viewbtn = tr.querySelector(".view")
-        const vbox = document.querySelector(".vbox")
+    function dbtnClient(idToErase) {
+        let clientindex = clients.findIndex(c => c.id === idToErase);
+        if (clientindex !== -1) {
+            clients.splice(clientindex, 1)
+            saveclients();
+            renderclient();
+        }
+    };
 
-        viewbtn.addEventListener("click", () => {
-            selectedId = client.id;
-            renderClientdetail(client);
+    function delenote(noteId) {
+        const client = clients.find(c => c.id === selectedId);
+        if (!client) return;
+
+        const noteindex = client.notes.findIndex(n => n.id === noteId);
+        if (noteindex !== -1) {
+            client.notes.splice(noteindex, 1);
+            saveclients();
             rendernote();
-
-        })
-
-    });
-
-};
-
-loadclients();
-
-function dbtnClient(idToErase) {
-    let clientindex = clients.findIndex(c => c.id === idToErase);
-    if (clientindex !== -1) {
-        clients.splice(clientindex, 1)
-        saveclients();
-        renderclient();
+        }
     }
-}
-function delenote(noteId){
-    const client =clients.find(c => c.id === selectedId);
-    selectedId = client.id;
-    const noteindex = client.notes.findIndex(n=>n.id === noteId)
-    if (!client)return;
-    {
-        client.notes.splice(noteindex ,1);
-        
-    }
-    saveclients();
-    rendernote();
-}
