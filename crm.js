@@ -238,14 +238,15 @@ document.querySelectorAll(".tabs button").forEach(btn => {
         document.querySelectorAll(".content-page").forEach(page => {
             page.style.display = "none"
 
-        });
+        }); ``
         const target = btn.dataset.target;
         console.log(target);
         document.querySelectorAll(".tabs button").forEach((x) => {
             x.classList.remove("active");
         });
-        // document.getElementById(target).classList.add("active");
+
         document.getElementById(target).style.display = "block";
+        document.getElementById(target).classList.add("active");
         btn.classList.add("active")
 
     });
@@ -515,6 +516,14 @@ function rendertask() {
 }
 
 // Delete function
+function deleteTask(taskId) {
+    const client = clients.find(c => c.id === selectedId);
+    if (!client) return;
+    const taskindex = client.tasks.findIndex(t => t.id === taskId);
+    client.tasks.splice(taskindex, 1);
+    saveclients();
+    rendertask();
+}
 
 
 // ----------------------------------------------------------renderfunction---------------------------------------------------//
@@ -576,6 +585,8 @@ function renderclient(dataToRender = clients) {
             renderClientdetail(client);
             rendernote();
             rendertask();
+            document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+            document.querySelector('.tabs button[data-target="overview"]').classList.add("active");
 
         })
 

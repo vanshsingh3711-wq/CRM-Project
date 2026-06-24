@@ -500,7 +500,7 @@
 
                             <!-- TASK BOX -->
 
-                            <div id="tasks" class="task-container" >
+                            <div id="tasks" class="content-page" style="display: none;">
 
                                 <div class="task-header">
                                     <h3>Tasks</h3>
@@ -544,7 +544,37 @@
                             <div class="content-page" id="follow-up"></div>
 
 
-                            <div class="content-page" id="documents"></div>
+                            <div id="documents" class="content-page" style="display: none;">
+
+                                <div class="doc-header">
+                                    <h3>Documents</h3>
+
+                                    <button id="uploadDocBtn">
+                                        + Upload Document
+                                    </button>
+                                </div>
+
+                                <input type="file" id="documentInput" hidden>
+
+                                <div id="documentList">
+
+                                    <div class="document-card">
+
+                                        <div>
+                                            <h4>📄 Website Proposal.pdf</h4>
+                                            <p>Uploaded: 24 June 2026</p>
+                                        </div>
+
+                                        <div>
+                                            <button>View</button>
+                                            <button>Delete</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         </div>
                     </div>
@@ -613,9 +643,9 @@
             </div>
 
 
-            
 
-                                                <!---------- TASK MODAL ------>
+
+            <!---------- TASK MODAL ------>
 
             <div id="taskModal" class="task-modal">
 
