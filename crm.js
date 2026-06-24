@@ -188,6 +188,24 @@ editForm.addEventListener("submit", (e) => {
 
 })
 
+const editClientDetailBtn = document.querySelector(".edit-client-btn");
+
+editClientDetailBtn.addEventListener("click", () => {
+    // 1. Find the currently viewed client (using selectedId)
+    const client = clients.find(c => c.id === selectedId);
+    if (!client) {
+        alert("No client selected");
+        return;
+    }
+    editForm.dataset.clientId = client.id;
+    editForm.name.value = client.name;
+    editForm.email.value = client.email;
+    editForm.number.value = client.number || "";
+    editForm.business.value = client.business || "";
+    editBox.style.display = "block";
+    renderClientdetail();
+    saveclients();
+})
 
 document.querySelector(".deal").addEventListener("click", () => {
     const clientId = editForm.dataset.clientId;
@@ -223,6 +241,9 @@ function renderClientdetail(client) {
         view.style.display = "none"
     })
     document.getElementById("clients-detail").style.display = "block";
+    document.querySelector(".back-link").addEventListener("click",()=>{document.getElementById("clients-detail").style.display = "none";
+        document.getElementById("clients-view").style.display = "block";
+    })
 
 };
 
