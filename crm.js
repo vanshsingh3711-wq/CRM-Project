@@ -140,7 +140,7 @@ clientPaper.addEventListener("submit", (e) => {
         status: "lead",
         createdat: new Date().toISOString(),
         notes: [],
-        task: []
+        tasks: [],
     };
 
     clients.push(newclient);    //client data  
@@ -237,16 +237,16 @@ document.querySelectorAll(".tabs button").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".content-page").forEach(page => {
             page.style.display = "none"
-           
+
         });
         const target = btn.dataset.target;
         console.log(target);
-        document.querySelectorAll(".tabs button").forEach((x) =>{
+        document.querySelectorAll(".tabs button").forEach((x) => {
             x.classList.remove("active");
         });
         // document.getElementById(target).classList.add("active");
-        document.getElementById(target).style.display = "block"; 
-        btn.classList.add("active")        
+        document.getElementById(target).style.display = "block";
+        btn.classList.add("active")
 
     });
 });
@@ -259,7 +259,7 @@ const noteCancelBtn = document.getElementById("noteCancelBtn");
 const noteForm = document.getElementById("noteForm");
 const notetitle = document.querySelector("#noteTitle");
 const notecontent = document.querySelector("#noteText");
-const notecategory = document.querySelector("#noteCategory")
+const notecategory = document.querySelector("#noteCategory");
 const noteimpt = document.querySelector("#notePriority");
 let selectedId = null;
 const addbtn = document.querySelector("#addNoteBtn");
@@ -273,7 +273,7 @@ closenote.addEventListener("click", () => {
 })
 noteCancelBtn.addEventListener("click", () => {
     noteModal.style.display = "none";
-})
+});
 
 
 noteForm.addEventListener("submit", (e) => {
@@ -330,7 +330,7 @@ function rendernote() {
     if (!notesList) {
         console.error("notesList not found in HTML.");
         return;
-    }
+    };
 
     // 4. Clear it
     notesList.innerHTML = "";
@@ -398,30 +398,129 @@ function rendernote() {
 const taskbtn = document.querySelector("#addTaskBtn");
 const tabs = document.querySelector(".tabs");
 const taskback = document.getElementById("taskModal");
-taskbtn.addEventListener("click",()=>{
-    taskback.style.display ="block"
+taskbtn.addEventListener("click", () => {
+    if (!selectedId) {
+        alert("Please Selecte client first")
+        return;
+    }
+    taskId = selectedId;
+    taskback.style.display = "block"
 });
 
+// TASK MODAL 
+
+const closetask = document.querySelector(".close-task");
+const taskform = document.querySelector("#taskForm");
+const tasktitile = document.querySelector("#taskTitle");
+const tasktext = document.querySelector("#taskDescription");
+const taskdate = document.querySelector("#taskDate");
+const taskimpt = document.querySelector("#taskPriority");
+let taskId = null;
+
+taskform.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const client = clients.find(c => c.id === taskId);
+    console.log(taskId);
+    console.log(client);
+    if (!client) {
+        alert("No client Foubnd")
+        return;
+    };
+
+    if (!tasktext || !tasktext.value.trim()) {
+        alert("Please write content for your task")
+    };
+    const newtask = {
+        id: crypto.randomUUID(),
+        title: tasktitile.value,
+        description: tasktext.value,
+        date: taskdate.value,
+        Priority: taskimpt.value
+    }
+    console.log(newtask);
+    if (!client.tasks) client.tasks = []
+    client.tasks.push(newtask);
+    console.log(client)
+    saveclients();
+    rendertask();
+    taskform.reset();
+    taskback.style.display = "none"
+    
+
+});
+
+// TASK RENDER FUNCTION 
+
+function rendertask() {
+    const client = clients.find(c => c.id === selectedId);
+    const taskList = document.getElementById("taskList");
+    if (!taskList) return;
+
+    // Clear it
+    taskList.innerHTML = "";
+
+    // If no client or no tasks, show a message
+    if (!client || !client.tasks || client.tasks.length === 0) {
+        taskList.innerHTML = `<p style="color: #888; padding: 10px 0;">No tasks yet.</p>`;
+        return;
+    }
+
+    // ✅ Build the HTML string
+    let html = "";
+    client.tasks.forEach(task => {
+        const duedate = task.date 
+            ? new Date(task.date).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })
+            : "No due date";
+        const priorityClass = (task.Priority || "medium").toLowerCase();
+
+        // ✅ Add this task's HTML to the big string
+        html += `
+            <div class="task-card">
+                <div class="task-top">
+                    <div>
+                        <h4>${task.title || "Untitled Task"}</h4>
+                        <p>${task.description || ""}</p>
+                    </div>
+                    <span class="priority ${priorityClass}">${task.Priority || "Medium"}</span>
+                </div>
+                <div class="task-bottom">
+                    <span>📅 ${duedate}</span>
+                    <div class="task-actions">
+                        <button class="delete-task" data-task-id="${task.id}" title="Delete task">🗑</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    // ✅ Write it ALL to the page at once
+    taskList.innerHTML = html;
+
+    // Add delete listeners
+    document.querySelectorAll(".delete-task").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const taskId = e.currentTarget.dataset.taskId;
+            deleteTask(taskId);
+        });
+    });
+}
+
+// Delete function
 
 
+// ----------------------------------------------------------renderfunction---------------------------------------------------//
 
-
-
-
-
-    // ----------------------------------------------------------renderfunction---------------------------------------------------//
-
-    function renderclient(dataToRender = clients) {
-        const table = document.querySelector("#clientTableBody")
-        if (!table) return;
-        table.innerHTML = "";
-        if (dataToRender.length === 0) {
-            table.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
-            return;
-        }
-        dataToRender.forEach(client => {                           //to asign each client to their row we used 'for each'
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
+function renderclient(dataToRender = clients) {
+    const table = document.querySelector("#clientTableBody")
+    if (!table) return;
+    table.innerHTML = "";
+    if (dataToRender.length === 0) {
+        table.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
+        return;
+    }
+    dataToRender.forEach(client => {                           //to asign each client to their row we used 'for each'
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
     <td>${client.name}</td>
     <td>${client.business || 'N/A'}</td>
     <td>${client.number || 'N/A'}</td>
@@ -441,58 +540,59 @@ taskbtn.addEventListener("click",()=>{
             </button>
             </td>
     `;
-            table.appendChild(tr);
+        table.appendChild(tr);
 
-            let deletebtn = tr.querySelector(".delete")
-            deletebtn.addEventListener("click", () => {
-                dbtnClient(client.id);
-                search.value = "";
-            });
-
-            const edit = tr.querySelector(".edit")
-            edit.addEventListener("click", () => {
-
-                editForm.dataset.clientId = client.id;
-                editBox.style.display = "block"
-                editForm.name.value = client.name;
-                editForm.email.value = client.email;
-                editForm.number.value = client.number || "";
-                editForm.business.value = client.business || "";
-
-            })
-            let viewbtn = tr.querySelector(".view")
-            const vbox = document.querySelector(".vbox")
-
-            viewbtn.addEventListener("click", () => {
-                selectedId = client.id;
-                renderClientdetail(client);
-                rendernote();
-
-            })
-
+        let deletebtn = tr.querySelector(".delete")
+        deletebtn.addEventListener("click", () => {
+            dbtnClient(client.id);
+            search.value = "";
         });
 
-    };
+        const edit = tr.querySelector(".edit")
+        edit.addEventListener("click", () => {
 
-    loadclients();
+            editForm.dataset.clientId = client.id;
+            editBox.style.display = "block"
+            editForm.name.value = client.name;
+            editForm.email.value = client.email;
+            editForm.number.value = client.number || "";
+            editForm.business.value = client.business || "";
 
-    function dbtnClient(idToErase) {
-        let clientindex = clients.findIndex(c => c.id === idToErase);
-        if (clientindex !== -1) {
-            clients.splice(clientindex, 1)
-            saveclients();
-            renderclient();
-        }
-    };
+        })
+        let viewbtn = tr.querySelector(".view")
+        const vbox = document.querySelector(".vbox")
 
-    function delenote(noteId) {
-        const client = clients.find(c => c.id === selectedId);
-        if (!client) return;
-
-        const noteindex = client.notes.findIndex(n => n.id === noteId);
-        if (noteindex !== -1) {
-            client.notes.splice(noteindex, 1);
-            saveclients();
+        viewbtn.addEventListener("click", () => {
+            selectedId = client.id;
+            renderClientdetail(client);
             rendernote();
-        }
+            rendertask();
+
+        })
+
+    });
+
+};
+
+loadclients();
+
+function dbtnClient(idToErase) {
+    let clientindex = clients.findIndex(c => c.id === idToErase);
+    if (clientindex !== -1) {
+        clients.splice(clientindex, 1)
+        saveclients();
+        renderclient();
     }
+};
+
+function delenote(noteId) {
+    const client = clients.find(c => c.id === selectedId);
+    if (!client) return;
+
+    const noteindex = client.notes.findIndex(n => n.id === noteId);
+    if (noteindex !== -1) {
+        client.notes.splice(noteindex, 1);
+        saveclients();
+        rendernote();
+    }
+}
