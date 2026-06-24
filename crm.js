@@ -398,6 +398,7 @@ function rendernote() {
 const taskbtn = document.querySelector("#addTaskBtn");
 const tabs = document.querySelector(".tabs");
 const taskback = document.getElementById("taskModal");
+const closetask = document.querySelector(".close-task")
 taskbtn.addEventListener("click", () => {
     if (!selectedId) {
         alert("Please Selecte client first")
@@ -406,10 +407,18 @@ taskbtn.addEventListener("click", () => {
     taskId = selectedId;
     taskback.style.display = "block"
 });
+closetask.addEventListener("click", () => {
+    taskback.style.display = "none"
+});
 
+
+window.addEventListener("click", (e) => {
+    if (e.target === taskback) {
+        taskback.style.display = "none"; // click outside closes box
+    }
+});
 // TASK MODAL 
 
-const closetask = document.querySelector(".close-task");
 const taskform = document.querySelector("#taskForm");
 const tasktitile = document.querySelector("#taskTitle");
 const tasktext = document.querySelector("#taskDescription");
@@ -445,7 +454,7 @@ taskform.addEventListener("submit", (e) => {
     rendertask();
     taskform.reset();
     taskback.style.display = "none"
-    
+
 
 });
 
@@ -468,7 +477,7 @@ function rendertask() {
     // ✅ Build the HTML string
     let html = "";
     client.tasks.forEach(task => {
-        const duedate = task.date 
+        const duedate = task.date
             ? new Date(task.date).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })
             : "No due date";
         const priorityClass = (task.Priority || "medium").toLowerCase();
