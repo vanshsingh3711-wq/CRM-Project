@@ -2,7 +2,7 @@ console.log("UI loaded!");
 
 // ui.js
 // This MUST be line 1 of ui.js
-import { loadclients, getClients } from './api.js';
+import { loadclients, getClients , getGreeting} from './api.js';
 
 // 2. Grab the table body from your HTML
 const table = document.querySelector("#clientTableBody");
@@ -69,7 +69,30 @@ export function setupNavigation() {
         });
     });
 }
+                                                    // Client list Displayinf Function 
+
+
+export function renderClientList(clientsToDisplay) {
+    const tableBody = document.querySelector("#clientTableBody"); // Assuming this is your target
+    tableBody.innerHTML = clientsToDisplay.map(client => `
+         <tr>
+            <td>${client.name}</td>
+            <td>${client.business || 'N/A'}</td>
+            <td>${client.number || 'N/A'}</td>
+            <td>${client.email}</td>
+            <td> <span class="status ${client.status}">${client.status}</span></td>
+            <td class="actions">
+                <button class="view">View</button>
+                <button class="edit">Edit</button>
+                <button class="delete" data-id="${client.id}">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+setupNavigation();
 function searchf(){
+    const clients = getClients();
 const search = document.querySelector("#searchBox")
 search.addEventListener("input", () => {
     const searchtext = search.value;
@@ -80,8 +103,29 @@ search.addEventListener("input", () => {
         return nameMatch || businessMatch || emailMactch;
 
     })
-    renderclient(filterclient);
+    renderClientList(filterclient);
 
 })
 
+};
+searchf(); 
+
+                                                            // time fucntion 
+function display() {
+    const now = new Date();
+    const greetingWord = getGreeting(now.getHours());
+
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const dateinfo = ` 📅${dayName} ,${monthName} ${now.getDate()}, ${now.getFullYear()}`
+
+    greeting.innerHTML = `Good ${greetingWord}, Alex`;
+    datebox.textContent = dateinfo;
 }
+display();
+setInterval(display, 30000);
+document.addEventListener("visibilitychange", function () {
+    if (!document.hidden)
+        display();
+});
+display();
