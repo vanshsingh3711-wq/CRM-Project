@@ -327,7 +327,8 @@ noteForm.addEventListener("submit", (e) => {
     rendernote();
     noteModal.style.display = "none";
 
-})
+});
+
 
 
 // NOTE RENDER FUNCTION 
@@ -392,13 +393,14 @@ function rendernote() {
                         📅 ${formattedDate}
                     </small>
                 </div>
-                <button class="delete-note-btn" data-note-id="${note.id}" style="
+                <span style="display:flex; gap:10px;"><button class="delete-note-btn" data-note-id="${note.id}" style="
                     background: none;
                     border: none;
                     color: #f74a6c;
                     cursor: pointer;
                     font-size: 30px;
                 ">🗑</button>
+                <button class ="editnote">Edit Note</button></span>
             </div>
         `;
 
@@ -408,14 +410,24 @@ function rendernote() {
         deletenote.addEventListener("click", () => {
             delenote(note.id);
 
+        });
+        const editnote = noteDiv.querySelector(".editnote")
+        editnote.addEventListener("click",()=>{
+
         })
 
 
     });
 }
 
+// NOTE EDIT FUNCTION 
+function noteedit(){
 
-// TASK BUTTON 
+
+}
+
+
+                                                            // TASK BUTTON 
 
 const taskbtn = document.querySelector("#addTaskBtn");
 const tabs = document.querySelector(".tabs");
