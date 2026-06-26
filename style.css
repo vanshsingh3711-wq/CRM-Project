@@ -1424,17 +1424,658 @@ select {
 }
 
 
+/* ========================================= */
+/* FOLLOW-UPS PAGE — Premium Dashboard       */
+/* ========================================= */
+
+/* ---- Filter toggle active state ---- */
+.follow-filter.active {
+    background: white !important;
+    color: #1a2639 !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ---- Table rows ---- */
+#followTableBody tr {
+    border-bottom: 1px solid #f4f6fb;
+    transition: background 0.15s ease;
+}
+#followTableBody tr:last-child {
+    border-bottom: none;
+}
+#followTableBody tr:hover {
+    background: #fafbff;
+}
+#followTableBody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+}
+
+/* ---- Client link ---- */
+.follow-client-link {
+    font-weight: 600;
+    color: #1a2639;
+    text-decoration: none;
+}
+.follow-client-link:hover {
+    color: #4d4fe0;
+    text-decoration: underline;
+}
+
+/* ---- Title text ---- */
+.follow-title {
+    color: #1a2639;
+    font-weight: 500;
+}
+
+/* ---- Due badge (Days left) ---- */
+.due-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.due-badge.overdue {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+.due-badge.today {
+    background: #fef3d7;
+    color: #b7791f;
+}
+.due-badge.soon {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+.due-badge.later {
+    background: #f1f4f9;
+    color: #6b7a8f;
+}
+
+/* ---- Status badges (follow-up specific) ---- */
+.follow-status {
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.follow-status.scheduled {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+.follow-status.completed {
+    background: #e3f5e9;
+    color: #1f8b4c;
+}
+.follow-status.missed {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+
+/* ---- Action buttons (subtle, icon-only) ---- */
+.follow-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+.follow-actions button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+    color: #6b7a8f;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+    font-size: 16px;
+}
+.follow-actions button:hover {
+    background: #f1f4f9;
+}
+.follow-actions .done-btn:hover {
+    background: #e8fff1;
+    color: #22c55e;
+}
+.follow-actions .delete-btn:hover {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+.follow-actions .view-btn:hover {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+
+/* ---- Today's Queue (Timeline items) ---- */
+.queue-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #f9fbfd;
+    border-radius: 10px;
+    border-left: 3px solid #4d4fe0;
+}
+.queue-item .time {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a2639;
+    min-width: 48px;
+}
+.queue-item .info {
+    flex: 1;
+    font-size: 14px;
+    color: #1a2639;
+}
+.queue-item .info small {
+    display: block;
+    font-size: 12px;
+    color: #6b7a8f;
+}
+.queue-item .priority-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.queue-item .priority-dot.high { background: #f74a6c; }
+.queue-item .priority-dot.medium { background: #f7a84a; }
+.queue-item .priority-dot.low { background: #22c55e; }
+
+/* ---- Responsive ---- */
+@media (max-width: 1000px) {
+    #follow-view > div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+@media (max-width: 700px) {
+    #follow-view .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+@media (max-width: 480px) {
+    #follow-view .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+    #follow-view > div[style*="display: flex; flex-wrap: wrap; gap: 12px"] {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #followSearchBox {
+        min-width: unset;
+    }
+};
+/* ========================================= */
+/* STATISTICS PAGE — Premium Dashboard       */
+/* ========================================= */
+
+#satatistic-view .content-header {
+    margin-bottom: 24px;
+}
+
+/* ---- Filter toggle (period buttons) ---- */
+#satatistic-view .filter.active {
+    background: white;
+    color: #1a2639;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ---- KPI trend indicators ---- */
+.stat-card .stat-number {
+    font-size: 32px !important;
+}
+
+/* ---- Bar chart container ---- */
+#satatistic-view div[id^="bar"] {
+    transition: height 0.4s ease;
+}
+
+/* ---- Donut SVG ---- */
+#satatistic-view svg circle {
+    transition: stroke-dasharray 0.6s ease;
+}
+
+/* ---- Top clients table ---- */
+#statTopClientsBody tr {
+    border-bottom: 1px solid #f0f4fa;
+}
+#statTopClientsBody tr:last-child {
+    border-bottom: none;
+}
+#statTopClientsBody td {
+    padding: 12px 16px;
+    vertical-align: middle;
+}
+#statTopClientsBody .client-name {
+    font-weight: 600;
+    color: #1a2639;
+}
+#statTopClientsBody .status-badge {
+    font-size: 12px;
+    padding: 3px 12px;
+    border-radius: 30px;
+    font-weight: 500;
+}
+#statTopClientsBody .followup-count {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* ---- Activity feed ---- */
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f4fa;
+}
+.activity-item:last-child {
+    border-bottom: none;
+}
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1f4f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.activity-text {
+    flex: 1;
+    font-size: 14px;
+    color: #1a2639;
+}
+.activity-text small {
+    display: block;
+    font-size: 12px;
+    color: #6b7a8f;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+    #satatistic-view > div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    #satatistic-view > div[style*="grid-template-columns: 1.5fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+@media (max-width: 700px) {
+    #satatistic-view .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+@media (max-width: 480px) {
+    #satatistic-view .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ========================================= */
+/* SETTINGS PAGE — Clean & Premium           */
+/* ========================================= */
+
+/* ---- Input focus states ---- */
+#setting-view input:focus,
+#setting-view select:focus {
+    border-color: var(--grad-mid1);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(31, 63, 151, 0.08);
+}
+
+/* ---- Custom Toggle Switch ---- */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #d1d5db;
+    border-radius: 30px;
+    transition: 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.toggle input:checked + .toggle-slider {
+    background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+}
+
+.toggle input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+}
+
+/* ---- Danger Zone hover effects ---- */
+#setting-view .danger-zone-btn {
+    transition: 0.2s ease;
+}
+#setting-view .danger-zone-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(247, 74, 108, 0.25);
+}
+#setting-view .danger-zone-btn-outline:hover {
+    background: #fef2f4;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+    #setting-view > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    #setting-view > div[style*="grid-template-columns: 1fr 1fr"] > div[style*="grid-column: 1 / -1"] {
+        grid-column: 1 / 1 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #setting-view .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+};
 
 
 
 
+/* ========================================= */
+/* HOME DASHBOARD — Premium Enhancements     */
+/* ========================================= */
 
+/* ---- Keep the original header styles, but ensure they work ---- */
+#dashboard-view .content-box {
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
 
+#dashboard-view .greeting {
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #10316f, #4d4fe0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    margin: 0;
+}
 
+#dashboard-view .datebox {
+    font-size: 15px;
+    color: #6b7a8f;
+    font-weight: 500;
+    margin: 4px 0 0 0;
+}
 
+/* ---- KPI Cards (already styled in existing CSS, just ensuring consistency) ---- */
+#dashboard-view .stat-card .stat-number {
+    font-size: 32px !important;
+}
 
+/* ---- Bar chart hover (CSS-only polish) ---- */
+#dashboard-view div[style*="height:"] > div > div {
+    transition: height 0.3s ease, opacity 0.2s ease;
+}
+#dashboard-view div[style*="height:"] > div:hover > div {
+    opacity: 0.7;
+}
 
+/* ---- Donut legend labels ---- */
+#dashboard-view .stat-card h3 + div div[style*="grid-template-columns"] {
+    font-size: 13px;
+}
 
+/* ---- Table hover (recent clients) ---- */
+#dashboard-view table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* ---- Upcoming follow-ups hover ---- */
+#dashboard-view div[style*="background: #f9fbfd; border-radius: 10px;"]:hover {
+    background: #f1f4f9 !important;
+    transition: 0.15s ease;
+}
+
+/* ---- Responsive overrides ---- */
+@media (max-width: 1000px) {
+    #dashboard-view > div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    #dashboard-view > div[style*="grid-template-columns: 1.5fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+@media (max-width: 700px) {
+    #dashboard-view .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+@media (max-width: 480px) {
+    #dashboard-view .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+    #dashboard-view .content-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #dashboard-view .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ========================================= */
+/* CLIENTS PAGE — Premium Enhancements       */
+/* ========================================= */
+
+/* ---- Header ---- */
+#clients-view .content-header h1 {
+    margin: 0;
+}
+
+#clients-view .content-header .header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* ---- Stats row ---- */
+#clientCountDisplay {
+    font-weight: 700;
+}
+
+/* ---- Filter bar ---- */
+#clients-view .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+#clients-view #searchBox:focus {
+    border-color: var(--grad-mid1);
+    box-shadow: 0 0 0 3px rgba(31, 63, 151, 0.08);
+}
+
+/* ---- Filter buttons (active state via JS toggling) ---- */
+#clients-view .filter {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+#clients-view .filter:hover:not(.active) {
+    background: #e5e9f0;
+}
+#clients-view .filter.active {
+    background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+    color: white;
+    box-shadow: 0 2px 8px rgba(45, 65, 180, 0.2);
+}
+
+/* ---- Table styling (matches other premium tables) ---- */
+#clients-view .client-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#clients-view .client-table tbody tr {
+    border-bottom: 1px solid #f4f6fb;
+    transition: background 0.15s ease;
+}
+#clients-view .client-table tbody tr:last-child {
+    border-bottom: none;
+}
+#clients-view .client-table tbody tr:hover {
+    background: #fafbff;
+}
+#clients-view .client-table td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #1a2639;
+}
+
+/* ---- Status badges (same as before, but refined) ---- */
+#clients-view .status {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+#clients-view .status.lead {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+#clients-view .status.contacted {
+    background: #fef3d7;
+    color: #b7791f;
+}
+#clients-view .status.proposal {
+    background: #fef3d7;
+    color: #d68a2c;
+}
+#clients-view .status.closed {
+    background: #e3f5e9;
+    color: #1f8b4c;
+}
+
+/* ---- Action buttons (clean, icon‑based) ---- */
+#clients-view .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    align-items: center;
+}
+#clients-view .actions button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #6b7a8f;
+    transition: 0.2s ease;
+    font-size: 14px;
+}
+#clients-view .actions button:hover {
+    background: #f1f4f9;
+    color: #1a2639;
+}
+#clients-view .actions .view {
+    color: #4A6CF7;
+}
+#clients-view .actions .view:hover {
+    background: #eef3ff;
+}
+#clients-view .actions .edit {
+    color: #f7a84a;
+}
+#clients-view .actions .edit:hover {
+    background: #fef3d7;
+}
+#clients-view .actions .delete {
+    color: #f74a6c;
+}
+#clients-view .actions .delete:hover {
+    background: #ffe5ea;
+}
+#clients-view .actions .delete svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+}
+
+/* ---- Empty state (matches follow‑up empty state) ---- */
+#clientEmptyState {
+    color: #6b7a8f;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+    #clients-view .content-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    #clients-view .header-actions {
+        flex-wrap: wrap;
+    }
+    #clients-view .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #clients-view #searchBox {
+        min-width: unset;
+    }
+    #clients-view .client-table td,
+    #clients-view .client-table th {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    #clients-view .actions button {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
 /* =============================== */
 /* ===== RESPONSIVE ===== */
 /* =============================== */

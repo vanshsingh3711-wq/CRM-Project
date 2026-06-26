@@ -537,7 +537,7 @@ function rendertask() {
     });
 
     // ✅ Write it ALL to the page at once
-    taskList.innerHTML = html;
+    taskList.innerHTML =html;
 
     // Add delete listeners
     document.querySelectorAll(".delete-task").forEach(btn => {

@@ -102,186 +102,270 @@
         <!-- ========================================= -->
         <main class="content">
 
-            <div id="clientBox" class="box">
-                <div class="boxContent">
-                    <span class="closeBtn">&times;</span>
-                    <form id="clientPaper">
-                        <input type="text" name="name" placeholder="Enter Client Name" required>
-                        <input type="email" name="email" placeholder="Enter Client Email" required>
-                        <input type="number" name="number" placeholder="Enter your Contact Number" required>
-                        <input type="text" name="business" placeholder="Enter your business name" required>
-                        <button type="submit">Add Client</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 1. HEADER (JS uses .greeting and .datebox) -->
+            <!-- ========================================= -->
+            <!-- HOME DASHBOARD — Premium Redesign        -->
+            <!-- ========================================= -->
             <div id="dashboard-view" class="view-section">
+
+                <!-- ===== HEADER (JS hooks: .greeting, .datebox, .btn) ===== -->
                 <div class="content-box">
                     <div>
-                        <!-- JS updates this innerHTML, CSS keeps it gradient -->
-                        <h1 class="greeting">Good Morning, Alex 👋</h1>
-                        <!-- JS updates this textContent -->
-                        <p class="datebox">📅 Monday, June 15, 2026</p>
+                        <h1 class="greeting" style="font-size: 26px; font-weight: 700; margin: 0;">Good Morning, Alex 👋
+                        </h1>
+                        <p class="datebox" style="color: #6b7a8f; margin: 4px 0 0 0; font-size: 15px;">📅 Monday, June
+                            15, 2026</p>
                     </div>
-                    <button class="btn">+ Quickly Add Client</button>
-
+                    <button class="btn"
+                        style="display: flex; align-items: center; gap: 8px; padding: 0 24px; height: 48px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Quick Add
+                    </button>
                 </div>
 
-
-
-
-                <!-- 2. FOUR STAT CARDS (Exact numbers from image) -->
-                <div class="stats-grid">
-                    <div class="stat-card card-1">
-                        <p class="stat-label">Total Clients</p>
-                        <p class="stat-number">25</p>
-                        <div class="stat-bar"></div>
+                <!-- ===== KPI CARDS (4 columns with trends) ===== -->
+                <div class="stats-grid" style="margin-bottom: 28px;">
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">👥 Total Clients</p>
+                        <p class="stat-number" id="dashTotalClients" style="font-size: 32px;">25</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 12%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #4d4fe0, #3947c7);"></div>
                     </div>
-                    <div class="stat-card card-2">
-                        <p class="stat-label">Active Leads</p>
-                        <p class="stat-number">12</p>
-                        <div class="stat-bar"></div>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">📈 Active Leads</p>
+                        <p class="stat-number" id="dashActiveLeads" style="font-size: 32px;">12</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #f7a84a; font-size: 13px; font-weight: 600;">↓ 3%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #f7a84a, #fdd47e);"></div>
                     </div>
-                    <div class="stat-card card-3">
-                        <p class="stat-label">Follow Ups Due</p>
-                        <p class="stat-number">5</p>
-                        <div class="stat-bar"></div>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">⏳ Follow‑ups Due</p>
+                        <p class="stat-number" id="dashFollowupsDue" style="font-size: 32px;">5</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #f74a6c; font-size: 13px; font-weight: 600;">↑ 2</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">needs attention</span>
+                        </div>
+                        <div class="stat-bar" style="background: #f74a6c;"></div>
                     </div>
-                    <div class="stat-card card-4">
-                        <p class="stat-label">Closed Deals</p>
-                        <p class="stat-number">8</p>
-                        <div class="stat-bar"></div>
-                    </div>
-                </div>
-
-                <!-- 3. MIDDLE ROW: Weekly Progress + Pipeline -->
-                <div class="middle-row">
-                    <!-- Left: Weekly Chart -->
-                    <div class="weekly-progress">
-                        <div class="week-days">
-                            <span>Mo</span><span>Tu</span><span>We</span>
-                            <span>Th</span><span>Fr</span><span>Sa</span>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">🏆 Closed Deals</p>
+                        <p class="stat-number" id="dashClosedDeals" style="font-size: 32px;">8</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 8%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
                         </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-fill" style="width: 80%;"></div>
-                        </div>
-                        <div class="progress-label">
-                            <span>80% of Target</span>
-                            <span class="increase">📈 3.2% increase (M-o-M)</span>
-                        </div>
-                    </div>
-
-                    <!-- Right: Pipeline Metrics (Exact text from image) -->
-                    <div class="pipeline-metrics">
-                        <div class="metric-item">
-                            <span class="metric-label">Leads in Pipeline</span>
-                            <span class="metric-value">75%</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Total Client Base</span>
-                            <span class="metric-value" style="color: #6b7a8f;">—</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Active Client Leads</span>
-                            <span class="metric-value success">✅ Healthy</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Immediate Follow-ups</span>
-                            <span class="metric-value success">🏆 Won This Month</span>
-                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #34c759, #7be08b);"></div>
                     </div>
                 </div>
 
-                <!-- 4. RECENT CLIENT ENGAGEMENTS (Table) -->
-                <section class="engagements">
-                    <h2>Recent Client Engagements</h2>
-                    <table class="engagement-table">
-                        <thead>
-                            <tr>
-                                <th>Client</th>
-                                <th>Company</th>
-                                <th>Status</th>
-                                <th>Recent Activity</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Vansh Singh</strong></td>
-                                <td>Apex Gym</td>
-                                <td><span class="status-badge lead">Lead</span></td>
-                                <td>📝 Updated Proposal</td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
-                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Vansh Singh</strong></td>
-                                <td>Apex Gym</td>
-                                <td><span class="status-badge opportunity">Opportunity</span></td>
-                                <td>📝 Updated Proposal</td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
-                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Vansh Singh</strong></td>
-                                <td>Apex Gym</td>
-                                <td><span class="status-badge closed">Closed Won</span></td>
-                                <td>📧 Sent Email</td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">✏️</button>
-                                    <button class="action-btn delete-btn" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                <!-- ===== CHARTS ROW (2 columns) ===== -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px;">
 
-                <!-- 5. UPCOMING FOLLOW-UPS (List - exact format) -->
-                <section class="followups">
-                    <h2>Upcoming Follow-ups</h2>
-                    <ul class="followup-list">
-                        <li>
-                            <label for="task1" class="followup-label">
-                                <span class="followup-date">JUN 15</span>
-                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
-                                <span class="followup-time">⏰ 10:00 AM</span>
-                            </label>
-                            <input type="checkbox" class="followup-checkbox" id="task1">
-                        </li>
-                        <li>
-                            <label for="task1" class="followup-label">
-                                <span class="followup-date">JUN 15</span>
-                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
-                                <span class="followup-time">⏰ 10:00 AM</span>
-                            </label>
-                            <input type="checkbox" class="followup-checkbox" id="task1">
-                        </li>
-                        <li>
-                            <label for="task1" class="followup-label">
-                                <span class="followup-date">JUN 15</span>
-                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
-                                <span class="followup-time">⏰ 10:00 AM</span>
-                            </label>
-                            <input type="checkbox" class="followup-checkbox" id="task1">
-                        </li>
-                        <li>
-                            <label for="task1" class="followup-label">
-                                <span class="followup-date">JUN 15</span>
-                                <span class="followup-desc">Vansh Singh - Phone Call - Website Proposal Review</span>
-                                <span class="followup-time">⏰ 10:00 AM</span>
-                            </label>
-                            <input type="checkbox" class="followup-checkbox" id="task1">
-                        </li>
-                    </ul>
-                </section>
+                    <!-- Left: Weekly Activity (Bar Chart) -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">📊 Weekly Activity
+                            </h3>
+                            <span style="font-size: 13px; color: #6b7a8f;">Last 7 days</span>
+                        </div>
+                        <div
+                            style="display: flex; align-items: flex-end; height: 140px; gap: 16px; padding-bottom: 4px;">
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Mon</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 85px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Tue</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 45px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Wed</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 100px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Thu</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 70px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Fri</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 40px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Sat</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 100%; height: 30px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Lead Status Distribution (Donut + Legend) -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">📌 Lead
+                            Distribution</h3>
+                        <div
+                            style="flex: 1; display: flex; justify-content: center; align-items: center; position: relative;">
+                            <svg viewBox="0 0 120 120" style="width: 120px; height: 120px; transform: rotate(-90deg);">
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#4A6CF7" stroke-width="16"
+                                    stroke-dasharray="100 314" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#f7a84a" stroke-width="16"
+                                    stroke-dasharray="60 314" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#22c55e" stroke-width="16"
+                                    stroke-dasharray="30 314" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#6b7a8f" stroke-width="16"
+                                    stroke-dasharray="15 314" />
+                            </svg>
+                            <div style="position: absolute; font-size: 20px; font-weight: 700; color: #1a2639;">25</div>
+                        </div>
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-top: 12px; font-size: 13px;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4A6CF7;"></span>
+                                Lead <span style="margin-left: auto; font-weight: 600;">8</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #f7a84a;"></span>
+                                Contacted <span style="margin-left: auto; font-weight: 600;">5</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e;"></span>
+                                Proposal <span style="margin-left: auto; font-weight: 600;">4</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #6b7a8f;"></span>
+                                Closed <span style="margin-left: auto; font-weight: 600;">8</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== BOTTOM: Recent Clients + Upcoming Follow-ups ===== -->
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
+
+                    <!-- Left: Recent Clients -->
+                    <div
+                        style="background: white; border-radius: 18px; border: 1px solid #eef3f8; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <div
+                            style="padding: 18px 24px; border-bottom: 1px solid #f0f4fa; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">🕐 Recent Clients
+                            </h3>
+                            <a href="#"
+                                style="font-size: 14px; color: #4A6CF7; text-decoration: none; font-weight: 500;">View
+                                All →</a>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                            <thead style="background: #f9fbfd;">
+                                <tr>
+                                    <th
+                                        style="padding: 10px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Name</th>
+                                    <th
+                                        style="padding: 10px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Company</th>
+                                    <th
+                                        style="padding: 10px 16px; text-align: right; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f4f6fb;">
+                                    <td style="padding: 10px 16px; font-weight: 600; color: #1a2639;">Vansh Singh</td>
+                                    <td style="padding: 10px 16px; color: #4a5a6e;">Apex Gym</td>
+                                    <td style="padding: 10px 16px; text-align: right;"><span
+                                            style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; background: #eef3ff; color: #4A6CF7;">Lead</span>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f4f6fb;">
+                                    <td style="padding: 10px 16px; font-weight: 600; color: #1a2639;">Priya Sharma</td>
+                                    <td style="padding: 10px 16px; color: #4a5a6e;">TechNova</td>
+                                    <td style="padding: 10px 16px; text-align: right;"><span
+                                            style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; background: #fef3d7; color: #b7791f;">Proposal</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 16px; font-weight: 600; color: #1a2639;">Rahul Verma</td>
+                                    <td style="padding: 10px 16px; color: #4a5a6e;">GreenLeaf</td>
+                                    <td style="padding: 10px 16px; text-align: right;"><span
+                                            style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; background: #e3f5e9; color: #1f8b4c;">Closed</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Right: Upcoming Follow-ups (Timeline) -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 18px 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">⏰ Upcoming
+                                Follow‑ups</h3>
+                            <a href="#"
+                                style="font-size: 14px; color: #4A6CF7; text-decoration: none; font-weight: 500;">View
+                                All →</a>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f9fbfd; border-radius: 10px; border-left: 3px solid #f74a6c;">
+                                <span
+                                    style="font-size: 13px; font-weight: 600; color: #1a2639; min-width: 48px;">Today</span>
+                                <div style="flex: 1; font-size: 14px; color: #1a2639;">
+                                    Vansh Singh
+                                    <small style="display: block; font-size: 12px; color: #6b7a8f;">📞 Phone
+                                        call</small>
+                                </div>
+                                <span style="font-size: 12px; color: #f74a6c; font-weight: 500;">🔴 Overdue</span>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f9fbfd; border-radius: 10px; border-left: 3px solid #f7a84a;">
+                                <span
+                                    style="font-size: 13px; font-weight: 600; color: #1a2639; min-width: 48px;">Tomorrow</span>
+                                <div style="flex: 1; font-size: 14px; color: #1a2639;">
+                                    Priya Sharma
+                                    <small style="display: block; font-size: 12px; color: #6b7a8f;">📄 Proposal
+                                        review</small>
+                                </div>
+                                <span style="font-size: 12px; color: #f7a84a; font-weight: 500;">🟡 Due soon</span>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f9fbfd; border-radius: 10px; border-left: 3px solid #4A6CF7;">
+                                <span style="font-size: 13px; font-weight: 600; color: #1a2639; min-width: 48px;">Jun
+                                    20</span>
+                                <div style="flex: 1; font-size: 14px; color: #1a2639;">
+                                    Rahul Verma
+                                    <small style="display: block; font-size: 12px; color: #6b7a8f;">✉️ Follow‑up
+                                        email</small>
+                                </div>
+                                <span style="font-size: 12px; color: #4A6CF7; font-weight: 500;">🔵 Scheduled</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-
 
             <div id="editBox" class="box">
                 <div class="editContent">
@@ -531,7 +615,7 @@
                                             <div class="task-actions">
                                                 <button>✅</button>
                                                 <button>🗑</button>
-                                                
+
                                             </div>
                                         </div>
 
@@ -710,50 +794,685 @@
 
 
 
+            <!-- ========================================= -->
+            <!-- CLIENTS PAGE — Premium Redesign           -->
+            <!-- ========================================= -->
             <div id="clients-view" class="view-section" style="display: none;">
-                <header class="content-header">
-                    <h1>All Clients 🌞</h1>
+
+                <!-- Header -->
+                <div class="content-header">
+                    <div>
+                        <h1 style="font-size: 26px; font-weight: 700; color: #1a2639; margin: 0;">👥 Clients</h1>
+                        <p style="color: #6b7a8f; margin: 4px 0 0 0; font-size: 14px;">Manage your client relationships
+                            and track engagement</p>
+                    </div>
                     <div class="header-actions">
-                        <button class="btn">+ Quick Add Client</button>
-                        <select id="sortOptions">
+                        <button class="btn"
+                            style="display: flex; align-items: center; gap: 8px; padding: 0 24px; height: 44px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Quick Add
+                        </button>
+                        <select id="sortOptions"
+                            style="padding: 0 16px; height: 44px; border: 1px solid #dfe3ea; border-radius: 10px; background: white; font-size: 14px; color: #1a2639; outline: none;">
                             <option value="newest">Newest</option>
                             <option value="oldest">Oldest</option>
-                            <option value="az">A-Z</option>
-                            <option value="za">Z-A</option>
+                            <option value="az">A–Z</option>
+                            <option value="za">Z–A</option>
                         </select>
                     </div>
-                </header>
-
-                <div class="filters">
-                    <input type="text" id="searchBox" placeholder="Search clients...">
-                    <button class="filter active">All</button>
-                    <button class="filter">Lead</button>
-                    <button class="filter">Contacted</button>
-                    <button class="filter">Proposal Sent</button>
-                    <button class="filter">Closed</button>
                 </div>
 
-                <table class="client-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Company</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th class="status">Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientTableBody">
-                        <tr>
-                            <!-- <td><button>Edit</button></td>
-                           <td><button >Close Deal </button></td> -->
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- Stats Row (Total Clients) -->
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <span style="font-size: 15px; font-weight: 500; color: #1a2639;">Total Clients: <strong
+                            id="clientCountDisplay" style="color: #4d4fe0;">0</strong></span>
+                    <span style="font-size: 14px; color: #6b7a8f;">|</span>
+                    <span style="font-size: 14px; color: #6b7a8f;">Last updated: <span id="clientLastUpdated">Just
+                            now</span></span>
+                </div>
+
+                <!-- Filter Bar (preserves #searchBox and .filter) -->
+                <div class="filters"
+                    style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
+                    <input type="text" id="searchBox" placeholder="Search by name, company, or email…"
+                        style="flex: 1; min-width: 180px; padding: 10px 16px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: white; outline: none; transition: 0.2s;">
+                    <button class="filter active" data-filter="all"
+                        style="padding: 7px 16px; border: none; border-radius: 30px; font-size: 13px; font-weight: 500; background: linear-gradient(90deg, #10316f, #4d4fe0); color: white; cursor: pointer;">All</button>
+                    <button class="filter" data-filter="lead"
+                        style="padding: 7px 16px; border: none; border-radius: 30px; font-size: 13px; font-weight: 500; background: #f1f4f9; color: #4a5a6e; cursor: pointer;">Lead</button>
+                    <button class="filter" data-filter="contacted"
+                        style="padding: 7px 16px; border: none; border-radius: 30px; font-size: 13px; font-weight: 500; background: #f1f4f9; color: #4a5a6e; cursor: pointer;">Contacted</button>
+                    <button class="filter" data-filter="proposal"
+                        style="padding: 7px 16px; border: none; border-radius: 30px; font-size: 13px; font-weight: 500; background: #f1f4f9; color: #4a5a6e; cursor: pointer;">Proposal</button>
+                    <button class="filter" data-filter="closed"
+                        style="padding: 7px 16px; border: none; border-radius: 30px; font-size: 13px; font-weight: 500; background: #f1f4f9; color: #4a5a6e; cursor: pointer;">Closed</button>
+                </div>
+
+                <!-- Client Table -->
+                <div
+                    style="background: white; border-radius: 18px; border: 1px solid #eef3f8; overflow: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                    <table class="client-table" style="margin-bottom: 0; width: 100%; min-width: 600px;">
+                        <thead style="background: #f9fbfd; border-bottom: 1px solid #f0f4fa;">
+                            <tr>
+                                <th
+                                    style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Name</th>
+                                <th
+                                    style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Company</th>
+                                <th
+                                    style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Phone</th>
+                                <th
+                                    style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Email</th>
+                                <th
+                                    style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Status</th>
+                                <th
+                                    style="padding: 14px 16px; text-align: right; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientTableBody">
+                            <!-- Your JS will inject rows here -->
+                        </tbody>
+                    </table>
+                    <!-- Empty state (your JS can toggle this) -->
+                    <div id="clientEmptyState"
+                        style="display: none; padding: 50px 20px; text-align: center; color: #6b7a8f;">
+                        <div style="font-size: 36px; margin-bottom: 8px;">📂</div>
+                        <p style="margin: 0;">No clients found. Click <strong>“Quick Add”</strong> to get started.</p>
+                    </div>
+                </div>
+
             </div>
 
 
+            <!-- ========================================= -->
+            <!-- FOLLOW-UPS PAGE — Premium Dashboard       -->
+            <!-- ========================================= -->
+            <div id="follow-view" class="view-section" style="display: none;">
+
+                <!-- Header -->
+                <div class="content-header">
+                    <div>
+                        <h1 style="font-size: 26px; font-weight: 700; color: #1a2639; margin: 0;">Follow‑ups</h1>
+                        <p style="color: #6b7a8f; margin: 4px 0 0 0; font-size: 14px;">Track upcoming engagements and
+                            client interactions</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" id="refreshFollowBtn"
+                            style="display: flex; align-items: center; gap: 8px; padding: 0 20px; height: 44px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9h-4m-9 9A9 9 0 0 1 3 12m9 9v-4" />
+                            </svg>
+                            Refresh
+                        </button>
+                        <button class="btn" id="quickFollowBtn"
+                            style="display: flex; align-items: center; gap: 8px; padding: 0 24px; height: 44px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            New
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== KPI CARDS (with trends) ===== -->
+                <div class="stats-grid" style="margin-bottom: 28px;">
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">⏳ Due</p>
+                        <p class="stat-number" id="followTotalDue" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #f7a84a; font-size: 13px; font-weight: 600;">↑ 2</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs yesterday</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #4d4fe0, #3947c7);"></div>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">⚠️ Overdue</p>
+                        <p class="stat-number" id="followOverdue" style="font-size: 32px; color: #f74a6c;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #f74a6c; font-size: 13px; font-weight: 600;">↑ 1</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">needs attention</span>
+                        </div>
+                        <div class="stat-bar" style="background: #f74a6c;"></div>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">📅 Today</p>
+                        <p class="stat-number" id="followToday" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #4A6CF7; font-size: 13px; font-weight: 600;">⚡</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">upcoming</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #f7a84a, #fdd47e);"></div>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label" style="color: #6b7a8f;">✅ Completed</p>
+                        <p class="stat-number" id="followCompleted" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 12%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">this week</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #34c759, #7be08b);"></div>
+                    </div>
+                </div>
+
+                <!-- ===== FILTER BAR (Clean toggle style) ===== -->
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 20px;">
+                    <input type="text" id="followSearchBox" placeholder="Search by client or title…"
+                        style="flex: 1; min-width: 180px; padding: 10px 16px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: white; outline: none; transition: 0.2s;">
+                    <div style="display: flex; gap: 4px; background: #f4f6fb; padding: 4px; border-radius: 10px;">
+                        <button class="follow-filter active" data-filter="all"
+                            style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">All</button>
+                        <button class="follow-filter" data-filter="scheduled"
+                            style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Scheduled</button>
+                        <button class="follow-filter" data-filter="completed"
+                            style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Completed</button>
+                        <button class="follow-filter" data-filter="missed"
+                            style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Missed</button>
+                    </div>
+                </div>
+
+                <!-- ===== MAIN CONTENT: Table + Side Panel ===== -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+
+                    <!-- LEFT: Table -->
+                    <div
+                        style="background: white; border-radius: 18px; border: 1px solid #eef3f8; overflow: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 600px;">
+                            <thead style="background: #f9fbfd; border-bottom: 1px solid #f0f4fa;">
+                                <tr>
+                                    <th
+                                        style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Client</th>
+                                    <th
+                                        style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Follow‑up</th>
+                                    <th
+                                        style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Due</th>
+                                    <th
+                                        style="padding: 14px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Status</th>
+                                    <th
+                                        style="padding: 14px 16px; text-align: right; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="followTableBody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                        <div id="followEmptyState"
+                            style="display: none; padding: 50px 20px; text-align: center; color: #6b7a8f;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
+                            <p style="margin: 0;">No follow‑ups match your filters.</p>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Today's Queue + Progress Ring -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+
+                        <!-- Progress Ring Card -->
+                        <div
+                            style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); text-align: center;">
+                            <h4 style="font-size: 14px; font-weight: 600; color: #6b7a8f; margin: 0 0 12px 0;">
+                                Completion Rate</h4>
+                            <div style="position: relative; display: inline-block;">
+                                <svg width="100" height="100" viewBox="0 0 120 120" style="transform: rotate(-90deg);">
+                                    <circle cx="60" cy="60" r="50" fill="transparent" stroke="#f0f4fa"
+                                        stroke-width="12" />
+                                    <circle cx="60" cy="60" r="50" fill="transparent" stroke="#4d4fe0" stroke-width="12"
+                                        stroke-dasharray="0 314" id="followCompletionRing" />
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                    <span id="followCompletionPercent"
+                                        style="font-size: 22px; font-weight: 700; color: #1a2639;">0%</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 13px; color: #6b7a8f; margin: 8px 0 0 0;">
+                                <span id="followDoneCount">0</span> / <span id="followTotalCount">0</span> completed
+                            </p>
+                        </div>
+
+                        <!-- Today's Queue (Timeline) -->
+                        <div
+                            style="background: white; border-radius: 18px; padding: 20px 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="font-size: 15px; font-weight: 600; color: #1a2639; margin: 0;">⏰ Today’s
+                                    Queue</h4>
+                                <span id="followQueueCount" style="font-size: 13px; color: #6b7a8f;">0 items</span>
+                            </div>
+                            <div id="followQueueList" style="display: flex; flex-direction: column; gap: 12px;">
+                                <!-- Dynamic timeline items -->
+                                <div style="color: #6b7a8f; text-align: center; padding: 12px 0; font-size: 14px;">No
+                                    follow‑ups for today</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- STATISTICS PAGE — Premium Dashboard       -->
+            <!-- ========================================= -->
+            <div id="satatistic-view" class="view-section" style="display: none;">
+
+                <!-- Header -->
+                <div class="content-header">
+                    <div>
+                        <h1 style="font-size: 26px; font-weight: 700; color: #1a2639; margin: 0;">Analytics</h1>
+                        <p style="color: #6b7a8f; margin: 4px 0 0 0; font-size: 14px;">Key metrics and performance
+                            overview</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" id="refreshStatsBtn"
+                            style="display: flex; align-items: center; gap: 8px; padding: 0 20px; height: 44px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9h-4m-9 9A9 9 0 0 1 3 12m9 9v-4" />
+                            </svg>
+                            Refresh
+                        </button>
+                        <div style="display: flex; gap: 4px; background: #f4f6fb; padding: 4px; border-radius: 10px;">
+                            <button class="filter active" data-period="week"
+                                style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Week</button>
+                            <button class="filter" data-period="month"
+                                style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Month</button>
+                            <button class="filter" data-period="year"
+                                style="border: none; background: transparent; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7a8f;">Year</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== KPI CARDS (4 columns with mini trends) ===== -->
+                <div class="stats-grid" style="margin-bottom: 28px;">
+                    <div class="stat-card" style="position: relative;">
+                        <p class="stat-label" style="color: #6b7a8f;">Total Clients</p>
+                        <p class="stat-number" id="statTotalClients" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 12%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #4d4fe0, #3947c7);"></div>
+                    </div>
+                    <div class="stat-card" style="position: relative;">
+                        <p class="stat-label" style="color: #6b7a8f;">Active Leads</p>
+                        <p class="stat-number" id="statActiveLeads" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #f7a84a; font-size: 13px; font-weight: 600;">↓ 3%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #f7a84a, #fdd47e);"></div>
+                    </div>
+                    <div class="stat-card" style="position: relative;">
+                        <p class="stat-label" style="color: #6b7a8f;">Closed Deals</p>
+                        <p class="stat-number" id="statClosedDeals" style="font-size: 32px;">0</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 8%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #34c759, #7be08b);"></div>
+                    </div>
+                    <div class="stat-card" style="position: relative;">
+                        <p class="stat-label" style="color: #6b7a8f;">Conversion Rate</p>
+                        <p class="stat-number" id="statConversionRate" style="font-size: 32px;">0%</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="color: #22c55e; font-size: 13px; font-weight: 600;">↑ 2.5%</span>
+                            <span style="color: #6b7a8f; font-size: 13px;">vs last month</span>
+                        </div>
+                        <div class="stat-bar" style="background: linear-gradient(90deg, #4d4fe0, #10316f);"></div>
+                    </div>
+                </div>
+
+                <!-- ===== CHARTS ROW (2 columns) ===== -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px;">
+
+                    <!-- Left: Bar Chart (Weekly Activity) -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">Weekly Activity
+                            </h3>
+                            <span style="font-size: 13px; color: #6b7a8f;">Last 7 days</span>
+                        </div>
+                        <div
+                            style="display: flex; align-items: flex-end; height: 140px; gap: 16px; padding-bottom: 4px;">
+                            <!-- Each bar is a div with height set via inline style (your JS will update these) -->
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barMon"
+                                    style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Mon</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barTue"
+                                    style="width: 100%; height: 80px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Tue</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barWed"
+                                    style="width: 100%; height: 50px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Wed</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barThu"
+                                    style="width: 100%; height: 95px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Thu</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barFri"
+                                    style="width: 100%; height: 70px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Fri</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barSat"
+                                    style="width: 100%; height: 45px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Sat</span>
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                <div id="barSun"
+                                    style="width: 100%; height: 30px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;">
+                                </div>
+                                <span style="font-size: 12px; color: #6b7a8f;">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Donut Chart (Status Distribution) -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">Status
+                            Distribution</h3>
+                        <div
+                            style="flex: 1; display: flex; justify-content: center; align-items: center; position: relative;">
+                            <!-- SVG Donut (simple pie with conic-gradient fallback) -->
+                            <svg viewBox="0 0 120 120" style="width: 120px; height: 120px; transform: rotate(-90deg);">
+                                <!-- Four segments with different stroke-dasharrays -->
+                                <!-- Your JS will update these values based on data -->
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#4A6CF7" stroke-width="16"
+                                    stroke-dasharray="0 314" id="donutLead" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#f7a84a" stroke-width="16"
+                                    stroke-dasharray="0 314" id="donutContacted" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#22c55e" stroke-width="16"
+                                    stroke-dasharray="0 314" id="donutProposal" />
+                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#6b7a8f" stroke-width="16"
+                                    stroke-dasharray="0 314" id="donutClosed" />
+                            </svg>
+                            <div style="position: absolute; font-size: 20px; font-weight: 700; color: #1a2639;">0</div>
+                        </div>
+                        <!-- Legend -->
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 13px;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4A6CF7;"></span>
+                                Lead <span id="legendLead" style="margin-left: auto; font-weight: 600;">0</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #f7a84a;"></span>
+                                Contacted <span id="legendContacted"
+                                    style="margin-left: auto; font-weight: 600;">0</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e;"></span>
+                                Proposal <span id="legendProposal" style="margin-left: auto; font-weight: 600;">0</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span
+                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #6b7a8f;"></span>
+                                Closed <span id="legendClosed" style="margin-left: auto; font-weight: 600;">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== BOTTOM: Top Clients & Recent Activity ===== -->
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
+                    <!-- Top Clients Table -->
+                    <div
+                        style="background: white; border-radius: 18px; border: 1px solid #eef3f8; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <div style="padding: 20px 24px; border-bottom: 1px solid #f0f4fa;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">🏆 Top Clients
+                            </h3>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                            <thead style="background: #f9fbfd;">
+                                <tr>
+                                    <th
+                                        style="padding: 12px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Client</th>
+                                    <th
+                                        style="padding: 12px 16px; text-align: left; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Status</th>
+                                    <th
+                                        style="padding: 12px 16px; text-align: right; color: #6b7a8f; font-weight: 600; font-size: 12px; text-transform: uppercase;">
+                                        Follow‑ups</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statTopClientsBody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                        <div id="statTopEmpty"
+                            style="display: none; padding: 30px; text-align: center; color: #6b7a8f;">No client data
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Feed -->
+                    <div
+                        style="background: white; border-radius: 18px; border: 1px solid #eef3f8; padding: 20px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">🔄 Recent
+                            Activity</h3>
+                        <div id="statRecentActivity" style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Your JS will inject activity items here -->
+                            <div style="color: #6b7a8f; text-align: center; padding: 20px 0;">No recent activity</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- SETTINGS PAGE — Premium & Clean           -->
+            <!-- ========================================= -->
+            <div id="setting-view" class="view-section" style="display: none;">
+
+                <!-- Header -->
+                <div class="content-header">
+                    <div>
+                        <h1 style="font-size: 26px; font-weight: 700; color: #1a2639; margin: 0;">⚙️ Settings</h1>
+                        <p style="color: #6b7a8f; margin: 4px 0 0 0; font-size: 14px;">Manage your account, preferences,
+                            and data</p>
+                    </div>
+                </div>
+
+                <!-- ===== Settings Grid (2 columns) ===== -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+
+                    <!-- Card: Profile -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">👤 Profile
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 13px; font-weight: 500; color: #4a5a6e; margin-bottom: 4px;">Full
+                                    Name</label>
+                                <input type="text" value="Alex Rivera"
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: #f8fafc; outline: none; transition: 0.2s;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 13px; font-weight: 500; color: #4a5a6e; margin-bottom: 4px;">Email
+                                    Address</label>
+                                <input type="email" value="alex@crm.app"
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: #f8fafc; outline: none; transition: 0.2s;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 13px; font-weight: 500; color: #4a5a6e; margin-bottom: 4px;">Role</label>
+                                <input type="text" value="Administrator" disabled
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #eef3f8; border-radius: 10px; font-size: 14px; background: #f4f6fb; color: #6b7a8f;">
+                            </div>
+                            <button class="btn"
+                                style="width: fit-content; padding: 10px 28px; height: 42px; font-size: 14px; margin-top: 4px;">Update
+                                Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: Appearance -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">🎨 Appearance
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 13px; font-weight: 500; color: #4a5a6e; margin-bottom: 4px;">Theme</label>
+                                <select
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: #f8fafc; outline: none;">
+                                    <option>Light (Default)</option>
+                                    <option>Dark</option>
+                                    <option>System</option>
+                                </select>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Compact Mode</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Reduce spacing for denser
+                                        views</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Notifications -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">🔔
+                            Notifications</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Email Alerts</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Receive daily summaries</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Desktop Push</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Browser notifications</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Follow‑up
+                                        Reminders</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">24 hours before due date</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Data Management -->
+                    <div
+                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">💾 Data
+                            Management</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Export Data</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Download all clients &amp;
+                                        activities (JSON)</p>
+                                </div>
+                                <button class="btn"
+                                    style="height: 36px; padding: 0 16px; font-size: 13px; background: #f4f6fb; color: #1a2639; box-shadow: none;">Export</button>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Import Data</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Restore from a backup file
+                                    </p>
+                                </div>
+                                <button class="btn"
+                                    style="height: 36px; padding: 0 16px; font-size: 13px; background: #f4f6fb; color: #1a2639; box-shadow: none;">Import</button>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                                <div>
+                                    <span style="font-size: 14px; font-weight: 500; color: #1a2639;">Clear Cache</span>
+                                    <p style="margin: 0; font-size: 13px; color: #6b7a8f;">Remove temporary local data
+                                    </p>
+                                </div>
+                                <button class="btn"
+                                    style="height: 36px; padding: 0 16px; font-size: 13px; background: #f4f6fb; color: #1a2639; box-shadow: none;">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Danger Zone (Full width) -->
+                    <div
+                        style="grid-column: 1 / -1; background: #fff8f9; border-radius: 18px; padding: 24px; border: 1px solid #fde2e6; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                            <div>
+                                <h3 style="font-size: 16px; font-weight: 600; color: #b91c1c; margin: 0 0 4px 0;">⚠️
+                                    Danger Zone</h3>
+                                <p style="margin: 0; font-size: 14px; color: #6b7a8f;">Irreversible actions – proceed
+                                    with caution</p>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <button
+                                    style="background: transparent; border: 1px solid #f74a6c; color: #f74a6c; padding: 8px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;">Reset
+                                    Account</button>
+                                <button
+                                    style="background: #f74a6c; border: none; color: white; padding: 8px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(247, 74, 108, 0.2);">Delete
+                                    All Data</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </main>
     </div>
 
