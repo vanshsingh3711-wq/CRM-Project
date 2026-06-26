@@ -1,35 +1,88 @@
 // api.js
- let clients = [];
- export function getClients(){
-    return clients;
- };
- export function generatedId(){
-    return crypto.randomUUID();
- }
- export function loadclients(){
-    let data = localStorage.getItem("clients")
-    if (data !== null) {
-        clients = JSON.parse(data);
-    }return clients;
- };
+// ============================================================
+//  DATA STORE & PERSISTENCE
+// ============================================================
 
- export function saveClients(){
-    localStorage.setItem("clients" , JSON.stringify(clients))
- };
+let clients = [];
 
+export function getClients() {
+  return clients;
+}
 
+export function getClientById(id) {
+  return clients.find(c => c.id === id);
+}
 
-const greeting = document.querySelector(".greeting"); // The "Good Morning" text
-const datebox = document.querySelector(".datebox"); // The "Monday, June 15, 2026" text
+export function generateId() {
+  return crypto.randomUUID();
+}
+
+export function loadClients() {
+  const data = localStorage.getItem('clients');
+  if (data) {
+    clients = JSON.parse(data);
+  }
+  return clients;
+}
+
+export function saveClients() {
+  localStorage.setItem('clients', JSON.stringify(clients));
+}
+
+export function addClient(clientData) {
+  const newClient = {
+    id: generateId(),
+    name: clientData.name,
+    email: clientData.email,
+    number: clientData.number || '',
+    business: clientData.business || '',
+    status: 'lead',
+    createdAt: new Date().toISOString(),
+    notes: [],
+    tasks: [],
+  };
+  clients.push(newClient);
+  saveClients();
+  return newClient;
+}
+
+export function updateClient(id, updatedData) {
+  const index = clients.findIndex(c => c.id === id);
+  if (index === -1) return null;
+  clients[index] = { ...clients[index], ...updatedData };
+  saveClients();
+  return clients[index];
+}
+
+export function deleteClient(id) {
+  const index = clients.findIndex(c => c.id === id);
+  if (index === -1) return false;
+  clients.splice(index, 1);
+  saveClients();
+  return true;
+}
+
+// ============================================================
+//  GREETING & DATE HELPERS
+// ============================================================
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+export function getGreeting(hours) {
+  if (hours >= 5 && hours < 12) return 'Morning';
+  if (hours >= 12 && hours < 17) return 'Afternoon';
+  if (hours >= 17 && hours < 21) return 'Evening';
+  return 'Night';
+}
 
- export function getGreeting(hours) {
-    if (hours >= 5 && hours < 12) return 'Morning';   // 5 AM to 11:59 AM
-    if (hours >= 12 && hours < 17) return 'Afternoon'; // 12 PM to 4:59 PM
-    if (hours >= 17 && hours < 21) return 'Evening';   // 5 PM to 8:59 PM
-    return 'Night'; // Anything else (9 PM to 4:59 AM)
-
+export function getCurrentDateInfo() {
+  const now = new Date();
+  return {
+    greetingWord: getGreeting(now.getHours()),
+    dayName: days[now.getDay()],
+    monthName: months[now.getMonth()],
+    date: now.getDate(),
+    year: now.getFullYear(),
+  };
 }
