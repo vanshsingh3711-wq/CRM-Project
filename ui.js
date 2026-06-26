@@ -13,54 +13,65 @@ let currentTaskClientId = null;  // client being edited for tasks
 // ============================================================
 //  DOM REFERENCES
 // ============================================================
-const sidebar        = document.querySelector('.sidebar');
-const menuBtn        = document.querySelector('.menuBtn');
-const navItems       = document.querySelectorAll('.nav-item');
-const searchBox      = document.getElementById('searchBox');
-const greetingEl     = document.querySelector('.greeting');
-const dateboxEl      = document.querySelector('.datebox');
+const sidebar = document.querySelector('.sidebar');
+const menuBtn = document.querySelector('.menuBtn');
+const navItems = document.querySelectorAll('.nav-item');
+const searchBox = document.getElementById('searchBox');
+const greetingEl = document.querySelector('.greeting');
+const dateboxEl = document.querySelector('.datebox');
 
 // Quick add modal
-const clientBox      = document.getElementById('clientBox');
-const closeBtn       = clientBox?.querySelector('.closeBtn');
-const clientPaper    = document.getElementById('clientPaper');
+const clientBox = document.getElementById('clientBox');
+const closeBtn = clientBox?.querySelector('.closeBtn');
+const clientPaper = document.getElementById('clientPaper');
 
 // Edit modal
-const editBox        = document.getElementById('editBox');
-const editForm       = document.getElementById('editform');
-const existBtn       = document.querySelector('.existbtn');
-const editClientBtn  = document.querySelector('.edit-client-btn');
-const dealBtn        = document.querySelector('.deal');
+const editBox = document.getElementById('editBox');
+const editForm = document.getElementById('editform');
+const existBtn = document.querySelector('.existbtn');
+const editClientBtn = document.querySelector('.edit-client-btn');
+const dealBtn = document.querySelector('.deal');
 
 // Client detail view
-const detailView     = document.getElementById('clients-detail');
-const backLink       = document.querySelector('.back-link');
+const detailView = document.getElementById('clients-detail');
+const backLink = document.querySelector('.back-link');
 
 // Note modal
-const noteModal      = document.getElementById('noteModal');
-const noteClose      = document.getElementById('noteModalClose');
-const noteCancel     = document.getElementById('noteCancelBtn');
-const noteForm       = document.getElementById('noteForm');
-const noteTitle      = document.getElementById('noteTitle');
-const noteText       = document.getElementById('noteText');
-const noteCategory   = document.getElementById('noteCategory');
-const notePriority   = document.getElementById('notePriority');
-const addNoteBtn     = document.getElementById('addNoteBtn');
+const noteModal = document.getElementById('noteModal');
+const noteClose = document.getElementById('noteModalClose');
+const noteCancel = document.getElementById('noteCancelBtn');
+const noteForm = document.getElementById('noteForm');
+const noteTitle = document.getElementById('noteTitle');
+const noteText = document.getElementById('noteText');
+const noteCategory = document.getElementById('noteCategory');
+const notePriority = document.getElementById('notePriority');
+const addNoteBtn = document.getElementById('addNoteBtn');
 
 // Task modal
-const taskModal      = document.getElementById('taskModal');
-const taskClose      = document.querySelector('.close-task');
-const taskForm       = document.getElementById('taskForm');
-const taskTitle      = document.getElementById('taskTitle');
-const taskDesc       = document.getElementById('taskDescription');
-const taskDate       = document.getElementById('taskDate');
-const taskPriority   = document.getElementById('taskPriority');
-const addTaskBtn     = document.getElementById('addTaskBtn');
+const taskModal = document.getElementById('taskModal');
+const taskClose = document.querySelector('.close-task');
+const taskForm = document.getElementById('taskForm');
+const taskTitle = document.getElementById('taskTitle');
+const taskDesc = document.getElementById('taskDescription');
+const taskDate = document.getElementById('taskDate');
+const taskPriority = document.getElementById('taskPriority');
+const addTaskBtn = document.getElementById('addTaskBtn');
 
 // Containers
 const clientTableBody = document.getElementById('clientTableBody');
-const notesList      = document.getElementById('notesList');
-const taskList       = document.getElementById('taskList');
+const notesList = document.getElementById('notesList');
+const taskList = document.getElementById('taskList');
+
+// FOLLOW-UP ADD BUTTON
+const addfollow = document.getElementById('quickFollowBtn');
+
+
+
+// FOLLOW-UP MODAL 
+const followupModal = document.getElementById('followupModal');
+const addFollowBtn = document.querySelector('#addFollowupBtn'); // your "Add Follow‑up" button
+const closeFollowBtn = document.getElementById('closeFollowupBtn');
+const cancelFollowBtn = document.getElementById('cancelFollowupBtn');
 
 // ============================================================
 //  SIDEBAR TOGGLE
@@ -86,6 +97,9 @@ navItems.forEach(item => {
     });
     const targetView = document.getElementById(targetId);
     if (targetView) targetView.style.display = 'block';
+    if (targetId === 'follow-view') {
+  renderglobalfollow();
+}
   });
 });
 
@@ -526,4 +540,273 @@ export function init() {
   // Set active nav item
   navItems.forEach(x => x.classList.remove('active'));
   document.querySelector('.nav-item[data-target="dashboard-view"]')?.classList.add('active');
+
+  // ----- Quick Add Button -----
+  const quickBtns = document.querySelectorAll('.btn');
+  const clientBox = document.getElementById('clientBox');
+  const closeBtn = clientBox?.querySelector('.closeBtn');
+  const clientPaper = document.getElementById('clientPaper');
+
+  quickBtns.forEach(button => {
+    button.addEventListener('click', () => {
+      clientBox.style.display = 'block';
+    });
+  });
+
+  closeBtn?.addEventListener('click', () => {
+    clientBox.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === clientBox) {
+      clientBox.style.display = 'none';
+    }
+  });
+
+  clientPaper?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Create new client object (use your API)
+    const newClient = {
+      id: crypto.randomUUID(),
+      name: clientPaper.name.value,
+      email: clientPaper.email.value,
+      number: clientPaper.number.value,
+      business: clientPaper.business.value,
+      status: 'lead',
+      createdAt: new Date().toISOString(),
+      notes: [],
+      tasks: [],
+    };
+    // Add via API (if you have addClient) or push to array
+    // Then close modal, reset form, save & re-render
+    // ... your existing logic from crm.js
+  });
+};
+
+// ADD FOLLOW-UP BUTTON 
+addfollow.addEventListener("click", () => {
+  followupModal.style.display = 'block';
+})
+closeFollowBtn.addEventListener("click", () => {
+  followupModal.style.display = 'none'
+});
+// ============================================================
+//  FOLLOW-UP MODAL FUNCTIONS
+// ============================================================
+
+// OPEN FROM GLOBAL PAGE (no client selected)
+export function openGlobalFollowup() {
+  const input = document.getElementById('followupClientInput');
+  const display = document.getElementById('selectedClientDisplay');
+  const datalist = document.getElementById('clientOptions');
+  const hiddenId = document.getElementById('followupClientId');
+
+  // Show search input, hide static display
+  input.style.display = 'block';
+  display.style.display = 'none';
+  hiddenId.value = '';
+  input.value = '';
+
+  // Populate datalist with ALL clients
+  const clients = api.getClients();
+  datalist.innerHTML = clients.map(client =>
+    `<option value="${client.name}">`
+  ).join('');
+
+  // Show modal
+  followupModal.style.display = 'block';
+  renderglobalfollow();
+}
+
+// OPEN FROM CLIENT DETAIL VIEW (has selectedId)
+export function openClientFollowup(clientId) {
+  const client = api.getClientById(clientId);
+  if (!client) {
+    alert('Client not found');
+    return;
+  }
+
+  const input = document.getElementById('followupClientInput');
+  const display = document.getElementById('selectedClientDisplay');
+  const nameSpan = document.getElementById('selectedClientName');
+  const hiddenId = document.getElementById('followupClientId');
+
+  // Hide search input, show static display
+  input.style.display = 'none';
+  display.style.display = 'block';
+  nameSpan.textContent = client.name;
+  hiddenId.value = client.id;
+
+  // Show modal
+  followupModal.style.display = 'block';
+}
+
+// RESET FUNCTION (clears form and closes modal)
+function resetfollow() {
+  const form = document.getElementById('followupForm');
+  const input = document.getElementById('followupClientInput');
+  const display = document.getElementById('selectedClientDisplay');
+  const hiddenId = document.getElementById('followupClientId');
+
+  form.reset();
+  input.style.display = 'block';
+  display.style.display = 'none';
+  hiddenId.value = '';
+  input.value = '';
+  followupModal.style.display = 'none';
+}
+
+// ============================================================
+//  EVENT LISTENERS
+// ============================================================
+
+// "New" button on Follow-ups page (global)
+addfollow?.addEventListener('click', openGlobalFollowup);
+
+// "Add Follow-up" button inside client detail tab
+addFollowBtn?.addEventListener('click', () => {
+  if (!selectedId) {
+    alert('Please open a client profile first.');
+    return;
+  }
+  openClientFollowup(selectedId);
+})
+
+// Close buttons (using the reset function WITHOUT duplicating listeners)
+closeFollowBtn?.addEventListener('click', resetfollow);
+cancelFollowBtn?.addEventListener('click', resetfollow);
+
+// Click outside modal
+window.addEventListener('click', (e) => {
+  if (e.target === followupModal) resetfollow();
+});
+
+// ============================================================
+//  SUBMIT HANDLER
+// ============================================================
+document.getElementById('followupForm')?.addEventListener('submit', function (e) {
+  // ✅ CRITICAL: Prevent page refresh
+  e.preventDefault();
+
+  // 1. Get client ID (from hidden input OR from search)
+  const hiddenId = document.getElementById('followupClientId');
+  const input = document.getElementById('followupClientInput');
+  let clientId;
+
+  if (hiddenId.value) {
+    // Case A: Opened from client detail view
+    clientId = hiddenId.value;
+  } else {
+    // Case B: Opened from global page
+    const userName = input.value.trim();
+
+    // ✅ Check if user typed anything first
+    if (!userName) {
+      alert('Please start typing and select a client.');
+      input.focus();
+      return; // ✅ STOP here – don't continue
+    }
+
+    // ✅ Find client by name (declared in THIS scope)
+    const found = api.getClients().find(client => client.name === userName);
+    if (!found) {
+      alert('Client not found. Please select a valid client from the list.');
+      input.value = '';
+      input.focus();
+      return; // ✅ STOP here – don't continue
+    }
+    clientId = found.id;
+  }
+
+  // 2. Get form values
+  const title = document.getElementById('followupTitle').value.trim();
+  const desc = document.getElementById('followupDesc').value.trim();
+  const date = document.getElementById('followupDate').value;
+  const time = document.getElementById('followupTime').value;
+  const priority = document.getElementById('followupPriority').value;
+
+  // 3. Validate required fields
+  if (!title) {
+    alert('Please enter a title.');
+    document.getElementById('followupTitle').focus();
+    return;
+  }
+  if (!date) {
+    alert('Please select a date.');
+    document.getElementById('followupDate').focus();
+    return;
+  }
+
+  // 4. Create follow-up object
+  const newfollow = {
+    id: api.generateId(),
+    title: title,
+    description: desc || '',
+    date: date,
+    time: time || '',
+    priority: priority || 'medium',
+    status: 'scheduled',
+    createdAt: new Date().toISOString()
+  };
+
+  // 5. Find client and add follow-up
+  const client = api.getClientById(clientId);
+  if (!client) {
+    alert('Client not found. Please try again.');
+    return;
+  }
+
+  if (!client.followups) client.followups = [];
+  client.followups.push(newfollow);
+  api.saveClients();
+
+  // 6. Close, reset, re-render
+  resetfollow();
+  renderAll();
+});
+
+function renderglobalfollow() {
+  const tablebody = document.getElementById('followTableBody');
+  if (!tablebody) return;
+
+  // 1. Flatten all follow‑ups from all clients
+  const allClients = api.getClients();
+  const allFollowups = allClients.flatMap(client =>
+    (client.followups || []).map(f => ({
+      ...f,
+      clientName: client.name,
+      clientId: client.id
+    }))
+  );
+
+  // 2. Sort by date (soonest first)
+  allFollowups.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // 3. Clear table
+  tablebody.innerHTML = '';
+
+  // 4. Empty state
+  if (allFollowups.length === 0) {
+    tablebody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888; padding: 30px;">No follow‑ups scheduled yet.</td></tr>`;
+    return;
+  }
+
+  // 5. Build rows
+  allFollowups.forEach(follow => {
+    const tr = document.createElement('tr');
+tr.innerHTML = `
+  <td>${follow.clientName}</td>
+  <td>${follow.title}</td>
+  <td>${follow.date ? new Date(follow.date).toLocaleDateString() : ''} ${follow.time || ''}</td>
+  <td><span class="status ${follow.status}">${follow.status}</span></td>
+  <td class="followactions">
+    <button class="followview" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">View</button>
+    <button class="followedit" data-follow-id="${follow.id}">Edit</button>
+    <button class="followdelete" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">🗑</button>
+  </td>
+`;
+    tablebody.appendChild(tr);
+  });
+
+  // Optionally attach event listeners for the buttons here
 }

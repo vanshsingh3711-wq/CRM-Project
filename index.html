@@ -914,14 +914,14 @@
                             </svg>
                             Refresh
                         </button>
-                        <button class="btn" id="quickFollowBtn"
+                        <button class="addfollowup" id="quickFollowBtn"
                             style="display: flex; align-items: center; gap: 8px; padding: 0 24px; height: 44px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
-                            New
+                            Add New
                         </button>
                     </div>
                 </div>
@@ -1009,6 +1009,7 @@
                                 </tr>
                             </thead>
                             <tbody id="followTableBody">
+                                <tr class="trbody"></tr>
                                 <!-- Dynamic rows -->
                             </tbody>
                         </table>
@@ -1472,6 +1473,98 @@
 
                 </div>
 
+            </div>
+
+            <!-- ========================================= -->
+            <!-- QUICK ADD CLIENT MODAL                    -->
+            <!-- ========================================= -->
+            <div id="clientBox" class="box">
+                <div class="boxContent">
+                    <span class="closeBtn">&times;</span>
+                    <form id="clientPaper">
+                        <input type="text" name="name" placeholder="Enter Client Name" required>
+                        <input type="email" name="email" placeholder="Enter Client Email" required>
+                        <input type="number" name="number" placeholder="Enter your Contact Number" required>
+                        <input type="text" name="business" placeholder="Enter your business name" required>
+                        <button type="submit" class="btn" style="width:100%; margin-top:12px;">Add Client</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- FOLLOW-UP ADD MODAL                       -->
+            <!-- ========================================= -->
+            <div id="followupModal" class="followup-modal">
+                <div class="followup-modal-content">
+
+                    <!-- Header -->
+                    <div class="followup-modal-header">
+                        <h2>📋 Add New Follow‑up</h2>
+                        <button class="followup-modal-close" id="closeFollowupBtn">&times;</button>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="followupForm" class="followup-form">
+
+                        <!-- Client Selection (auto‑filled in client detail, dropdown in global view) -->
+                        <div class="followup-form-group">
+                            <label for="followupClient">Client <span class="required">*</span></label>
+
+                            <!-- Hidden by default, shown when user is in a client detail view -->
+                            <div id="selectedClientDisplay"
+                                style="display: none; padding: 12px 16px; background: #f4f6fb; border-radius: 10px; font-weight: 600; color: #1a2639;">
+                                <span id="selectedClientName"></span>
+                                <input type="hidden" id="followupClientId">
+                            </div>
+
+                            <!-- Visible by default, searchable input with datalist -->
+                            <input type="text" id="followupClientInput" list="clientOptions"
+                                placeholder="Start typing a client name…" autocomplete="off">
+                            <datalist id="clientOptions"></datalist>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="followup-form-group">
+                            <label for="followupTitle">Title <span class="required">*</span></label>
+                            <input type="text" id="followupTitle" placeholder="e.g., Proposal Review Call" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="followup-form-group">
+                            <label for="followupDesc">Description</label>
+                            <textarea id="followupDesc" rows="4"
+                                placeholder="Add details about this follow‑up…"></textarea>
+                        </div>
+
+                        <!-- Row: Date + Time + Priority -->
+                        <div class="followup-form-row">
+                            <div class="followup-form-group half">
+                                <label for="followupDate">Date <span class="required">*</span></label>
+                                <input type="date" id="followupDate" required>
+                            </div>
+                            <div class="followup-form-group half">
+                                <label for="followupTime">Time</label>
+                                <input type="time" id="followupTime">
+                            </div>
+                            <div class="followup-form-group half">
+                                <label for="followupPriority">Priority</label>
+                                <select id="followupPriority">
+                                    <option value="low">🟢 Low</option>
+                                    <option value="medium" selected>🟡 Medium</option>
+                                    <option value="high">🔴 High</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="followup-form-actions">
+                            <button type="button" class="followup-btn followup-btn-cancel"
+                                id="cancelFollowupBtn">Cancel</button>
+                            <button type="submit" class="followup-btn followup-btn-save">💾 Save Follow‑up</button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
         </main>
     </div>
