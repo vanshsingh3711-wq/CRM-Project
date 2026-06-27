@@ -533,6 +533,8 @@ function renderAll() {
 // ============================================================
 export function init() {
   api.loadClients();
+  updatefollowcard();
+  todaylistandcircle();
   renderAll();
   // Default view: dashboard
   document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
@@ -581,6 +583,8 @@ export function init() {
     // Then close modal, reset form, save & re-render
     // ... your existing logic from crm.js
   });
+
+
 };
 
 // ADD FOLLOW-UP BUTTON 
@@ -782,8 +786,8 @@ function renderglobalfollow(arraylist = null) {
     }))
   );
   let filtered = allFollowups;
-  if (!currentFilter ==='all'){
-filtered = allFollowups.filter(f=> f.status === currentFilter);
+  if (!currentFilter !== 'all') {
+    filtered = allFollowups.filter(f => f.status === currentFilter);
   }
   // 2. Sort by date (soonest first)
   allFollowups.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -809,7 +813,7 @@ filtered = allFollowups.filter(f=> f.status === currentFilter);
     <button class="followview" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">View</button>
     <button class="followdelete" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">🗑</button>
   </td>
-`;        
+`;
     tablebody.appendChild(tr);
 
     const viewfollow = tr.querySelector('.followview').addEventListener('click', () => {
@@ -827,30 +831,29 @@ filtered = allFollowups.filter(f=> f.status === currentFilter);
 
     });
 
-    tr.querySelector('.followdelete').addEventListener('click',()=>{
+    tr.querySelector('.followdelete').addEventListener('click', () => {
       const client = api.getClientById(follow.clientId);
-      console.log(client)
+
       if (!client) return;
 
-      client.followups = client.followups.filter(f=> f.id !==follow.id,);
+      client.followups = client.followups.filter(f => f.id !== follow.id,);
       api.saveClients();
       renderglobalfollow();
-
-      
+      updatefollowcard();
     })
-    
+
   });
-  
+
   // Optionally attach event listeners for the buttons here
 }
 
 
 const filterButtons = document.querySelectorAll('.follow-filter');
-filterButtons.forEach(btn =>{
-  btn.addEventListener('click',(e)=>{
+filterButtons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
     currentFilter = e.currentTarget.dataset.filter;
     console.log(currentFilter);
-     document.querySelectorAll('.follow-filter').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.follow-filter').forEach(b => b.classList.remove('active'));
     e.currentTarget.classList.add('active');
     renderglobalfollow();
 
@@ -863,6 +866,7 @@ const searchfollow = document.getElementById('followSearchBox');
 searchfollow?.addEventListener('input', () => {
   const text = searchfollow.value.toLowerCase().trim();
   const allClients = api.getClients();
+  console.log(allClients)
 
   if (!text) {
     // Show all follow-ups
@@ -887,9 +891,82 @@ searchfollow?.addEventListener('input', () => {
 // FOLLOW-UP  CARD INFO UPDATE 
 // ============================================================
 
-const due= document.getElementById('followTotalDue')
-const overdue =document.getClientById('followOverdue')
+const due = document.getElementById('followTotalDue')
+const overdue = document.querySelector('#followOverdue')
 const today = document.getElementById('followToday')
 const completed = document.getElementById('followCompleted')
+const client = api.getClients()
+const f = client.followups;
 
 
+
+function updatefollowcard() {
+
+  const allclient = api.getClients();
+  const allFollowups = allclient.flatMap(client => client.followups || []);
+  const totaldue = allFollowups.filter(f => f.status === 'scheduled').length;
+  const overdueCount = allFollowups.filter(f => f.status === 'scheduled' && new Date(f.date) < new Date()).length;
+  const todayCount = allFollowups.filter(f => f.status === 'scheduled' && new Date(f.date).toDateString() === new Date().toDateString()).length;
+  const completedCount = allFollowups.filter(f => f.status === 'completed').length;
+  due.textContent = totaldue;
+  document.getElementById('followOverdue').textContent = overdueCount;
+  document.getElementById('followToday').textContent = todayCount;
+  document.getElementById('followCompleted').textContent = completedCount;
+
+  console.log(due.textContent)
+
+}
+updatefollowcard();
+
+
+
+function todaylistandcircle() {
+  const allClients = api.getClients();
+  
+  // 1. Flatten all follow‑ups, adding clientName
+  const allFollowups = allClients.flatMap(c =>
+    (c.followups || []).map(f => ({
+      ...f,
+      clientName: c.name,
+      clientId: c.id
+    }))
+  );
+
+  // ---- Completion Rate ----
+  const total = allFollowups.length;
+  const done = allFollowups.filter(f => f.status === 'completed').length;
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+  const circumference = 314.16;
+  const dash = (percent / 100) * circumference;
+
+  document.getElementById('followCompletionPercent').textContent = percent + '%';
+  document.getElementById('followDoneCount').textContent = done;
+  document.getElementById('followTotalCount').textContent = total;
+  document.getElementById('followCompletionRing').setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+
+  // ---- Today's Queue ----
+  const todayStr = new Date().toDateString();
+  const todafollow = allFollowups
+    .filter(f => f.status === 'scheduled' && new Date(f.date).toDateString() === todayStr)
+    .sort((a, b) => (a.time || '00:00') > (b.time || '00:00') ? 1 : -1);
+
+  const queueCount = document.getElementById('followQueueCount');
+  const queueList = document.getElementById('followQueueList');
+
+  queueCount.textContent = todafollow.length + ' items';
+
+  if (todafollow.length === 0) {
+    queueList.innerHTML = `<div style="color: #6b7a8f; text-align: center; padding: 12px 0; font-size: 14px;">No follow‑ups for today</div>`;
+  } else {
+    queueList.innerHTML = todafollow.map(f => `
+      <div class="queue-item">
+        <span class="time">${f.time || 'All day'}</span>
+        <div class="info">
+          ${f.clientName}
+          <small>${f.title}</small>
+        </div>
+        <span class="priority-dot ${f.priority || 'medium'}"></span>
+      </div>
+    `).join('');
+  }
+}
