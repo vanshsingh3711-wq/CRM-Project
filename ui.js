@@ -228,21 +228,25 @@ backLink?.addEventListener('click', e => {
   navItems.forEach(x => x.classList.remove('active'));
   document.querySelector('.nav-item[data-target="clients-view"]')?.classList.add('active');
 });
-
+let currentclientfil = 'all';
 // ============================================================
 //  RENDER CLIENT TABLE
 // ============================================================
 function renderClientTable(data = null) {
   const clients = data || api.getClients();
+
+  let filterC = clients;
+  if (currentclientfil !== 'all') { filterC = clients.filter(c => c.status === currentclientfil) };
   if (!clientTableBody) return;
   clientTableBody.innerHTML = '';
 
-  if (clients.length === 0) {
+  if (filterC.length === 0) {
     clientTableBody.innerHTML = `<tr><td colspan="6">No clients found</td></tr>`;
     return;
   }
 
-  clients.forEach(client => {
+  filterC.forEach(client => {
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${client.name}</td>
@@ -264,6 +268,7 @@ function renderClientTable(data = null) {
       </td>
     `;
     clientTableBody.appendChild(tr);
+
 
     // View
     tr.querySelector('.view').addEventListener('click', () => {
@@ -298,6 +303,24 @@ function renderClientTable(data = null) {
       }
     });
   });
+  
+
+}
+
+
+function clientfilter() {
+  const allfilter = document.querySelectorAll('.filter');
+  allfilter.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      currentclientfil = e.currentTarget.dataset.filter
+      document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'))
+      e.currentTarget.classList.add('active');
+      renderClientTable();
+
+    })
+  }
+
+  )
 }
 
 // ============================================================
@@ -535,6 +558,7 @@ export function init() {
   api.loadClients();
   updatefollowcard();
   todaylistandcircle();
+  clientfilter();
   renderAll();
   // Default view: dashboard
   // document.getElementById('refreshFollowBtn')?.addEventListener('click', refreshFollowPage);
@@ -923,7 +947,7 @@ updatefollowcard();
 
 function todaylistandcircle() {
   const allClients = api.getClients();
-  
+
   // 1. Flatten all follow‑ups, adding clientName
   const allFollowups = allClients.flatMap(c =>
     (c.followups || []).map(f => ({

@@ -857,6 +857,7 @@ body {
 
 /* ----Client Page styling------- */
 
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -2151,16 +2152,26 @@ select {
 
 /* ---- Filter buttons (active state via JS toggling) ---- */
 #clients-view .filter {
+    padding: 7px 16px;
+     border: none; border-radius: 30px;
+      font-size: 13px; font-weight: 500; 
     transition: all 0.2s ease;
     cursor: pointer;
 }
 #clients-view .filter:hover:not(.active) {
     background: #e5e9f0;
+    
 }
 #clients-view .filter.active {
-    background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
-    color: white;
+    /* background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+    color: white; */
     box-shadow: 0 2px 8px rgba(45, 65, 180, 0.2);
+
+    padding: 7px 16px;
+     border: none; border-radius: 30px;
+      font-size: 13px; font-weight: 500; 
+      background: linear-gradient(90deg, #10316f, #4d4fe0); 
+      color: white; cursor: pointer;
 }
 
 /* ---- Table styling (matches other premium tables) ---- */
