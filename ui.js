@@ -537,6 +537,7 @@ export function init() {
   todaylistandcircle();
   renderAll();
   // Default view: dashboard
+  // document.getElementById('refreshFollowBtn')?.addEventListener('click', refreshFollowPage);
   document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
   document.getElementById('dashboard-view').style.display = 'block';
   // Set active nav item
@@ -969,4 +970,10 @@ function todaylistandcircle() {
       </div>
     `).join('');
   }
+}
+
+function refreshFollowPage() {
+  renderglobalfollow();      // Re‑builds the table
+  updatefollowcard();        // Updates Due / Overdue / Today / Completed KPI cards
+  todaylistandcircle();      // Updates Completion Rate + Today's Queue
 }
