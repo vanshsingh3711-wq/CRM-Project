@@ -98,8 +98,8 @@ navItems.forEach(item => {
     const targetView = document.getElementById(targetId);
     if (targetView) targetView.style.display = 'block';
     if (targetId === 'follow-view') {
-  renderglobalfollow();
-}
+      renderglobalfollow();
+    }
   });
 });
 
@@ -498,7 +498,7 @@ function renderTasks() {
       deleteTask(task.id);
     });
   });
-}
+};
 
 function deleteTask(taskId) {
   const client = api.getClientById(selectedId);
@@ -762,15 +762,18 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
 
   // 6. Close, reset, re-render
   resetfollow();
+  renderglobalfollow();
   renderAll();
 });
 
-function renderglobalfollow() {
+
+let currentFilter = 'all';
+function renderglobalfollow(arraylist = null) {
   const tablebody = document.getElementById('followTableBody');
   if (!tablebody) return;
 
   // 1. Flatten all follow‑ups from all clients
-  const allClients = api.getClients();
+  const allClients = arraylist || api.getClients();
   const allFollowups = allClients.flatMap(client =>
     (client.followups || []).map(f => ({
       ...f,
@@ -778,7 +781,10 @@ function renderglobalfollow() {
       clientId: client.id
     }))
   );
-
+  let filtered = allFollowups;
+  if (!currentFilter ==='all'){
+filtered = allFollowups.filter(f=> f.status === currentFilter);
+  }
   // 2. Sort by date (soonest first)
   allFollowups.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -794,19 +800,96 @@ function renderglobalfollow() {
   // 5. Build rows
   allFollowups.forEach(follow => {
     const tr = document.createElement('tr');
-tr.innerHTML = `
+    tr.innerHTML = `
   <td>${follow.clientName}</td>
   <td>${follow.title}</td>
   <td>${follow.date ? new Date(follow.date).toLocaleDateString() : ''} ${follow.time || ''}</td>
   <td><span class="status ${follow.status}">${follow.status}</span></td>
   <td class="followactions">
     <button class="followview" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">View</button>
-    <button class="followedit" data-follow-id="${follow.id}">Edit</button>
     <button class="followdelete" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">🗑</button>
   </td>
-`;
+`;        
     tablebody.appendChild(tr);
-  });
 
+    const viewfollow = tr.querySelector('.followview').addEventListener('click', () => {
+      const client = api.getClientById(follow.clientId);
+      if (!client) return;
+      selectedId = client.id;
+      renderClientDetail(client);
+      renderNotes();
+      renderTasks();
+
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelector('.tabs button[data-target="overview"]')?.classList.add('active');
+      document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+      detailView.style.display = 'block';
+
+    });
+
+    tr.querySelector('.followdelete').addEventListener('click',()=>{
+      const client = api.getClientById(follow.clientId);
+      console.log(client)
+      if (!client) return;
+
+      client.followups = client.followups.filter(f=> f.id !==follow.id,);
+      api.saveClients();
+      renderglobalfollow();
+
+      
+    })
+    
+  });
+  
   // Optionally attach event listeners for the buttons here
 }
+
+
+const filterButtons = document.querySelectorAll('.follow-filter');
+filterButtons.forEach(btn =>{
+  btn.addEventListener('click',(e)=>{
+    currentFilter = e.currentTarget.dataset.filter;
+    console.log(currentFilter);
+     document.querySelectorAll('.follow-filter').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    renderglobalfollow();
+
+  })
+})
+
+
+// search button follow 
+const searchfollow = document.getElementById('followSearchBox');
+searchfollow?.addEventListener('input', () => {
+  const text = searchfollow.value.toLowerCase().trim();
+  const allClients = api.getClients();
+
+  if (!text) {
+    // Show all follow-ups
+    renderglobalfollow(allClients);
+    return;
+  }
+
+  // Filter clients whose name contains the search text
+  // OR who have any follow-up whose title contains the text
+  const filteredClients = allClients.filter(client => {
+    const nameMatch = client.name.toLowerCase().includes(text);
+    const followupMatch = (client.followups || []).some(f =>
+      f.title.toLowerCase().includes(text)
+    );
+    return nameMatch || followupMatch;
+  });
+
+  renderglobalfollow(filteredClients);
+});
+
+// ============================================================
+// FOLLOW-UP  CARD INFO UPDATE 
+// ============================================================
+
+const due= document.getElementById('followTotalDue')
+const overdue =document.getClientById('followOverdue')
+const today = document.getElementById('followToday')
+const completed = document.getElementById('followCompleted')
+
+
