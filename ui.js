@@ -383,6 +383,8 @@ window.addEventListener('click', e => {
 
 noteForm?.addEventListener('submit', e => {
   e.preventDefault();
+  const noteedit = document.getElementById('noteEditId').value;
+
   const client = api.getClientById(selectedId);
   if (!client) {
     alert('Client not found');
@@ -392,16 +394,30 @@ noteForm?.addEventListener('submit', e => {
     alert('Please write some content');
     return;
   }
-  const newNote = {
-    id: api.generateId(),
-    title: noteTitle.value || 'Untitled',
-    content: noteText.value,
-    category: noteCategory.value,
-    impt: notePriority.value,
-    createdAt: new Date().toISOString(),
-  };
-  if (!client.notes) client.notes = [];
-  client.notes.push(newNote);
+
+  if (noteedit) {
+    const note = client.notes.find(n => n.id === noteedit)
+    if (!note) { alert('no note found') }
+
+    note.title = noteTitle.value;
+    note.content = noteText.value;
+    note.category = noteCategory.value;
+    note.impt = notePriority.value;
+
+  }
+
+  else {
+    const newNote = {
+      id: api.generateId(),
+      title: noteTitle.value || 'Untitled',
+      content: noteText.value,
+      category: noteCategory.value,
+      impt: notePriority.value,
+      createdAt: new Date().toISOString(),
+    };
+    if (!client.notes) client.notes = [];
+    client.notes.push(newNote);
+  }
   api.saveClients();
   renderNotes();
   noteForm.reset();
@@ -433,13 +449,30 @@ function renderNotes() {
             📂 ${note.category || 'General'} • ⚡ ${note.impt || 'Medium'} • 📅 ${date}
           </small>
         </div>
-        <button class="delete-note-btn" data-note-id="${note.id}" style="background:none; border:none; color:#f74a6c; cursor:pointer; font-size:24px;">🗑</button>
+        <div>
+        <button class="edit-note" data-id="${note.id}" title="Edit">✎</button>
+        <button class="delete-note-btn" data-note-id="${note.id}" style="background:none; border:none; color:#f74a6c; cursor:pointer; font-size:24px;">🗑</button></div>
       </div>
     `;
     notesList.appendChild(div);
     div.querySelector('.delete-note-btn').addEventListener('click', () => {
       deleteNote(note.id);
     });
+    const editnote = div.querySelector('.edit-note')
+    editnote.addEventListener('click', () => {
+      const noteId = editnote.dataset.id;
+      const client =api.getClientById(selectedId)
+      if(!client)return;
+      const note = client.notes.find(n=> n.id ===noteId);
+      if(!note)return;
+       document.getElementById('noteEditId').value = noteId;
+
+      document.getElementById('noteTitle').value = note.title || '';
+      document.getElementById('noteText').value = note.content || '';
+      document.getElementById('noteCategory').value = note.category || 'general';
+      document.getElementById('notePriority').value = note.impt || 'medium';
+      noteModal.style.display = 'block';
+    })
   });
 }
 
@@ -728,7 +761,7 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
   // ✅ CRITICAL: Prevent page refresh
   e.preventDefault();
 
-   // 1️⃣ Read the hidden edit ID
+  // 1️⃣ Read the hidden edit ID
   const editId = document.getElementById('followupEditId').value;
 
   // 2️⃣ Get the client and form values
@@ -742,15 +775,15 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
   const time = document.getElementById('followupTime').value;
   const priority = document.getElementById('followupPriority').value;
 
-    // 3️⃣ Validate required fields
+  // 3️⃣ Validate required fields
   if (!title || !date) {
     alert('Please fill in title and date.');
     return;
   }
 
-  if(editId){
-    const followup = client.followups.find(f=>f.id === editId)
-    if(!followup){
+  if (editId) {
+    const followup = client.followups.find(f => f.id === editId)
+    if (!followup) {
       alert('follow-up not found')
 
     }
@@ -759,8 +792,8 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
     followup.date = date;
     followup.time = time;
     followup.priority = priority;
-  }else{
-    const newfollow= {
+  } else {
+    const newfollow = {
       id: api.generateId(),
       title: title,
       description: desc || '',
@@ -773,20 +806,20 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
     if (!client.followups) client.followups = [];
     client.followups.push(newfollow);
   };
-  
-  
-  
-  
+
+
+
+
   api.saveClients();
   // 6. Close, reset, re-render
   resetfollow();
   renderglobalfollow();
   renderAll();
-  if(selectedId)rendetailfollowup();
-    updatefollowcard();
+  if (selectedId) rendetailfollowup();
+  updatefollowcard();
   todaylistandcircle();
 });
-                                                              // DISPLAY FOLLOW-UP ON CLINT DETAIL PAGE 
+// DISPLAY FOLLOW-UP ON CLINT DETAIL PAGE 
 function rendetailfollowup() {
   const followlist = document.getElementById('clientFollowupList')
   if (!followlist) return;
@@ -822,64 +855,64 @@ function rendetailfollowup() {
       </div>
     `;
     followlist.appendChild(card);
-    const edit=card.querySelector('.edit-btn')
-    edit.addEventListener('click',()=>{
-      editfollow(Clients.id , follow.id);
+    const edit = card.querySelector('.edit-btn')
+    edit.addEventListener('click', () => {
+      editfollow(Clients.id, follow.id);
     });
-    const dbtn =card.querySelector('.delete-btn');
-    dbtn.addEventListener('click',()=>{
+    const dbtn = card.querySelector('.delete-btn');
+    dbtn.addEventListener('click', () => {
       dtnfollow(follow.id)
       api.saveClients();
       rendetailfollowup();
     });
 
     const completd = card.querySelector('.complete-btn');
-if (completd) {
-  completd.addEventListener('click', () => {
-    const client = Clients;   // Use the existing client object
-    if (!client) return;
-    const fup = client.followups.find(f => f.id === follow.id);
-    if (fup) {
-      fup.status = 'completed';
-      api.saveClients();
-      rendetailfollowup();
-      updatefollowcard();
-      todaylistandcircle();
+    if (completd) {
+      completd.addEventListener('click', () => {
+        const client = Clients;   // Use the existing client object
+        if (!client) return;
+        const fup = client.followups.find(f => f.id === follow.id);
+        if (fup) {
+          fup.status = 'completed';
+          api.saveClients();
+          rendetailfollowup();
+          updatefollowcard();
+          todaylistandcircle();
+        }
+      });
     }
-  });
-}
   }
   )
 };
 
 
-function dtnfollow(deleteFollow){
+function dtnfollow(deleteFollow) {
   const clients = api.getClientById(selectedId)
-  if(!clients)return;
+  if (!clients) return;
   // const followups = clients.followups.find(f=>f.id === deleteFollow)
-  clients.followups= clients.followups.filter(f=> f.id !==deleteFollow)
-  
+  clients.followups = clients.followups.filter(f => f.id !== deleteFollow)
+
 }
 
-function editfollow(cliendId , followupId){
-const client = api.getClientById(cliendId);
-if (!client)return;
-const followup = client.followups.find(f=> f.id === followupId)
-if (!followup)return;
-// give the hidden div follow up id that we got now 
- document.getElementById('followupEditId').value = followupId;
+function editfollow(cliendId, followupId) {
+  const client = api.getClientById(cliendId);
+  if (!client) return;
+  const followup = client.followups.find(f => f.id === followupId)
+  if (!followup) return;
+  // give the hidden div follow up id that we got now 
+  document.getElementById('followupEditId').value = followupId;
 
   const input = document.getElementById('followupClientInput');
   const display = document.getElementById('selectedClientDisplay');
   const nameSpan = document.getElementById('selectedClientName');
   const hiddenId = document.getElementById('followupClientId');
 
-   input.style.display = 'none';
+  input.style.display = 'none';
   display.style.display = 'block';
   nameSpan.textContent = client.name;
   hiddenId.value = client.id;
 
-  document.getElementById('followupTitle').value =followup.title || '';
+  document.getElementById('followupTitle').value = followup.title || '';
   document.getElementById('followupDesc').value = followup.description || '';
   document.getElementById('followupDate').value = followup.date || '';
   document.getElementById('followupTime').value = followup.time || '';
