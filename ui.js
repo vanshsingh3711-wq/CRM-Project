@@ -272,8 +272,10 @@ function renderClientTable(data = null) {
 
     // View
     tr.querySelector('.view').addEventListener('click', () => {
+
       selectedId = client.id;
       renderClientDetail(client);
+      rendetailfollowup();
       renderNotes();
       renderTasks();
       // Reset tabs
@@ -303,7 +305,7 @@ function renderClientTable(data = null) {
       }
     });
   });
-  
+
 
 }
 
@@ -343,6 +345,15 @@ function renderClientDetail(client) {
 document.querySelectorAll('.tabs button').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.dataset.target;
+
+    if (target === 'follow-up') {
+      rendetailfollowup();   // ✅ Add this line
+    } else if (target === 'notes') {
+      renderNotes();
+    } else if (target === 'tasks') {
+      renderTasks();
+    }
+
     document.querySelectorAll('.content-page').forEach(page => {
       page.style.display = 'none';
     });
@@ -717,83 +728,167 @@ document.getElementById('followupForm')?.addEventListener('submit', function (e)
   // ✅ CRITICAL: Prevent page refresh
   e.preventDefault();
 
-  // 1. Get client ID (from hidden input OR from search)
-  const hiddenId = document.getElementById('followupClientId');
-  const input = document.getElementById('followupClientInput');
-  let clientId;
+   // 1️⃣ Read the hidden edit ID
+  const editId = document.getElementById('followupEditId').value;
 
-  if (hiddenId.value) {
-    // Case A: Opened from client detail view
-    clientId = hiddenId.value;
-  } else {
-    // Case B: Opened from global page
-    const userName = input.value.trim();
+  // 2️⃣ Get the client and form values
+  const clientId = document.getElementById('followupClientId').value;
+  const client = api.getClientById(clientId);
+  if (!client) return;
 
-    // ✅ Check if user typed anything first
-    if (!userName) {
-      alert('Please start typing and select a client.');
-      input.focus();
-      return; // ✅ STOP here – don't continue
-    }
-
-    // ✅ Find client by name (declared in THIS scope)
-    const found = api.getClients().find(client => client.name === userName);
-    if (!found) {
-      alert('Client not found. Please select a valid client from the list.');
-      input.value = '';
-      input.focus();
-      return; // ✅ STOP here – don't continue
-    }
-    clientId = found.id;
-  }
-
-  // 2. Get form values
   const title = document.getElementById('followupTitle').value.trim();
   const desc = document.getElementById('followupDesc').value.trim();
   const date = document.getElementById('followupDate').value;
   const time = document.getElementById('followupTime').value;
   const priority = document.getElementById('followupPriority').value;
 
-  // 3. Validate required fields
-  if (!title) {
-    alert('Please enter a title.');
-    document.getElementById('followupTitle').focus();
-    return;
-  }
-  if (!date) {
-    alert('Please select a date.');
-    document.getElementById('followupDate').focus();
+    // 3️⃣ Validate required fields
+  if (!title || !date) {
+    alert('Please fill in title and date.');
     return;
   }
 
-  // 4. Create follow-up object
-  const newfollow = {
-    id: api.generateId(),
-    title: title,
-    description: desc || '',
-    date: date,
-    time: time || '',
-    priority: priority || 'medium',
-    status: 'scheduled',
-    createdAt: new Date().toISOString()
+  if(editId){
+    const followup = client.followups.find(f=>f.id === editId)
+    if(!followup){
+      alert('follow-up not found')
+
+    }
+    followup.title = title;
+    followup.description = desc;
+    followup.date = date;
+    followup.time = time;
+    followup.priority = priority;
+  }else{
+    const newfollow= {
+      id: api.generateId(),
+      title: title,
+      description: desc || '',
+      date: date,
+      time: time || '',
+      priority: priority || 'medium',
+      status: 'scheduled',
+      createdAt: new Date().toISOString()
+    }
+    if (!client.followups) client.followups = [];
+    client.followups.push(newfollow);
   };
-
-  // 5. Find client and add follow-up
-  const client = api.getClientById(clientId);
-  if (!client) {
-    alert('Client not found. Please try again.');
-    return;
-  }
-
-  if (!client.followups) client.followups = [];
-  client.followups.push(newfollow);
+  
+  
+  
+  
   api.saveClients();
-
   // 6. Close, reset, re-render
   resetfollow();
   renderglobalfollow();
   renderAll();
+  if(selectedId)rendetailfollowup();
+    updatefollowcard();
+  todaylistandcircle();
 });
+                                                              // DISPLAY FOLLOW-UP ON CLINT DETAIL PAGE 
+function rendetailfollowup() {
+  const followlist = document.getElementById('clientFollowupList')
+  if (!followlist) return;
+
+  const Clients = api.getClientById(selectedId);
+  if (!Clients) return;
+  const Followups = Clients.followups || [];
+
+  followlist.innerHTML = '';
+  if (Followups.length === 0) {
+    followlist.innerHTML = `<div style="text-align:center; color:#888; padding:30px;">No follow‑ups scheduled for this client.</div>`; return;
+
+  }
+  Followups.forEach(follow => {
+    const card = document.createElement('div');
+    card.className = 'followup-card';
+
+    card.innerHTML = `
+      <div class="followup-card-left">
+        <div class="followup-card-title">${follow.title}</div>
+        <div class="followup-card-desc">${follow.description || ''}</div>
+        <div class="followup-card-meta">
+          <span>📅 ${follow.date ? new Date(follow.date).toLocaleDateString() : 'No date'}</span>
+          <span>⏰ ${follow.time || 'No time'}</span>
+          <span><span class="priority-dot ${follow.priority || 'medium'}"></span> ${follow.priority || 'medium'}</span>
+        </div>
+        <span class="followup-card-status ${follow.status}">${follow.status}</span>
+      </div>
+      <div class="followup-card-actions">
+        ${follow.status !== 'completed' ? `<button class="complete-btn" data-id="${follow.id}" title="Mark as completed">✅</button>` : ''}
+        <button class="delete-btn" data-id="${follow.id}" title="Delete">🗑</button>
+        <button class="edit-btn" data-id="${follow.id}" title="Edit">✎</button>
+      </div>
+    `;
+    followlist.appendChild(card);
+    const edit=card.querySelector('.edit-btn')
+    edit.addEventListener('click',()=>{
+      editfollow(Clients.id , follow.id);
+    });
+    const dbtn =card.querySelector('.delete-btn');
+    dbtn.addEventListener('click',()=>{
+      dtnfollow(follow.id)
+      api.saveClients();
+      rendetailfollowup();
+    });
+
+    const completd = card.querySelector('.complete-btn');
+if (completd) {
+  completd.addEventListener('click', () => {
+    const client = Clients;   // Use the existing client object
+    if (!client) return;
+    const fup = client.followups.find(f => f.id === follow.id);
+    if (fup) {
+      fup.status = 'completed';
+      api.saveClients();
+      rendetailfollowup();
+      updatefollowcard();
+      todaylistandcircle();
+    }
+  });
+}
+  }
+  )
+};
+
+
+function dtnfollow(deleteFollow){
+  const clients = api.getClientById(selectedId)
+  if(!clients)return;
+  // const followups = clients.followups.find(f=>f.id === deleteFollow)
+  clients.followups= clients.followups.filter(f=> f.id !==deleteFollow)
+  
+}
+
+function editfollow(cliendId , followupId){
+const client = api.getClientById(cliendId);
+if (!client)return;
+const followup = client.followups.find(f=> f.id === followupId)
+if (!followup)return;
+// give the hidden div follow up id that we got now 
+ document.getElementById('followupEditId').value = followupId;
+
+  const input = document.getElementById('followupClientInput');
+  const display = document.getElementById('selectedClientDisplay');
+  const nameSpan = document.getElementById('selectedClientName');
+  const hiddenId = document.getElementById('followupClientId');
+
+   input.style.display = 'none';
+  display.style.display = 'block';
+  nameSpan.textContent = client.name;
+  hiddenId.value = client.id;
+
+  document.getElementById('followupTitle').value =followup.title || '';
+  document.getElementById('followupDesc').value = followup.description || '';
+  document.getElementById('followupDate').value = followup.date || '';
+  document.getElementById('followupTime').value = followup.time || '';
+  document.getElementById('followupPriority').value = followup.priority || 'medium';
+  followupModal.style.display = 'block'
+};
+
+
+
 
 
 let currentFilter = 'all';
@@ -835,7 +930,7 @@ function renderglobalfollow(arraylist = null) {
   <td>${follow.date ? new Date(follow.date).toLocaleDateString() : ''} ${follow.time || ''}</td>
   <td><span class="status ${follow.status}">${follow.status}</span></td>
   <td class="followactions">
-    <button class="followview" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">View</button>
+    <button class="followview" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">👁</button>
     <button class="followdelete" data-client-id="${follow.clientId}" data-follow-id="${follow.id}">🗑</button>
   </td>
 `;

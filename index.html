@@ -571,6 +571,37 @@
                                 </div>
 
                             </div>
+
+                            <!-- FOLLOW-UPS TAB (inside client detail) -->
+                            <div class="content-page" id="follow-up" style="display: none;">
+                                <div class="followup-tab-container">
+                                    <!-- Header -->
+                                    <div class="followup-tab-header">
+                                        <h3>📅 Follow-ups</h3>
+                                        <button id="addFollowupBtn" class="add-followup-btn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            Add Follow‑up
+                                        </button>
+                                    </div>
+
+                                    <!-- Follow-up List -->
+                                    <div id="clientFollowupList">
+                                        <!-- Follow-up cards will be rendered here by JS -->
+                                    </div>
+
+                                    <!-- Empty State (shown when no follow-ups) -->
+                                    <div id="clientFollowupEmpty" style="display: none;">
+                                        <div class="empty-state-icon">📋</div>
+                                        <p>No follow‑ups scheduled for this client.</p>
+                                        <p class="empty-state-sub">Click <strong>“Add Follow‑up”</strong> to create one.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- //NOTE BOX   -->
 
                             <div class="content-page" id="notes" style="display: none; padding: 40px; height: auto;">
@@ -840,16 +871,11 @@
                     style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
                     <input type="text" id="searchBox" placeholder="Search by name, company, or email…"
                         style="flex: 1; min-width: 180px; padding: 10px 16px; border: 1px solid #dfe3ea; border-radius: 10px; font-size: 14px; background: white; outline: none; transition: 0.2s;">
-                    <button class="filter active" data-filter="all"
-                       >All</button>
-                    <button class="filter" data-filter="lead"
-                        >Lead</button>
-                    <button class="filter" data-filter="contacted"
-                        >Contacted</button>
-                    <button class="filter" data-filter="proposal"
-                        >Proposal</button>
-                    <button class="filter" data-filter="closed"
-                       >Closed</button>
+                    <button class="filter active" data-filter="all">All</button>
+                    <button class="filter" data-filter="lead">Lead</button>
+                    <button class="filter" data-filter="contacted">Contacted</button>
+                    <button class="filter" data-filter="proposal">Proposal</button>
+                    <button class="filter" data-filter="closed">Closed</button>
                 </div>
 
                 <!-- Client Table -->
@@ -1505,6 +1531,7 @@
 
                     <!-- Form -->
                     <form id="followupForm" class="followup-form">
+                        <input type="hidden" id="followupEditId" value="">
 
                         <!-- Client Selection (auto‑filled in client detail, dropdown in global view) -->
                         <div class="followup-form-group">
@@ -1566,6 +1593,9 @@
                     </form>
                 </div>
             </div>
+
+
+            
         </main>
     </div>
 

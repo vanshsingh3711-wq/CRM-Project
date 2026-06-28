@@ -1180,6 +1180,223 @@ select {
     }
 }
 
+
+
+/* ========================================= */
+/* FOLLOW-UPS TAB (Client Detail View)       */
+/* ========================================= */
+
+.followup-tab-container {
+    padding: 24px 30px;
+}
+
+/* ---- Header ---- */
+.followup-tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.followup-tab-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a2639;
+    margin: 0;
+}
+
+.add-followup-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #10316f, #4d4fe0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 2px 8px rgba(45, 65, 180, 0.2);
+}
+
+.add-followup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 65, 180, 0.3);
+}
+
+.add-followup-btn svg {
+    flex-shrink: 0;
+}
+
+/* ---- Follow-up Cards ---- */
+.followup-card {
+    background: #f9fbfd;
+    border: 1px solid #eef3f8;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: 0.15s ease;
+}
+
+.followup-card:hover {
+    background: #f4f7fc;
+    border-color: #dce4ed;
+}
+
+.followup-card-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.followup-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2639;
+    margin: 0 0 4px 0;
+}
+
+.followup-card-desc {
+    font-size: 14px;
+    color: #4a5a6e;
+    margin: 0 0 6px 0;
+}
+
+.followup-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13px;
+    color: #6b7a8f;
+}
+
+.followup-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.followup-card-status {
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.followup-card-status.scheduled {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+
+.followup-card-status.completed {
+    background: #e3f5e9;
+    color: #1f8b4c;
+}
+
+.followup-card-status.missed {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+
+/* ---- Card Actions ---- */
+.followup-card-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.followup-card-actions button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #6b7a8f;
+    transition: 0.2s ease;
+    font-size: 16px;
+}
+
+.followup-card-actions button:hover {
+    background: #f1f4f9;
+}
+
+.followup-card-actions .complete-btn:hover {
+    background: #e8fff1;
+    color: #22c55e;
+}
+
+.followup-card-actions .delete-btn:hover {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+
+/* ---- Priority Dot ---- */
+.priority-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.priority-dot.high {
+    background: #f74a6c;
+}
+
+.priority-dot.medium {
+    background: #f7a84a;
+}
+
+.priority-dot.low {
+    background: #22c55e;
+}
+
+/* ---- Empty State ---- */
+#clientFollowupEmpty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7a8f;
+}
+
+#clientFollowupEmpty .empty-state-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+#clientFollowupEmpty p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+#clientFollowupEmpty .empty-state-sub {
+    font-size: 14px;
+    color: #8a9aa8;
+}
+
+/* ---- Overdue badge (optional) ---- */
+.followup-overdue .followup-card-status.scheduled {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+
+.followup-overdue {
+    border-left: 4px solid #f74a6c;
+    background: #fff9fa;
+}
+
+.followup-overdue:hover {
+    background: #fff5f7;
+}
 /* ========================================= */
 /* ADD NOTE MODAL                            */
 /* ========================================= */
