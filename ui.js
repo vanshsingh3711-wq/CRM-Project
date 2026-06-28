@@ -461,11 +461,11 @@ function renderNotes() {
     const editnote = div.querySelector('.edit-note')
     editnote.addEventListener('click', () => {
       const noteId = editnote.dataset.id;
-      const client =api.getClientById(selectedId)
-      if(!client)return;
-      const note = client.notes.find(n=> n.id ===noteId);
-      if(!note)return;
-       document.getElementById('noteEditId').value = noteId;
+      const client = api.getClientById(selectedId)
+      if (!client) return;
+      const note = client.notes.find(n => n.id === noteId);
+      if (!note) return;
+      document.getElementById('noteEditId').value = noteId;
 
       document.getElementById('noteTitle').value = note.title || '';
       document.getElementById('noteText').value = note.content || '';
@@ -503,26 +503,33 @@ window.addEventListener('click', e => {
 
 taskForm?.addEventListener('submit', e => {
   e.preventDefault();
-  const client = api.getClientById(currentTaskClientId);
-  if (!client) {
-    alert('Client not found');
-    return;
+  const taskedit = document.querySelector('#taskEditId').value;
+  const client = api.getClientById(selectedId)
+
+  if (taskedit) {
+    const task = client.tasks.find(t => t.id === taskedit);
+
+    if (!task) { alert('task not found'); return; }
+    task.title = taskTitle.value;
+    task.description = taskDesc.value;
+    task.date = taskDate.value;
+    task.Priority = taskPriority.value;
+  } else {
+
+    const newTask = {
+      id: api.generateId(),
+      title: taskTitle.value || 'Untitled',
+      description: taskDesc.value,
+      date: taskDate.value,
+      Priority: taskPriority.value,
+    };
+    if (!client.tasks) client.tasks = [];
+    client.tasks.push(newTask);
   }
-  if (!taskDesc.value.trim()) {
-    alert('Please write a description');
-    return;
-  }
-  const newTask = {
-    id: api.generateId(),
-    title: taskTitle.value || 'Untitled',
-    description: taskDesc.value,
-    date: taskDate.value,
-    Priority: taskPriority.value,
-  };
-  if (!client.tasks) client.tasks = [];
-  client.tasks.push(newTask);
+
   api.saveClients();
   renderTasks();
+  document.getElementById('taskEditId').value = '';
   taskForm.reset();
   taskModal.style.display = 'none';
 });
@@ -556,6 +563,7 @@ function renderTasks() {
       <div class="task-bottom">
         <span>📅 ${dateStr}</span>
         <div class="task-actions">
+        <button class="edit-task" data-id="${task.id}" title="Edit">✎</button>
           <button class="delete-task" data-task-id="${task.id}">🗑</button>
         </div>
       </div>
@@ -564,6 +572,25 @@ function renderTasks() {
     card.querySelector('.delete-task').addEventListener('click', () => {
       deleteTask(task.id);
     });
+
+    const taskedit =card.querySelector('.edit-task')
+    taskedit.addEventListener('click',()=>{
+
+      const client = api.getClientById(selectedId)
+      if(!client)return;
+      const taskId = taskedit.dataset.id; 
+      const task = client.tasks.find(t=> t.id === taskId)
+      if (!task)return;
+      document.querySelector('#taskEditId').value = taskId;
+
+      document.getElementById('taskTitle').value = task.title || '';
+      document.getElementById('taskDate').value = task.date || '';
+      document.getElementById('taskDescription').value = task.description || 'general';
+      document.getElementById('taskPriority').value = task.Priority || 'medium';
+
+      taskModal.style.display = 'block';
+      
+    })
   });
 };
 
