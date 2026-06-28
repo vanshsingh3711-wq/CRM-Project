@@ -699,6 +699,28 @@
                 </div>
             </div>
 
+            <div id="documents" class="content-page" style="display: none;">
+                <div class="documents-container">
+                    <div class="doc-header">
+                        <h3>📄 Documents</h3>
+                        <button id="uploadDocBtn">+ Upload Document</button>
+                    </div>
+
+                    <input type="file" id="documentInput" hidden multiple>
+
+                    <div id="documentList">
+                        <!-- Document cards will be rendered here -->
+                    </div>
+
+                    <!-- Empty state (shown if no docs) -->
+                    <div id="documentsEmpty" style="display: none;">
+                        <div class="empty-icon">📁</div>
+                        <p>No documents uploaded yet.</p>
+                        <p class="empty-sub">Click “Upload Document” to add files.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- ========================================= -->
             <!-- ADD NOTE MODAL                            -->
             <!-- ========================================= -->
@@ -1597,7 +1619,7 @@
             </div>
 
 
-            
+
         </main>
     </div>
 

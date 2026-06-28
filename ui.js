@@ -674,6 +674,7 @@ export function init() {
       createdAt: new Date().toISOString(),
       notes: [],
       tasks: [],
+      documents: [],
     };
     // Add via API (if you have addClient) or push to array
     // Then close modal, reset form, save & re-render
@@ -1149,6 +1150,139 @@ function todaylistandcircle() {
       </div>
     `).join('');
   }
+}
+
+
+// ----- Document Upload -----
+const uploadBtn = document.getElementById('uploadDocBtn');
+const fileInput = document.getElementById('documentInput');
+
+uploadBtn?.addEventListener('click', () => {
+  if (!selectedId) {
+    alert('Please open a client profile first.');
+    return;
+  }
+  fileInput.click();
+});
+
+fileInput?.addEventListener('change', function(e) {
+  const files = this.files;
+  if (!files.length) return;
+
+  const client = api.getClientById(selectedId);
+  if (!client) {
+    alert('Client not found.');
+    this.value = ''; // reset
+    return;
+  }
+
+  // Process each file
+  Array.from(files).forEach(file => {
+    // Skip files larger than 2MB to avoid localStorage issues
+    if (file.size > 2 * 1024 * 1024) {
+      alert(`File "${file.name}" is too large (>2MB). Please upload a smaller file.`);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(loadEvent) {
+      const dataUrl = loadEvent.target.result; // base64 data URL
+
+      const newDoc = {
+        id: api.generateId(),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        data: dataUrl,
+        uploadedAt: new Date().toISOString()
+      };
+
+      if (!client.documents) client.documents = [];
+      client.documents.push(newDoc);
+      api.saveClients();
+      renderDocuments(); // refresh the list
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Reset the input so the same file can be uploaded again
+  this.value = '';
+});
+
+
+function renderDocuments() {
+  const container = document.getElementById('documentList');
+  const emptyState = document.getElementById('documentsEmpty');
+  if (!container) return;
+
+  const client = api.getClientById(selectedId);
+  if (!client) {
+    container.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  const docs = client.documents || [];
+  container.innerHTML = '';
+
+  if (docs.length === 0) {
+    emptyState.style.display = 'block';
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  docs.forEach(doc => {
+    const card = document.createElement('div');
+    card.className = 'document-card';
+
+    // Format the file size
+    const sizeStr = doc.size < 1024 ? doc.size + ' B' :
+                   doc.size < 1048576 ? (doc.size / 1024).toFixed(1) + ' KB' :
+                   (doc.size / 1048576).toFixed(1) + ' MB';
+
+    const date = new Date(doc.uploadedAt).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+
+    // Determine file icon based on type
+    let icon = '📄';
+    if (doc.type.startsWith('image/')) icon = '🖼️';
+    else if (doc.type === 'application/pdf') icon = '📕';
+    else if (doc.type.includes('word')) icon = '📘';
+    else if (doc.type.includes('excel') || doc.type.includes('sheet')) icon = '📗';
+
+    card.innerHTML = `
+      <div class="document-card-left">
+        <div class="document-card-title">
+          <span class="file-icon">${icon}</span>
+          ${doc.name}
+        </div>
+        <div class="document-card-meta">
+          ${sizeStr} • Uploaded: ${date}
+        </div>
+      </div>
+      <div class="document-card-actions">
+        <button class="view-btn" data-id="${doc.id}">View</button>
+        <button class="delete-btn" data-id="${doc.id}">Delete</button>
+      </div>
+    `;
+
+    container.appendChild(card);
+
+    // ---- View button ----
+    card.querySelector('.view-btn').addEventListener('click', () => {
+      // Open the file in a new tab
+      window.open(doc.data, '_blank');
+    });
+
+    // ---- Delete button ----
+    card.querySelector('.delete-btn').addEventListener('click', () => {
+      if (!confirm(`Delete "${doc.name}"?`)) return;
+      client.documents = client.documents.filter(d => d.id !== doc.id);
+      api.saveClients();
+      renderDocuments();
+    });
+  });
 }
 
 function refreshFollowPage() {

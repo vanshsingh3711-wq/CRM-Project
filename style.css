@@ -2494,6 +2494,182 @@ select {
     color: #6b7a8f;
 }
 
+
+/* ========================================= */
+/* DOCUMENTS TAB (Client Detail View)        */
+/* ========================================= */
+
+.documents-container {
+    padding: 24px 30px;
+}
+
+/* ---- Header ---- */
+.doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.doc-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a2639;
+    margin: 0;
+}
+
+#uploadDocBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #10316f, #4d4fe0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 2px 8px rgba(45, 65, 180, 0.2);
+}
+
+#uploadDocBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 65, 180, 0.3);
+}
+
+/* ---- Document Cards ---- */
+.document-card {
+    background: #f9fbfd;
+    border: 1px solid #eef3f8;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.15s ease;
+}
+
+.document-card:hover {
+    background: #f4f7fc;
+    border-color: #dce4ed;
+}
+
+.document-card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.document-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a2639;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.document-card-title .file-icon {
+    font-size: 18px;
+}
+
+.document-card-meta {
+    font-size: 13px;
+    color: #6b7a8f;
+}
+
+.document-card-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.document-card-actions button {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.document-card-actions .view-btn {
+    background: #eef3ff;
+    color: #4A6CF7;
+}
+
+.document-card-actions .view-btn:hover {
+    background: #4A6CF7;
+    color: white;
+}
+
+.document-card-actions .delete-btn {
+    background: #ffe5ea;
+    color: #f74a6c;
+}
+
+.document-card-actions .delete-btn:hover {
+    background: #f74a6c;
+    color: white;
+}
+
+/* ---- Empty State ---- */
+#documentsEmpty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7a8f;
+}
+
+#documentsEmpty .empty-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+#documentsEmpty p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+#documentsEmpty .empty-sub {
+    font-size: 14px;
+    color: #8a9aa8;
+}
+
+/* ---- Upload Progress / File Input Styling ---- */
+#documentInput {
+    display: none;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+    .document-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .document-card-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .doc-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    #uploadDocBtn {
+        justify-content: center;
+        width: 100%;
+    }
+}
 /* ---- Responsive ---- */
 @media (max-width: 700px) {
     #clients-view .content-header {
