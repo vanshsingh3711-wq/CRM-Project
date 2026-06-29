@@ -86,3 +86,23 @@ export function getCurrentDateInfo() {
     year: now.getFullYear(),
   };
 }
+
+export function gettotalclient(){
+  return clients.length;
+}
+
+export function getactiveclients(){
+  return clients.filter(c=> c.status === 'lead' || c.status === 'contacted' || 
+    c.status === 'proposal').length
+}
+
+export function getclosedclient(){
+  return clients.filter(c=> c.status ==='closed').length
+}
+
+export function totalpercent(){
+const total = clients.length;
+if(total === 0)return 0;
+const close = getclosedclient();
+return Math.round((close/total)*100)
+}

@@ -97,6 +97,9 @@ navItems.forEach(item => {
     });
     const targetView = document.getElementById(targetId);
     if (targetView) targetView.style.display = 'block';
+    if (targetId === 'satatistic-view'){
+      renderstatics();
+    }
     if (targetId === 'follow-view') {
       renderglobalfollow();
     }
@@ -340,16 +343,8 @@ function clientfilter() {
   )
 }
 
-// function followfilter(){
-//   const allfilter = document.querySelectorAll('.follow-filter')
-//   allfilter.forEach(btn=>{
-//     btn.addEventListener('click',(e)=>{
-//       currentfollowfilter =e.currentTarget.dataset.filter;
 
 
-//     })
-//   })
-// }
 
 
 // ============================================================
@@ -674,6 +669,7 @@ function renderAll() {
 export function init() {
   api.loadClients();
   updatefollowcard();
+  renderstatics();
   todaylistandcircle();
   clientfilter();
   // followfilter();
@@ -1147,6 +1143,17 @@ function updatefollowcard() {
 }
 updatefollowcard();
 
+function renderstatics(){
+  const clientpagetotal = document.getElementById('clientCountDisplay')
+  clientpagetotal.textContent =api.gettotalclient();
+  document.getElementById('statTotalClients').textContent = api.gettotalclient();
+  document.getElementById('statActiveLeads').textContent = api.getactiveclients();
+  document.getElementById('statClosedDeals').textContent = api.getclosedclient();
+  document.getElementById('statConversionRate').textContent = api.totalpercent() + '%';
+
+
+
+}
 
 
 function todaylistandcircle() {
