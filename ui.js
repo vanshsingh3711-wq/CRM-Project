@@ -685,17 +685,26 @@ function renderAll() {
   }
 }
 
+function updateDashboard() {
+  updateDashboardKPIs();
+  updateDashboardBars();
+  updateDashboardDonut();
+  updateRecentClients();
+  updateUpcomingFollowups();
+}
 // ============================================================
 //  INITIALISE
 // ============================================================
 export function init() {
   api.loadClients();
   updatefollowcard();
+  updateDashboard();
   renderstatics();
   todaylistandcircle();
   clientfilter();
   // followfilter();
   renderAll();
+  console.log('updateDashboard called');
   // Default view: dashboard
   // document.getElementById('refreshFollowBtn')?.addEventListener('click', refreshFollowPage);
   document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
@@ -1142,8 +1151,6 @@ const due = document.getElementById('followTotalDue')
 const overdue = document.querySelector('#followOverdue')
 const today = document.getElementById('followToday')
 const completed = document.getElementById('followCompleted')
-const client = api.getClients()
-const f = client.followups;
 
 
 
@@ -1211,7 +1218,7 @@ function renderstatics() {
 
 
   // ---- 3. Status Distribution (Donut Chart) ----
-  
+
   const total = clients.length;
   const statuses = ['lead', 'contacted', 'proposal', 'closed'];
   const donutIds = ['donutLead', 'donutContacted', 'donutProposal', 'donutClosed'];
@@ -1225,44 +1232,45 @@ function renderstatics() {
     const dash = (percentage / 100) * circumference;
 
     const donutEl = document.getElementById(donutIds[index]);
-  if(donutEl){
-     donutEl.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
-    donutEl.setAttribute('stroke-dashoffset', `-${offset}`);
-    donutEl.setAttribute('stroke', colors[index]);
-    donutEl.setAttribute('stroke-width', '16');
-    donutEl.setAttribute('fill', 'none');
-    offset += dash; 
-  }
+    if (donutEl) {
+      donutEl.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+      donutEl.setAttribute('stroke-dashoffset', `-${offset}`);
+      donutEl.setAttribute('stroke', colors[index]);
+      donutEl.setAttribute('stroke-width', '16');
+      donutEl.setAttribute('fill', 'none');
+      offset += dash;
+    }
 
     document.getElementById(legendIds[index]).textContent = count;
     const centerEl = document.querySelector('#satatistic-view svg + div');
     if (centerEl) centerEl.textContent = total;
-   
+
   })
 
-
+  
   // TOP CLIENTS //
   const topClients = clients.map(c => ({
     ...c,   // keep all original client data (name, status, etc.)
     followCount: (c.followups || []).length
   }))
-  .sort((a,b)=> b.followCount - a.followCount).slice(0,5);
+    .sort((a, b) => b.followCount - a.followCount).slice(0, 5);
   const topBody = document.getElementById('statTopClientsBody');
   const emptyState = document.getElementById('statTopEmpty');
-if (topBody) {
-  if (topClients.length === 0) {
-    if (emptyState) emptyState.style.display = 'block';
-    topBody.innerHTML = '';  // Clear the table body
-  } else {
-    if (emptyState) emptyState.style.display = 'none';
-    topBody.innerHTML = topClients.map((client, index) => `
+  if (topBody) {
+    if (topClients.length === 0) {
+      if (emptyState) emptyState.style.display = 'block';
+      topBody.innerHTML = '';  // Clear the table body
+    } else {
+      if (emptyState) emptyState.style.display = 'none';
+      topBody.innerHTML = topClients.map((client, index) => `
       <tr>
         <td>${index + 1}</td>
         <td><span class="client-name">${client.name}</span></td>
         <td><span class="status-badge ${client.status}">${client.status}</span></td>
         <td class="followup-count">${client.followCount}</td>
       </tr>
-    `).join('');}
+    `).join('');
+    }
   }
   // ---- 5. Recent Activity Feed ----
   const activityFeed = document.getElementById('statRecentActivity');
@@ -1288,6 +1296,146 @@ if (topBody) {
   }
 
 }
+
+
+
+                                                                  //DASHBOARD PAGE //
+
+                                          // KPI CARDS 
+  function updateDashboardKPIs() {
+    const clients = api.getClients();
+    const total = clients.length;
+    const active = clients.filter(c => c.status === 'lead' || c.status === 'contacted' || c.status === 'proposal').length;
+    const totalfollow = clients.flatMap(c => c.followups || []);
+    const closed = clients.filter(c => c.status === 'closed').length;
+    const due = totalfollow.filter(f => f.status === 'scheduled').length;
+
+    document.getElementById('dashTotalClients').textContent = total;
+    document.getElementById('dashActiveLeads').textContent = active;
+    document.getElementById('dashFollowupsDue').textContent = due;
+    document.getElementById('dashClosedDeals').textContent = closed;
+  };
+
+                                        // WEEKLY BAR CHART//
+
+function updateDashboardBars() {
+  const clients = api.getClients();
+  const dayCounts = [0, 0, 0, 0, 0, 0, 0];
+  const today = new Date();
+  const currentDay = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+  monday.setHours(0, 0, 0, 0);
+
+  clients.forEach(client => {
+    const createdAt = new Date(client.createdAt);
+    if (createdAt >= monday && createdAt <= today) {
+      const dayIndex = createdAt.getDay();
+      const arrayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+      dayCounts[arrayIndex]++;
+    }
+  });
+
+  const maxCount = Math.max(...dayCounts, 1);
+  const barIds = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun'];
+  barIds.forEach((id, index) => {
+    const bar = document.getElementById(id);
+    if (bar) {
+      const barheight = (dayCounts[index] / maxCount) * 100;
+      bar.style.height = Math.max(15, barheight) + '%';
+    }
+  });
+}
+
+function updateDashboardDonut() {
+  const clients = api.getClients();
+  const total = clients.length;
+  const statuses = ['lead', 'contacted', 'proposal', 'closed'];
+  const colors = ['#4A6CF7', '#f7a84a', '#22c55e', '#6b7a8f'];
+  const donutIds = ['donutLead', 'donutContacted', 'donutProposal', 'donutClosed'];
+  const legendIds = ['legendLead', 'legendContacted', 'legendProposal', 'legendClosed'];
+ let offset = 0;
+ statuses.forEach((status ,index)=>{
+  const count = clients.filter(c=> c.status === status).length;
+  const percentage = total> 0? (count/total)*100 :0;
+  const circumference = 314.16;
+   const dash = (percentage / 100) * circumference;
+
+   const donutEl = document.getElementById(donutIds[index])
+   if(donutEl){
+     donutEl.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+      donutEl.setAttribute('stroke-dashoffset', `-${offset}`);
+      donutEl.setAttribute('stroke', colors[index]);
+      offset += dash;
+   }
+   document.getElementById(legendIds[index]).textContent = count;
+ });
+  const centerEl = document.querySelector('#dashboard-view svg + div');
+  if (centerEl) centerEl.textContent = total;
+};
+
+                                                                      //RECENT ACTIVITY //
+function updateRecentClients() {
+  const clients = api.getClients();
+  const recent = clients
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3);
+
+  const tbody = document.getElementById('recentClientsBody');
+  if (tbody) {
+    tbody.innerHTML = recent.map(client => `
+      <tr>
+        <td style="padding: 10px 16px; font-weight: 600; color: #1a2639;">${client.name}</td>
+        <td style="padding: 10px 16px; color: #4a5a6e;">${client.business || 'N/A'}</td>
+        <td style="padding: 10px 16px; text-align: right;">
+          <span style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; background: ${client.status === 'closed' ? '#e3f5e9' : client.status === 'proposal' ? '#fef3d7' : '#eef3ff'}; color: ${client.status === 'closed' ? '#1f8b4c' : client.status === 'proposal' ? '#b7791f' : '#4A6CF7'};">${client.status}</span>
+        </td>
+      </tr>
+    `).join('');
+  }
+};
+
+                                                                  // UPCOMING FOLLOW-UPS
+function updateUpcomingFollowups() {
+  const clients = api.getClients();
+  const allFollowups = clients.flatMap(c => 
+    (c.followups || []).map(f => ({ ...f, clientName: c.name }))
+  );
+  const upcoming = allFollowups
+    .filter(f => f.status === 'scheduled')
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(0, 3);
+
+  const container = document.getElementById('upcomingFollowups');
+  if (container) {
+    if (upcoming.length === 0) {
+      container.innerHTML = `<div style="color: #6b7a8f; text-align: center; padding: 12px 0; font-size: 14px;">No upcoming follow-ups</div>`;
+    } else {
+      container.innerHTML = upcoming.map(f => {
+        const isToday = new Date(f.date).toDateString() === new Date().toDateString();
+        const isOverdue = new Date(f.date) < new Date();
+        const borderColor = isOverdue ? '#f74a6c' : isToday ? '#f7a84a' : '#4A6CF7';
+        const statusText = isOverdue ? 'Overdue' : isToday ? 'Today' : 'Scheduled';
+        const statusColor = isOverdue ? '#f74a6c' : isToday ? '#f7a84a' : '#4A6CF7';
+        const dayLabel = isToday ? 'Today' : isOverdue ? 'Overdue' : new Date(f.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+        return `
+          <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f9fbfd; border-radius: 10px; border-left: 3px solid ${borderColor};">
+            <span style="font-size: 13px; font-weight: 600; color: #1a2639; min-width: 48px;">${dayLabel}</span>
+            <div style="flex: 1; font-size: 14px; color: #1a2639;">
+              ${f.clientName}
+              <small style="display: block; font-size: 12px; color: #6b7a8f;">${f.title}</small>
+            </div>
+            <span style="font-size: 12px; color: ${statusColor}; font-weight: 500;">${statusText}</span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+}
+
+
+
 
 function todaylistandcircle() {
   const allClients = api.getClients();
@@ -1474,7 +1622,12 @@ function renderDocuments() {
 }
 
 
-
+console.log({
+  total: document.getElementById('dashTotalClients'),
+  active: document.getElementById('dashActiveLeads'),
+  recent: document.getElementById('recentClientsBody'),
+  upcoming: document.getElementById('upcomingFollowups')
+});
 function refreshFollowPage() {
   renderglobalfollow();      // Re‑builds the table
   updatefollowcard();        // Updates Due / Overdue / Today / Completed KPI cards
