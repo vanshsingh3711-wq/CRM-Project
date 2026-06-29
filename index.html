@@ -431,13 +431,13 @@
 
                         <div class="client-meta">
 
-                            <div>
+                            <div>=
                                 <label>Status</label>
-                                <select>
-                                    <option>Lead</option>
-                                    <option>Contacted</option>
-                                    <option>Proposal Sent</option>
-                                    <option>Closed</option>
+                                <select class="select-status">
+                                    <option value="lead">Lead</option>
+                                    <option value="contacted">Contacted</option>
+                                    <option value="proposal">Proposal Sent</option>
+                                    <option value="closed">Closed</option>
                                 </select>
                             </div>
 
@@ -462,7 +462,9 @@
                             <div>
                                 <p>Total Follow-ups</p>
                                 <h2>3</h2>
-                                <a href="#">View all</a>
+                                <button class="view-all-followups"
+                                    style="background:none; border:none; color:#4A6CF7; cursor:pointer; font-weight:500; padding:0;">View
+                                    all</button>
                             </div>
                         </div>
 
@@ -480,7 +482,9 @@
                             <div>
                                 <p>Open Tasks</p>
                                 <h2>2</h2>
-                                <a href="#">View all</a>
+                                <button class="view-all-tasks"
+                                    style="background:none; border:none; color:#4A6CF7; cursor:pointer; font-weight:500; padding:0;">View
+                                    all</button>
                             </div>
                         </div>
 

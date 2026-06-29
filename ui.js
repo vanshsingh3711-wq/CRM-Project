@@ -64,7 +64,7 @@ const taskList = document.getElementById('taskList');
 
 // FOLLOW-UP ADD BUTTON
 const addfollow = document.getElementById('quickFollowBtn');
-
+// let currentfollowfilter = 'all';
 
 
 // FOLLOW-UP MODAL 
@@ -304,11 +304,26 @@ function renderClientTable(data = null) {
         searchBox.value = '';
       }
     });
+
+
+
   });
 
 
 }
 
+const selectStatus = document.querySelector('.select-status')
+if (selectStatus) {
+  selectStatus.addEventListener('change', function (e) {
+
+    const client = api.getClientById(selectedId);
+    client.status = e.target.value;
+    api.saveClients();
+    renderClientDetail(client);
+    renderClientTable();
+
+  })
+}
 
 function clientfilter() {
   const allfilter = document.querySelectorAll('.filter');
@@ -325,6 +340,18 @@ function clientfilter() {
   )
 }
 
+// function followfilter(){
+//   const allfilter = document.querySelectorAll('.follow-filter')
+//   allfilter.forEach(btn=>{
+//     btn.addEventListener('click',(e)=>{
+//       currentfollowfilter =e.currentTarget.dataset.filter;
+
+
+//     })
+//   })
+// }
+
+
 // ============================================================
 //  RENDER CLIENT DETAIL (overview)
 // ============================================================
@@ -337,6 +364,12 @@ function renderClientDetail(client) {
   document.querySelector('.over-business').textContent = client.business || 'NA';
   document.querySelector('.over-email').textContent = client.email;
   document.querySelector('.over-number').textContent = client.number;
+
+  // Inside renderClientDetail(client)
+  const statusSelect = document.querySelector('.select-status');
+  if (statusSelect) {
+    statusSelect.value = client.status || 'lead';
+  }
 }
 
 // ============================================================
@@ -374,6 +407,19 @@ addNoteBtn?.addEventListener('click', () => {
   }
   noteModal.style.display = 'block';
 });
+
+document.querySelector('.view-all-followups')?.addEventListener('click', function() {
+  const followTab = document.querySelector('.tabs button[data-target="follow-up"]');
+  if (followTab) followTab.click();
+  rendetailfollowup();
+});
+
+document.querySelector('.view-all-tasks')?.addEventListener('click', function() {
+  const taskTab = document.querySelector('.tabs button[data-target="tasks"]');
+  if (taskTab) taskTab.click();
+  rendetailfollowup();
+});
+
 
 noteClose?.addEventListener('click', () => { noteModal.style.display = 'none'; });
 noteCancel?.addEventListener('click', () => { noteModal.style.display = 'none'; });
@@ -573,14 +619,14 @@ function renderTasks() {
       deleteTask(task.id);
     });
 
-    const taskedit =card.querySelector('.edit-task')
-    taskedit.addEventListener('click',()=>{
+    const taskedit = card.querySelector('.edit-task')
+    taskedit.addEventListener('click', () => {
 
       const client = api.getClientById(selectedId)
-      if(!client)return;
-      const taskId = taskedit.dataset.id; 
-      const task = client.tasks.find(t=> t.id === taskId)
-      if (!task)return;
+      if (!client) return;
+      const taskId = taskedit.dataset.id;
+      const task = client.tasks.find(t => t.id === taskId)
+      if (!task) return;
       document.querySelector('#taskEditId').value = taskId;
 
       document.getElementById('taskTitle').value = task.title || '';
@@ -589,7 +635,7 @@ function renderTasks() {
       document.getElementById('taskPriority').value = task.Priority || 'medium';
 
       taskModal.style.display = 'block';
-      
+
     })
   });
 };
@@ -630,6 +676,7 @@ export function init() {
   updatefollowcard();
   todaylistandcircle();
   clientfilter();
+  // followfilter();
   renderAll();
   // Default view: dashboard
   // document.getElementById('refreshFollowBtn')?.addEventListener('click', refreshFollowPage);
@@ -959,6 +1006,7 @@ function renderglobalfollow(arraylist = null) {
 
   // 1. Flatten all follow‑ups from all clients
   const allClients = arraylist || api.getClients();
+
   const allFollowups = allClients.flatMap(client =>
     (client.followups || []).map(f => ({
       ...f,
@@ -967,23 +1015,23 @@ function renderglobalfollow(arraylist = null) {
     }))
   );
   let filtered = allFollowups;
-  if (!currentFilter !== 'all') {
+  if (currentFilter !== 'all') {
     filtered = allFollowups.filter(f => f.status === currentFilter);
   }
   // 2. Sort by date (soonest first)
-  allFollowups.sort((a, b) => new Date(a.date) - new Date(b.date));
+  filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   // 3. Clear table
   tablebody.innerHTML = '';
 
   // 4. Empty state
-  if (allFollowups.length === 0) {
+  if (filtered.length === 0) {
     tablebody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888; padding: 30px;">No follow‑ups scheduled yet.</td></tr>`;
     return;
   }
 
   // 5. Build rows
-  allFollowups.forEach(follow => {
+  filtered.forEach(follow => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
   <td>${follow.clientName}</td>
@@ -1165,7 +1213,7 @@ uploadBtn?.addEventListener('click', () => {
   fileInput.click();
 });
 
-fileInput?.addEventListener('change', function(e) {
+fileInput?.addEventListener('change', function (e) {
   const files = this.files;
   if (!files.length) return;
 
@@ -1185,7 +1233,7 @@ fileInput?.addEventListener('change', function(e) {
     }
 
     const reader = new FileReader();
-    reader.onload = function(loadEvent) {
+    reader.onload = function (loadEvent) {
       const dataUrl = loadEvent.target.result; // base64 data URL
 
       const newDoc = {
@@ -1237,8 +1285,8 @@ function renderDocuments() {
 
     // Format the file size
     const sizeStr = doc.size < 1024 ? doc.size + ' B' :
-                   doc.size < 1048576 ? (doc.size / 1024).toFixed(1) + ' KB' :
-                   (doc.size / 1048576).toFixed(1) + ' MB';
+      doc.size < 1048576 ? (doc.size / 1024).toFixed(1) + ' KB' :
+        (doc.size / 1048576).toFixed(1) + ' MB';
 
     const date = new Date(doc.uploadedAt).toLocaleDateString('en-US', {
       year: 'numeric', month: 'short', day: 'numeric'
