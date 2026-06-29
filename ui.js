@@ -180,6 +180,7 @@ clientPaper?.addEventListener('submit', e => {
   clientBox.style.display = 'none';
   form.reset();
   renderAll();
+  renderstatics();
 });
 
 // ============================================================
@@ -246,7 +247,7 @@ let currentclientfil = 'all';
 function renderClientTable(data = null) {
   let clients = data || api.getClients();
 
-  // SORT
+  // SORT BY SELECTED VALUE // 
   switch (currentSort) {
     case 'newest': clients = [...clients].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     break;
@@ -1165,15 +1166,81 @@ function updatefollowcard() {
 updatefollowcard();
 
 function renderstatics() {
-  const clientpagetotal = document.getElementById('clientCountDisplay')
-  clientpagetotal.textContent = api.gettotalclient();
+ console.log('✅ renderstatics() called');
+
+ // ---- 1. KPI Cards ----
+  const clientpagetotal = document.getElementById('clientCountDisplay');
+  if (clientpagetotal) clientpagetotal.textContent = api.gettotalclient();
   document.getElementById('statTotalClients').textContent = api.gettotalclient();
   document.getElementById('statActiveLeads').textContent = api.getactiveclients();
   document.getElementById('statClosedDeals').textContent = api.getclosedclient();
   document.getElementById('statConversionRate').textContent = api.totalpercent() + '%';
 
+  const clients = api.getClients();
+  const dayCounts = [0,0,0,0,0,0,0];
+  const today = new Date();
+  const currentDay = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+  monday.setHours(0,0,0,0);
+
+  clients.forEach(client => {
+    const createdAt = new Date(client.createdAt);
+    if (createdAt >= monday && createdAt <= today) {
+      const dayIndex = createdAt.getDay();
+      const arrayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+      dayCounts[arrayIndex]++;
+    }
+  });
+
+  console.log('Day counts:', dayCounts);
+  const maxCount = Math.max(...dayCounts, 1);
+  console.log('Max count:', maxCount);
+
+  const barIds = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun'];
+  barIds.forEach((id, index) => {
+    const bar = document.getElementById(id);
+    if (bar) {
+      const barheight = (dayCounts[index] / maxCount) * 100;
+      bar.style.height = Math.max(15, barheight) + '%';
+      console.log(`${id} height set to ${bar.style.height}`);
+    } else {
+      console.warn(`Element #${id} not found!`);
+    }
+  });
 
 
+
+
+
+
+
+
+
+
+
+
+  // ---- 5. Recent Activity Feed ----
+  const activityFeed = document.getElementById('statRecentActivity');
+  if (activityFeed) {
+    const recentClients = clients
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5);
+
+    if (recentClients.length === 0) {
+      activityFeed.innerHTML = `<div style="color: #6b7a8f; text-align: center; padding: 20px 0;">No recent activity</div>`;
+    } else {
+      activityFeed.innerHTML = recentClients.map(client => `
+        <div class="activity-item">
+          <div class="activity-icon">👤</div>
+          <div class="activity-text">
+            New client added: <strong>${client.name}</strong>
+            <small>${new Date(client.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
+          </div>
+        </div>
+      `).join('');}
+
+  }
 }
 
 
