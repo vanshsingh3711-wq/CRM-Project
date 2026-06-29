@@ -9,7 +9,7 @@ import * as api from './api.js';
 // ============================================================
 let selectedId = null;           // currently viewed client (for notes / tasks)
 let currentTaskClientId = null;  // client being edited for tasks
-
+let currentSort = 'newest';  // default: newest first
 // ============================================================
 //  DOM REFERENCES
 // ============================================================
@@ -97,7 +97,7 @@ navItems.forEach(item => {
     });
     const targetView = document.getElementById(targetId);
     if (targetView) targetView.style.display = 'block';
-    if (targetId === 'satatistic-view'){
+    if (targetId === 'satatistic-view') {
       renderstatics();
     }
     if (targetId === 'follow-view') {
@@ -127,6 +127,14 @@ searchBox?.addEventListener('input', () => {
   );
   renderClientTable(filtered);
 });
+
+// Sort dropdown
+document.getElementById('sortOptions')?.addEventListener('change', function (e) {
+  currentSort = e.target.value;
+  renderClientTable(); // Re-render with the new sort
+});
+
+
 
 // ============================================================
 //  GREETING & DATE DISPLAY
@@ -236,8 +244,21 @@ let currentclientfil = 'all';
 //  RENDER CLIENT TABLE
 // ============================================================
 function renderClientTable(data = null) {
-  const clients = data || api.getClients();
+  let clients = data || api.getClients();
 
+  // SORT
+  switch (currentSort) {
+    case 'newest': clients = [...clients].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    break;
+    case 'oldest': clients = [...clients].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    break;
+    case 'az': clients = [...clients].sort((a, b) => a.name.localeCompare(b.name));
+    break;
+    case 'za': clients = [...clients].sort((a, b) => b.name.localeCompare(a.name));
+    break;
+    default:
+    break;
+  }
   let filterC = clients;
   if (currentclientfil !== 'all') { filterC = clients.filter(c => c.status === currentclientfil) };
   if (!clientTableBody) return;
@@ -403,13 +424,13 @@ addNoteBtn?.addEventListener('click', () => {
   noteModal.style.display = 'block';
 });
 
-document.querySelector('.view-all-followups')?.addEventListener('click', function() {
+document.querySelector('.view-all-followups')?.addEventListener('click', function () {
   const followTab = document.querySelector('.tabs button[data-target="follow-up"]');
   if (followTab) followTab.click();
   rendetailfollowup();
 });
 
-document.querySelector('.view-all-tasks')?.addEventListener('click', function() {
+document.querySelector('.view-all-tasks')?.addEventListener('click', function () {
   const taskTab = document.querySelector('.tabs button[data-target="tasks"]');
   if (taskTab) taskTab.click();
   rendetailfollowup();
@@ -1143,9 +1164,9 @@ function updatefollowcard() {
 }
 updatefollowcard();
 
-function renderstatics(){
+function renderstatics() {
   const clientpagetotal = document.getElementById('clientCountDisplay')
-  clientpagetotal.textContent =api.gettotalclient();
+  clientpagetotal.textContent = api.gettotalclient();
   document.getElementById('statTotalClients').textContent = api.gettotalclient();
   document.getElementById('statActiveLeads').textContent = api.getactiveclients();
   document.getElementById('statClosedDeals').textContent = api.getclosedclient();
@@ -1339,6 +1360,8 @@ function renderDocuments() {
     });
   });
 }
+
+
 
 function refreshFollowPage() {
   renderglobalfollow();      // Re‑builds the table
