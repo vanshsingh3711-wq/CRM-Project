@@ -250,15 +250,15 @@ function renderClientTable(data = null) {
   // SORT BY SELECTED VALUE // 
   switch (currentSort) {
     case 'newest': clients = [...clients].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    break;
+      break;
     case 'oldest': clients = [...clients].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    break;
+      break;
     case 'az': clients = [...clients].sort((a, b) => a.name.localeCompare(b.name));
-    break;
+      break;
     case 'za': clients = [...clients].sort((a, b) => b.name.localeCompare(a.name));
-    break;
+      break;
     default:
-    break;
+      break;
   }
   let filterC = clients;
   if (currentclientfil !== 'all') { filterC = clients.filter(c => c.status === currentclientfil) };
@@ -1166,9 +1166,9 @@ function updatefollowcard() {
 updatefollowcard();
 
 function renderstatics() {
- console.log('✅ renderstatics() called');
+  console.log('✅ renderstatics() called');
 
- // ---- 1. KPI Cards ----
+  // ---- 1. KPI Cards ----
   const clientpagetotal = document.getElementById('clientCountDisplay');
   if (clientpagetotal) clientpagetotal.textContent = api.gettotalclient();
   document.getElementById('statTotalClients').textContent = api.gettotalclient();
@@ -1177,12 +1177,12 @@ function renderstatics() {
   document.getElementById('statConversionRate').textContent = api.totalpercent() + '%';
 
   const clients = api.getClients();
-  const dayCounts = [0,0,0,0,0,0,0];
+  const dayCounts = [0, 0, 0, 0, 0, 0, 0];
   const today = new Date();
   const currentDay = today.getDay();
   const monday = new Date(today);
   monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
-  monday.setHours(0,0,0,0);
+  monday.setHours(0, 0, 0, 0);
 
   clients.forEach(client => {
     const createdAt = new Date(client.createdAt);
@@ -1210,16 +1210,60 @@ function renderstatics() {
   });
 
 
+  // ---- 3. Status Distribution (Donut Chart) ----
+  
+  const total = clients.length;
+  const statuses = ['lead', 'contacted', 'proposal', 'closed'];
+  const donutIds = ['donutLead', 'donutContacted', 'donutProposal', 'donutClosed'];
+  const legendIds = ['legendLead', 'legendContacted', 'legendProposal', 'legendClosed'];
+  const colors = ['#4A6CF7', '#f7a84a', '#22c55e', '#6b7a8f'];
+  let offset = 0;
+  statuses.forEach((status, index) => {
+    const count = clients.filter(c => c.status === status).length;
+    const percentage = total > 0 ? (count / total) * 100 : 0;
+    const circumference = 314.16;
+    const dash = (percentage / 100) * circumference;
+
+    const donutEl = document.getElementById(donutIds[index]);
+  if(donutEl){
+     donutEl.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+    donutEl.setAttribute('stroke-dashoffset', `-${offset}`);
+    donutEl.setAttribute('stroke', colors[index]);
+    donutEl.setAttribute('stroke-width', '16');
+    donutEl.setAttribute('fill', 'none');
+    offset += dash; 
+  }
+
+    document.getElementById(legendIds[index]).textContent = count;
+    const centerEl = document.querySelector('#satatistic-view svg + div');
+    if (centerEl) centerEl.textContent = total;
+   
+  })
 
 
-
-
-
-
-
-
-
-
+  // TOP CLIENTS //
+  const topClients = clients.map(c => ({
+    ...c,   // keep all original client data (name, status, etc.)
+    followCount: (c.followups || []).length
+  }))
+  .sort((a,b)=> b.followCount - a.followCount).slice(0,5);
+  const topBody = document.getElementById('statTopClientsBody');
+  const emptyState = document.getElementById('statTopEmpty');
+if (topBody) {
+  if (topClients.length === 0) {
+    if (emptyState) emptyState.style.display = 'block';
+    topBody.innerHTML = '';  // Clear the table body
+  } else {
+    if (emptyState) emptyState.style.display = 'none';
+    topBody.innerHTML = topClients.map((client, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td><span class="client-name">${client.name}</span></td>
+        <td><span class="status-badge ${client.status}">${client.status}</span></td>
+        <td class="followup-count">${client.followCount}</td>
+      </tr>
+    `).join('');}
+  }
   // ---- 5. Recent Activity Feed ----
   const activityFeed = document.getElementById('statRecentActivity');
   if (activityFeed) {
@@ -1238,11 +1282,12 @@ function renderstatics() {
             <small>${new Date(client.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
           </div>
         </div>
-      `).join('');}
+      `).join('');
+    }
 
   }
-}
 
+}
 
 function todaylistandcircle() {
   const allClients = api.getClients();
