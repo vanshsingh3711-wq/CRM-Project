@@ -2093,7 +2093,7 @@ select {
     align-items: center;
     gap: 8px;
     color: #1a2639;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 /* Colored dot */
@@ -2107,7 +2107,7 @@ select {
 /* Count aligned to right */
 .stat-donut-count {
     margin-left: auto;
-    font-weight: 700;
+    font-weight: 500;
     color: #1a2639;
 }
 
