@@ -97,7 +97,7 @@ body {
   position: sticky;
   top: 0;
   height: 100vh;
-  position: relative;
+  
 }
 .sidebar.close {
   width: 70px;
@@ -148,6 +148,7 @@ body {
   height: 1px;
   background: var(--border);
   margin: 10px 4px 18px;
+  margin-bottom: 40px;
 }
 
 .nav {
@@ -167,6 +168,7 @@ body {
   transition: 0.2s ease;
   font-size: 1.02rem;
   user-select: none;
+  
 }
 .nav-item .icon {
   width: 20px;
