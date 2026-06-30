@@ -1297,7 +1297,20 @@ function renderstatics() {
 
 }
 
+document.getElementById('up-view-all').addEventListener('click',()=>{
+  document.getElementById('dashboard-view').style.display = 'none'
+  document.getElementById('clients-view').style.display = 'block'
+   navItems.forEach(x => x.classList.remove('active'));
+  document.querySelector('.nav-item[data-target="clients-view"]')?.classList.add('active');
 
+})
+document.getElementById('view-follow').addEventListener('click',()=>{
+  document.getElementById('dashboard-view').style.display = 'none'
+  document.getElementById('follow-view').style.display = 'block'
+   navItems.forEach(x => x.classList.remove('active'));
+  document.querySelector('.nav-item[data-target="follow-view"]')?.classList.add('active');
+renderglobalfollow();
+})
 
                                                                   //DASHBOARD PAGE //
 
