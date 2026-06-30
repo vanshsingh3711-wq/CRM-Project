@@ -166,109 +166,90 @@
                     </div>
                 </div>
 
-                <!-- ===== CHARTS ROW (2 columns) ===== -->
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px;">
+                <!-- ===== CHARTS ROW ===== -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px;">
 
-                    <!-- Left: Weekly Activity (Bar Chart) -->
-                    <div
-                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">📊 Weekly Activity
-                            </h3>
-                            <span style="font-size: 13px; color: #6b7a8f;">Last 7 days</span>
-                        </div>
-                        <div
-                            style="display: flex; align-items: flex-end; height: 140px; gap: 16px; padding-bottom: 4px;">
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Mon</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 85px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Tue</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 45px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Wed</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 100px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Thu</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 70px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Fri</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 40px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Sat</span>
-                            </div>
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 100%; height: 30px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0;">
-                                </div>
-                                <span style="font-size: 12px; color: #6b7a8f;">Sun</span>
-                            </div>
-                        </div>
-                    </div>
+  <!-- LEFT: Weekly Activity (Bar Chart) -->
+  <div style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">📊 Weekly Activity</h3>
+      <span style="font-size: 13px; color: #6b7a8f;">Last 7 days</span>
+    </div>
+    <!-- Bar container – each bar has an ID that JS updates -->
+    <div style="display: flex; align-items: flex-end; height: 140px; gap: 16px; padding-bottom: 4px;">
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barMon" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Mon</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barTue" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Tue</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barWed" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Wed</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barThu" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Thu</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barFri" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Fri</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barSat" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Sat</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <div id="barSun" style="width: 100%; height: 60px; background: linear-gradient(180deg, #4d4fe0, #3947c7); border-radius: 6px 6px 0 0; transition: height 0.3s;"></div>
+        <span style="font-size: 12px; color: #6b7a8f;">Sun</span>
+      </div>
+    </div>
+  </div>
 
-                    <!-- Right: Lead Status Distribution (Donut + Legend) -->
-                    <div
-                        style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
-                        <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">📌 Lead
-                            Distribution</h3>
-                        <div
-                            style="flex: 1; display: flex; justify-content: center; align-items: center; position: relative;">
-                            <svg viewBox="0 0 120 120" style="width: 120px; height: 120px; transform: rotate(-90deg);">
-                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#4A6CF7" stroke-width="16"
-                                    stroke-dasharray="100 314" />
-                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#f7a84a" stroke-width="16"
-                                    stroke-dasharray="60 314" />
-                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#22c55e" stroke-width="16"
-                                    stroke-dasharray="30 314" />
-                                <circle cx="60" cy="60" r="50" fill="transparent" stroke="#6b7a8f" stroke-width="16"
-                                    stroke-dasharray="15 314" />
-                            </svg>
-                            <div style="position: absolute; font-size: 20px; font-weight: 700; color: #1a2639;">25</div>
-                        </div>
-                        <div
-                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-top: 12px; font-size: 13px;">
-                            <div style="display: flex; align-items: center; gap: 6px;"><span
-                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4A6CF7;"></span>
-                                Lead <span style="margin-left: auto; font-weight: 600;">8</span></div>
-                            <div style="display: flex; align-items: center; gap: 6px;"><span
-                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #f7a84a;"></span>
-                                Contacted <span style="margin-left: auto; font-weight: 600;">5</span></div>
-                            <div style="display: flex; align-items: center; gap: 6px;"><span
-                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e;"></span>
-                                Proposal <span style="margin-left: auto; font-weight: 600;">4</span></div>
-                            <div style="display: flex; align-items: center; gap: 6px;"><span
-                                    style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #6b7a8f;"></span>
-                                Closed <span style="margin-left: auto; font-weight: 600;">8</span></div>
-                        </div>
-                    </div>
-                </div>
-
+  <!-- RIGHT: Lead Distribution (Donut Chart) -->
+  <div style="background: white; border-radius: 18px; padding: 24px; border: 1px solid #eef3f8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
+    <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0 0 16px 0;">📌 Lead Distribution</h3>
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center; position: relative;">
+      <svg viewBox="0 0 120 120" style="width: 120px; height: 120px; transform: rotate(-90deg);">
+        <!-- These four circles will be updated by JS via their IDs -->
+        <circle cx="60" cy="60" r="50" fill="transparent" stroke="#4A6CF7" stroke-width="16" stroke-dasharray="0 314" id="donutLead" />
+        <circle cx="60" cy="60" r="50" fill="transparent" stroke="#f7a84a" stroke-width="16" stroke-dasharray="0 314" id="donutContacted" />
+        <circle cx="60" cy="60" r="50" fill="transparent" stroke="#22c55e" stroke-width="16" stroke-dasharray="0 314" id="donutProposal" />
+        <circle cx="60" cy="60" r="50" fill="transparent" stroke="#6b7a8f" stroke-width="16" stroke-dasharray="0 314" id="donutClosed" />
+      </svg>
+      <!-- Center number – we give it an ID for reliable updates -->
+      <div id="dashDonutCenter" style="position: absolute; font-size: 20px; font-weight: 700; color: #1a2639;">0</div>
+    </div>
+    <!-- Legend – each count has an ID that JS updates -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-top: 12px; font-size: 13px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4A6CF7;"></span>
+        Lead <span id="legendLead" style="margin-left: auto; font-weight: 600;">0</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #f7a84a;"></span>
+        Contacted <span id="legendContacted" style="margin-left: auto; font-weight: 600;">0</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e;"></span>
+        Proposal <span id="legendProposal" style="margin-left: auto; font-weight: 600;">0</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #6b7a8f;"></span>
+        Closed <span id="legendClosed" style="margin-left: auto; font-weight: 600;">0</span>
+      </div>
+    </div>
+  </div>
+</div>
                 <!-- ===== BOTTOM: Recent Clients + Upcoming Follow-ups ===== -->
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
 
                     <!-- Left: Recent Clients -->
-                    <div
+                    <div 
                         style="background: white; border-radius: 18px; border: 1px solid #eef3f8; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
-                        <div
+                        <div 
                             style="padding: 18px 24px; border-bottom: 1px solid #f0f4fa; display: flex; justify-content: space-between; align-items: center;">
                             <h3 style="font-size: 16px; font-weight: 600; color: #1a2639; margin: 0;">🕐 Recent Clients
                             </h3>
@@ -276,7 +257,7 @@
                                 style="font-size: 14px; color: #4A6CF7; text-decoration: none; font-weight: 500;">View
                                 All →</a>
                         </div>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <table id="recentClientsBody" style="width: 100%; border-collapse: collapse; font-size: 14px;">
                             <thead style="background: #f9fbfd;">
                                 <tr>
                                     <th
@@ -327,8 +308,8 @@
                                 style="font-size: 14px; color: #4A6CF7; text-decoration: none; font-weight: 500;">View
                                 All →</a>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div
+                        <div id="upcomingFollowups" style="display: flex; flex-direction: column; gap: 12px;">
+                            <div 
                                 style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f9fbfd; border-radius: 10px; border-left: 3px solid #f74a6c;">
                                 <span
                                     style="font-size: 13px; font-weight: 600; color: #1a2639; min-width: 48px;">Today</span>

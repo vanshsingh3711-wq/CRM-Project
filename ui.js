@@ -1379,7 +1379,7 @@ function updateRecentClients() {
   const clients = api.getClients();
   const recent = clients
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 3);
+    .slice(0, 5);
 
   const tbody = document.getElementById('recentClientsBody');
   if (tbody) {
@@ -1405,7 +1405,7 @@ function updateUpcomingFollowups() {
     .filter(f => f.status === 'scheduled')
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 3);
-
+console.log(upcoming);
   const container = document.getElementById('upcomingFollowups');
   if (container) {
     if (upcoming.length === 0) {
