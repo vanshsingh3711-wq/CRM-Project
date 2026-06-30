@@ -14,6 +14,34 @@
   --grad-end: #4d4fe0;
 }
 
+
+
+.sidebar {
+  background: var(--bg-sidebar);
+  /* … */
+}
+
+.sidebar {
+  background: var(--bg-sidebar);
+}
+
+.content-box,
+.stat-card,
+.card,
+.modal-content {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+input, select, textarea {
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -2048,6 +2076,58 @@ select {
 /* ========================================= */
 /* STATISTICS PAGE — Premium Dashboard       */
 /* ========================================= */
+
+
+/* Donut legend container */
+.stat-donut-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+/* Each legend item */
+.stat-donut-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a2639;
+    font-weight: 500;
+}
+
+/* Colored dot */
+.stat-donut-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Count aligned to right */
+.stat-donut-count {
+    margin-left: auto;
+    font-weight: 700;
+    color: #1a2639;
+}
+
+/* Individual colors */
+.stat-lead {
+    background: #4A6CF7;
+}
+
+.stat-contacted {
+    background: #f7a84a;
+}
+
+.stat-proposal {
+    background: #22c55e;
+}
+
+.stat-closed {
+    background: #6b7a8f;
+}
+
 
 #satatistic-view .content-header {
     margin-bottom: 24px;

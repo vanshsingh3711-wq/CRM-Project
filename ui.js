@@ -1171,7 +1171,6 @@ function updatefollowcard() {
 
 }
 updatefollowcard();
-
 function renderstatics() {
   console.log('✅ renderstatics() called');
 
@@ -1184,6 +1183,8 @@ function renderstatics() {
   document.getElementById('statConversionRate').textContent = api.totalpercent() + '%';
 
   const clients = api.getClients();
+
+  // ---- 2. Weekly Bar Chart (statistics page) ----
   const dayCounts = [0, 0, 0, 0, 0, 0, 0];
   const today = new Date();
   const currentDay = today.getDay();
@@ -1200,31 +1201,31 @@ function renderstatics() {
     }
   });
 
-  console.log('Day counts:', dayCounts);
   const maxCount = Math.max(...dayCounts, 1);
-  console.log('Max count:', maxCount);
-
-  const barIds = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun'];
+  // ✅ UNIQUE IDs for statistics page bars
+  const barIds = ['statBarMon', 'statBarTue', 'statBarWed', 'statBarThu', 'statBarFri', 'statBarSat', 'statBarSun'];
   barIds.forEach((id, index) => {
     const bar = document.getElementById(id);
     if (bar) {
       const barheight = (dayCounts[index] / maxCount) * 100;
       bar.style.height = Math.max(15, barheight) + '%';
-      console.log(`${id} height set to ${bar.style.height}`);
-    } else {
-      console.warn(`Element #${id} not found!`);
     }
   });
 
-
-  // ---- 3. Status Distribution (Donut Chart) ----
-
+  // ---- 3. Donut Chart (statistics page) ----
   const total = clients.length;
   const statuses = ['lead', 'contacted', 'proposal', 'closed'];
-  const donutIds = ['donutLead', 'donutContacted', 'donutProposal', 'donutClosed'];
-  const legendIds = ['legendLead', 'legendContacted', 'legendProposal', 'legendClosed'];
+  // ✅ UNIQUE IDs for statistics page donut
+  const donutIds = ['statDonutLead', 'statDonutContacted', 'statDonutProposal', 'statDonutClosed'];
+  const legendIds = [
+    "statLegendLead",
+    "statLegendContacted",
+    "statLegendProposal",
+    "statLegendClosed"
+];
   const colors = ['#4A6CF7', '#f7a84a', '#22c55e', '#6b7a8f'];
   let offset = 0;
+
   statuses.forEach((status, index) => {
     const count = clients.filter(c => c.status === status).length;
     const percentage = total > 0 ? (count / total) * 100 : 0;
@@ -1242,36 +1243,41 @@ function renderstatics() {
     }
 
     document.getElementById(legendIds[index]).textContent = count;
-    const centerEl = document.querySelector('#satatistic-view svg + div');
-    if (centerEl) centerEl.textContent = total;
+  });
 
-  })
+  // ✅ Update center number with unique ID
+  const centerEl = document.getElementById('statDonutCenter');
+  if (centerEl) centerEl.textContent = total;
 
-  
-  // TOP CLIENTS //
+  // ---- 4. Top Clients Table ----
   const topClients = clients.map(c => ({
-    ...c,   // keep all original client data (name, status, etc.)
+    ...c,
     followCount: (c.followups || []).length
   }))
-    .sort((a, b) => b.followCount - a.followCount).slice(0, 5);
+  .sort((a, b) => b.followCount - a.followCount)
+  .slice(0, 5);
+
   const topBody = document.getElementById('statTopClientsBody');
   const emptyState = document.getElementById('statTopEmpty');
+
   if (topBody) {
     if (topClients.length === 0) {
       if (emptyState) emptyState.style.display = 'block';
-      topBody.innerHTML = '';  // Clear the table body
+      topBody.innerHTML = '';
     } else {
       if (emptyState) emptyState.style.display = 'none';
       topBody.innerHTML = topClients.map((client, index) => `
-      <tr>
-        <td>${index + 1}</td>
-        <td><span class="client-name">${client.name}</span></td>
-        <td><span class="status-badge ${client.status}">${client.status}</span></td>
-        <td class="followup-count">${client.followCount}</td>
-      </tr>
-    `).join('');
+        <tr>
+          <td style="padding: 12px 16px; font-weight: 600; color: #1a2639;">${index + 1}. ${client.name}</td>
+          <td style="padding: 12px 16px;">
+            <span class="status ${client.status}" style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 500;">${client.status}</span>
+          </td>
+          <td style="padding: 12px 16px; text-align: right; font-weight: 600; color: #4A6CF7;">${client.followCount}</td>
+        </tr>
+      `).join('');
     }
   }
+
   // ---- 5. Recent Activity Feed ----
   const activityFeed = document.getElementById('statRecentActivity');
   if (activityFeed) {
@@ -1283,19 +1289,21 @@ function renderstatics() {
       activityFeed.innerHTML = `<div style="color: #6b7a8f; text-align: center; padding: 20px 0;">No recent activity</div>`;
     } else {
       activityFeed.innerHTML = recentClients.map(client => `
-        <div class="activity-item">
-          <div class="activity-icon">👤</div>
-          <div class="activity-text">
-            New client added: <strong>${client.name}</strong>
-            <small>${new Date(client.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f4f6fb;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #eef3ff; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">👤</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 500; color: #1a2639;">${client.name}</div>
+            <div style="font-size: 13px; color: #6b7a8f;">Added: ${new Date(client.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
           </div>
+          <span class="status ${client.status}" style="display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 11px; font-weight: 500;">${client.status}</span>
         </div>
       `).join('');
     }
-
   }
 
-}
+  console.log('✅ Statistics page rendered');
+};
+
 
 document.getElementById('up-view-all').addEventListener('click',()=>{
   document.getElementById('dashboard-view').style.display = 'none'
@@ -1635,12 +1643,59 @@ function renderDocuments() {
 }
 
 
+
+
 console.log({
   total: document.getElementById('dashTotalClients'),
   active: document.getElementById('dashActiveLeads'),
   recent: document.getElementById('recentClientsBody'),
   upcoming: document.getElementById('upcomingFollowups')
 });
+
+const profileName = document.querySelector('.profile-name');
+
+function updateProfile() {
+  const btn = document.getElementById('profilebtn');
+  if (!btn) {
+    console.warn('Button #profilebtn not found');
+    return;
+  }
+
+  btn.addEventListener('click', () => {
+    const name = document.getElementById('input-name').value;
+    const email = document.getElementById('input-email').value;
+
+    // Update sidebar
+    if (profileName) profileName.textContent = name;
+
+    // Save to localStorage (or your own storage)
+    localStorage.setItem('user-name', name);
+    localStorage.setItem('user-email', email);
+
+    console.log('Profile updated:', name, email);
+  });
+}
+
+// Load saved profile on page load
+function loadProfile() {
+  const savedName = localStorage.getItem('user-name');
+  const savedEmail = localStorage.getItem('user-email');
+  if (savedName) {
+    document.getElementById('input-name').value = savedName;
+    if (profileName) profileName.textContent = savedName;
+  }
+  if (savedEmail) {
+    document.getElementById('input-email').value = savedEmail;
+  }
+}
+// Call on page load
+document.addEventListener('DOMContentLoaded', () => {
+  loadProfile();
+  updateProfile();
+});
+
+
+
 function refreshFollowPage() {
   renderglobalfollow();      // Re‑builds the table
   updatefollowcard();        // Updates Due / Overdue / Today / Completed KPI cards
